@@ -99,6 +99,96 @@ let globalRecentTasks = [];
 fetch(API_URL)
   .then(response => response.json())
   .then(data => {
+    const chartData = data.chartData;
+    globalRecentTasks = data.recentTasks;
+    const workerData = data.workerData;
+    
+    // Populate the Date dropdown with unique dates from the data
+    const dateSelect = document.getElementById('filterDate');
+    const uniqueDates = [...new Set(globalRecentTasks.map(t => t.date))].sort((a, b) => new Date(b) - new Date(a));
+    uniqueDates.forEach(date => {
+      dateSelect.innerHTML += '<option value="' + date + '">' + date + '</option>';
+    });
+
+    renderDashboard(chartData, globalRecentTasks, workerData);
+  })
+  .catch(error => console.error("Error loading dashboard data:", error));
+
+function renderDashboard(chartData, recentTasks, workerData) {
+  // Render Section Chart
+  new Chart(document.getElementById('sectionChart'), {
+    type: 'bar',
+    data: { labels: Object.keys(chartData.sections), datasets: [{ data: Object.values(chartData.sections), backgroundColor: colors.slice(0, Object.keys(chartData.sections).length), borderRadius: 4 }] },
+    options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }, y: { grid: { display: false }, ticks: { color: '#e2e8f0', font: { size: 11 } } } } }
+  });
+
+  // Render Worker Chart
+  new Chart(document.getElementById('workerChart'), {
+    type: 'doughnut',
+    data: { labels: Object.keys(chartData.workers), datasets: [{ data: Object.values(chartData.workers), backgroundColor: colors }] },
+    options: { plugins: { legend: { position: 'right', labels: { color: '#e2e8f0', font: { size: 11 }, padding: 8 } } } }
+  });
+
+  // Render Daily Trend Chart
+  new Chart(document.getElementById('dailyChart'), {
+    type: 'line',
+    data: { labels: chartData.daily.map(d => d[0]), datasets: [{ label: 'Tasks', data: chartData.daily.map(d => d[1]), borderColor: '#3b82f6', backgroundColor: '#3b82f620', fill: true, tension: 0.3, pointRadius: 2 }] },
+    options: { plugins: { legend: { display: false } }, scales: { x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8', maxRotation: 45, font: { size: 10 } } }, y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } } } }
+  });
+
+  // Render Problem Category Chart
+  new Chart(document.getElementById('problemChart'), {
+    type: 'polarArea',
+    data: { labels: Object.keys(chartData.problem_cats), datasets: [{ data: Object.values(chartData.problem_cats), backgroundColor: colors.map(c => c + '99') }] },
+    options: { plugins: { legend: { position: 'right', labels: { color: '#e2e8f0', font: { size: 11 } } } }, scales: { r: { grid: { color: '#334155' }, ticks: { display: false } } } }
+  });
+
+  // Render Machine Chart
+  new Chart(document.getElementById('machineChart'), {
+    type: 'bar',
+    data: { labels: Object.keys(chartData.machines), datasets: [{ label: 'Tasks', data: Object.values(chartData.machines), backgroundColor: colors[0] + 'cc', borderRadius: 4 }] },
+    options: { plugins: { legend: { display: false } }, scales: { x: { grid: { display: false }, ticks: { color: '#e2e8f0', font: { size: 10 }, maxRotation: 45 } }, y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } } } }
+  });
+
+  // Render Worker Grid
+  const workerGrid = document.getElementById('workerGrid');
+  workerGrid.innerHTML = '';
+  if (workerData) {
+    Object.entries(workerData).forEach(([name, info]) => {
+      workerGrid.innerHTML += '<div class="worker-card"><div class="count">' + info.count + '</div><div class="name">' + name + '</div><div class="avg">Avg: ' + info.avg_dur + ' min</div></div>';
+    });
+  }
+
+  // Render the data table initially once data loads
+  renderTable();
+}
+
+// Function to handle the table filtering UI (Updated with Date filter)
+function renderTable() {
+  const dateVal = document.getElementById('filterDate').value;
+  const sec = document.getElementById('filterSection').value;
+  const wrk = document.getElementById('filterWorker').value;
+  const search = document.getElementById('filterSearch').value.toLowerCase();
+  
+  const tbody = document.getElementById('taskTable');
+  tbody.innerHTML = ''; // Clear the current table rows
+  
+  globalRecentTasks.filter(t => {
+    if (dateVal && t.date !== dateVal) return false;
+    if (sec && t.section !== sec) return false;
+    if (wrk && t.worker !== wrk) return false;
+    if (search && !t.machine.toLowerCase().includes(search) && !t.problem.toLowerCase().includes(search)) return false;
+    return true;
+  }).forEach(t => {
+    tbody.innerHTML += '<tr><td>' + t.date + '</td><td><span class="badge badge-blue">' + t.section + '</span></td><td>' + t.machine + '</td><td>' + t.problem + '</td><td>' + t.action + '</td><td>' + t.worker + '</td><td style="font-weight:700; color:#60a5fa;">' + t.duration + '</td></tr>';
+  });
+}
+
+// Add event listeners for all table filters
+document.getElementById('filterDate').addEventListener('change', renderTable);
+document.getElementById('filterSection').addEventListener('change', renderTable);
+document.getElementById('filterWorker').addEventListener('change', renderTable);
+document.getElementById('filterSearch').addEventListener('input', renderTable);
     // Assign fetched data to your variables
     const chartData = data.chartData;
     globalRecentTasks = data.recentTasks;
