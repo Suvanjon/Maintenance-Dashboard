@@ -38,7 +38,7 @@ body{background:#f5f3ef;min-height:100vh;color:#222}
 <a href="index.html" class="back-link">← Back to Dashboard</a>
 <div class="card">
 <h2>Daily Maintenance - Data Entry</h2>
-<form id="mainForm">
+<form id="mainForm" target="hf" action="https://docs.google.com/forms/d/e/1FAIpQLScfy7359C_3VXHVz6FWQ8pedDX3WzC81spACyUpnrv_HqslGA/formResponse" method="POST">
 <div class="field">
 <label>Date <span class="req">*</span></label>
 <input type="date" name="entry.713877233" id="fDate" required="">
@@ -47,7 +47,7 @@ body{background:#f5f3ef;min-height:100vh;color:#222}
 <label>Section</label>
 <select name="entry.938132357" id="fSection">
 <option value="">-- Select Section --</option>
-<option value="Circuit Breaker">Circuit Breaker</option><option value="Gang Switch">Gang Switch</option><option value="Home Appliance">Home Appliance</option><option value="IMM In house">IMM In house</option><option value="LED">LED</option><option value="PVC Tape">PVC Tape</option><option value="Piano &amp; Holder">Piano &amp; Holder</option><option value="RnD Lab">RnD Lab</option><option value="Utility">Utility</option><option value="Workshop">Workshop</option></select>
+<option value="Circuit Breaker">Circuit Breaker</option><option value="Gang Switch">Gang Switch</option><option value="Home Appliance">Home Appliance</option><option value="IMM In house">IMM In house</option><option value="LED">LED</option><option value="PVC Tape">PVC Tape</option><option value="Piano &amp; Holder">Piano &amp; Holder</option><option value="RnD Lab">RnD Lab</option><option value="Utility">Utility</option><option value="Workshop">Workshop</option><option value="Circuit Breaker">Circuit Breaker</option><option value="Gang Switch">Gang Switch</option><option value="Home Appliance">Home Appliance</option><option value="IMM In house">IMM In house</option><option value="LED">LED</option><option value="PVC Tape">PVC Tape</option><option value="Piano &amp; Holder">Piano &amp; Holder</option><option value="RnD Lab">RnD Lab</option><option value="Utility">Utility</option><option value="Workshop">Workshop</option></select>
 </div>
 <div class="field" id="machineWrapper">
 <label>Machine Name <span class="req">*</span></label>
@@ -81,20 +81,42 @@ body{background:#f5f3ef;min-height:100vh;color:#222}
 <input type="time" name="entry.1162737553" id="fEnd" required="">
 </div>
 </div>
+
+<input type="hidden" name="fvv" value="1">
+<input type="hidden" name="partialResponse" value="[null,null,&quot;-1483795683298799273&quot;]">
+<input type="hidden" name="pageHistory" value="0">
+<input type="hidden" name="draftResponse" value="[,,]">
+<input type="hidden" name="fbzx" value="-1483795683298799273">
 <button type="submit" class="btn">Submit Entry</button>
 <div class="error-msg" id="errMsg"></div>
 <div class="success-msg" id="succMsg">✓ Entry submitted successfully!</div>
 </form>
 </div>
-</div><script>
+</div><iframe name="hf" id="hf" style="display:none"></iframe>
+<script>
 var MACHINES={"IMM In house":["IMM-360T-PP-A1","IMM-300T-PP-A2","IMM-258T-PP-A3","IMM-250T-PP-A4","IMM-250T-PP-A5","IMM-120T-PP-B1","IMM-208T-PP-B2","IMM-200T-PP-B3","IMM-168T-PP-B4","IMM-128T-PP-B5","IMM-160T-PP-B6","IMM-160T-PP-B7","Robot 3 Axis  18 TR-A1","Robot 3 Axis  18 TR-A2","Robot 3 Axis  18 TR-A3","Robot 3 Axis  18 TR-A4","Robot 3 Axis  18 TR-A5","Robot 3 Axis  16 TR-B1","Robot 3 Axis  16 TR-B2","Robot 3 Axis  16 TR-B3","Robot 3 Axis  16 TR-B4","Robot 3 Axis  16 TR-B5","Robot 3 Axis  16 TR-B6","Robot 3 Axis  16 TR-B7","Central Feeding System","DEHUMIDIFYING DRYERS TCDH-50-01","DEHUMIDIFYING DRYERS WITH TCDH-100-02","Granulator-TGQ 5232S-15HP- 01","Granulator-TGQ-4127S-10HP- 02"],"Workshop":["Lathe Machine","Milling Machine","EDM Machine","Wire Cut Machine"],"Utility":["Chiller -01","Chiller -02","Cooling Tower-01","Cooling Tower-02","Compressor -01","Compressor-02"],"PVC Tape":["Four Shaft Cutting Machine-01","Four Shaft Cutting Machine-02","Tape Single & Dozen Packing Machine","Blade Sharpening Machine for PVC Tape Blade"],"Gang Switch":["Gang Assembly Conveyor line with Accessories-01","Gang Assembly Conveyor line with Accessories-02","Gang Assembly Conveyor line with Accessories-03","Gang Assembly Conveyor line with Accessories-04","Pillow Packing Machine-01","Pillow Packing Machine-02","Pillow Packing Machine-03","Pillow Packing Machine-04","Pillow Packing Machine-05","Pillow Packing Machine-06","Screw Packing Machine-01","Screw Packing Machine-02","Screw Packing Machine-03","Screw Packing Machine-04","Screw Packing Machine-05","Screw Packing Machine-06","Auto Packing Line for Gang","Belt Stamping Machine-01 Gang","Belt Stamping Machine-01 Gang"],"Piano & Holder":["Assembly Conveyor line 20 Feet with Accessories-01","Assembly Conveyor line 20 Feet with Accessories-02","Assembly Conveyor line 20 Feet with Accessories-03","Wire stripper Machine"],"Circuit Breaker":["Single Pole Automatic Short Time Delay Test Machine","Multi-Station Assembly Workbench","Automatic Nail Punching Pole Riveting","Automatic Inkjet Unit","Automatic Reversal Unit","Automatic Screen Printing Unit","Automatic Short Circuit Testing Unit","Automatic High Voltage Testing Unit","Automatic Clip Assembly Unit"],"LED":["Automatic LED Light Assembly Machine","Semi Automatic LED Light Assembly Machine-01","Semi Automatic LED Light Assembly Machine-02","Automatic Packing Machine for LED Light","LED Assembly Conveyor line with Accessories-01","LED Assembly Conveyor line with Accessories-02","LED Assembly Conveyor line with Accessories-03","LED Assembly Conveyor line with Accessories-04","LED Assembly Conveyor line with Accessories-05","Automatic Crimping Machine-01","Automatic Crimping Machine-02","Manual Crimping Machine","Automatic Aging Line","Manual Aging Line","Single Station Laser Printer-01","Single Station Laser Printer-02","Single Station Laser Printer-03","Belt Stamping Machine-03 LED","Belt Stamping Machine-04 LED","Belt Stamping Machine-05 LED","CHIP CUTTING MACHINE FOR BRACKET TUBE","PAD PRINTING MACHINE FOR PANEL LIGHT"],"Home Appliance":["CONVEYOR BELT FOR SMALL HOME APPLIANCE (30 METER)-01","CONVEYOR BELT FOR GAS STOVE (30 METER)-02","5 IN 1 QC MACHINE","FLAME TESTING MACHINE (GAS STOVE) - 01","FLAME TESTING MACHINE (GAS STOVE) - 02","SPOT WELDING MACHINE (GAS STOVE) - 01","SPOT WELDING MACHINE (GAS STOVE) - 02","GAS LEAKAGE TESTING MACHINE (GAS STOVE) - 01","GAS LEAKAGE TESTING MACHINE (GAS STOVE) - 02","TEMPERATURE TESTING MACHINE (ELECTRIC IRON)","GLUING MACHINE (ELECTRIC COOKER)","SPOT WELDING MACHINE (ELECTRIC KETTLE)","CONTINUOUS WELDING MACHINE (ELECTRIC KETTLE)","EDGE BEADING COMBINED MACHINE (ELECTRIC KETTLE)","GLUING MACHINE FOR HEATING PLATE (ELECTRIC KETTLE)","LEAK TESTING MACHINE (4 STATION - ELECTRIC KETTLE)","SEMI AUTO STRAIGHT LINE SEALER (PACKAGING MACHINE)","AUTOMATIC SIDE SEALING MACHINE (PACKAGING MACHINE)","AUTOMATIC HEAT SHRINK TUNNEL (PACKAGING MACHINE)","AUTOMATIC STRAPPING MACHINE (PACKAGING MACHINE)","Belt Stamping Machine-06 HAP"],"RnD Lab":["SWITCHES AND RECEPTACLES TESTER","LOAD BANK","TEMPERATURE RISE TESTER","TEMPERATURE RISE TESTER BLOCK","GLOW WIRE TESTER","SALT SPRAY TESTER","FAN REGULATOR LIFETIME TESTER","IMPACT PENDULUM TESTER","AGEING OVEN","PUSH PULL TESTER FOR SOCKETS","UNIVERSAL TESTING MACHINE","TEST MACHINE FOR SWITCH SOCKET ON THE ASSEMBLY LINE","GONIO-SPECTRORADIOMETER (GO-SPEX500)","HAAS-1200 HIGH ACCURACY ARRAY SPECTRORADIOMETER"]};
 var sec=document.getElementById('fSection'),mach=document.getElementById('fMachine'),machWrap=document.getElementById('machineWrapper');
 Object.keys(MACHINES).sort().forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;sec.appendChild(o)});
 sec.addEventListener('change',function(){mach.innerHTML='<option value="">-- Select Machine --</option>';var sel=sec.value;if(sel&&MACHINES[sel]){MACHINES[sel].forEach(function(m){var o=document.createElement('option');o.value=m;o.textContent=m;mach.appendChild(o)});machWrap.style.display='block';mach.value=''}else{machWrap.style.display='none'}});
 var form=document.getElementById('mainForm'),errMsg=document.getElementById('errMsg'),succMsg=document.getElementById('succMsg');
-form.addEventListener('submit',function(e){errMsg.style.display='none';succMsg.style.display='none';if(!sec.value){e.preventDefault();errMsg.textContent='Please select a Section';errMsg.style.display='block';return}if(!mach.value){e.preventDefault();errMsg.textContent='Please select a Machine';errMsg.style.display='block';return}e.preventDefault();var fd=new FormData(form);fd.append('fvv','1');fd.append('partialResponse','[null,null,"-1483795683298799273"]');fd.append('pageHistory','0');fd.append('draftResponse','[,,]');fd.append('fbzx','-1483795683298799273');var params=new URLSearchParams(fd).toString();var xhr=new XMLHttpRequest();xhr.open('POST','https://docs.google.com/forms/d/e/1FAIpQLScfy7359C_3VXHVz6FWQ8pedDX3WzC81spACyUpnrv_HqslGA/formResponse',true);xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');xhr.onload=function(){if(xhr.status>=200&&xhr.status<400){succMsg.style.display='block';form.reset();machWrap.style.display='none';mach.innerHTML='<option value="">-- Select Machine --</option>';document.getElementById('fDate').value=new Date().toISOString().split('T')[0];setTimeout(function(){succMsg.style.display='none'},5000)}else{errMsg.textContent='Submission failed. Please try again.';errMsg.style.display='block'}};xhr.onerror=function(){errMsg.textContent='Network error. Please try again.';errMsg.style.display='block'};xhr.send(params)});
+form.addEventListener('submit',function(e){
+  errMsg.style.display='none';succMsg.style.display='none';
+  if(!sec.value){e.preventDefault();errMsg.textContent='Please select a Section';errMsg.style.display='block';return}
+  if(!mach.value){e.preventDefault();errMsg.textContent='Please select a Machine';errMsg.style.display='block';return}
+  var hf=document.getElementById('hf');
+  hf.onload=function(){
+    succMsg.style.display='block';
+    form.reset();machWrap.style.display='none';
+    mach.innerHTML='<option value="">-- Select Machine --</option>';
+    document.getElementById('fDate').value=new Date().toISOString().split('T')[0];
+    setTimeout(function(){succMsg.style.display='none'},5000);
+    hf.onload=null;
+  };
+});
 document.getElementById('fDate').value=new Date().toISOString().split('T')[0];
 </script>
+
+
 
 
 </body></html>
