@@ -22,8 +22,8 @@ body{background:#f5f3ef;min-height:100vh;overflow-x:hidden}
 .card-btn .arrow{position:absolute;bottom:24px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;transition:background .3s}
 .card-btn:hover .arrow{background:rgba(255,255,255,.35)}
 .brand{color:#005151;font-size:13px;font-weight:600;text-align:center;margin-top:30px;opacity:.5}
-#sub-preventive{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:82vh;background:#f5f3ef}
-#sub-preventive.show{display:flex}
+.sub-panel{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:82vh;background:#f5f3ef}
+.sub-panel.show{display:flex}
 .sub-title{color:#005151;font-size:24px;font-weight:700;text-align:center;margin-bottom:8px}
 .sub-desc{color:#666;font-size:14px;text-align:center;margin-bottom:36px}
 .sub-cards{display:flex;gap:30px;flex-wrap:wrap;justify-content:center;padding:0 20px}
@@ -41,15 +41,16 @@ body{background:#f5f3ef;min-height:100vh;overflow-x:hidden}
 <div class="hdr-text">AKIJ LIGHT ENGINEERING LTD.</div>
 <div class="hdr-sub">Maintenance Management System</div>
 </div>
+
 <div id="landing">
 <div class="landing-title">Maintenance Dashboard</div>
 <div class="landing-sub">Select a module to begin</div>
 <div class="cards">
-<a href="daily_dashboard.html" class="card-btn">
+<div class="card-btn" onclick="showDaily()">
 <div class="icon">&#128295;</div>
 <div class="label">Daily Maintenance<br>Task</div>
 <div class="arrow">&#10132;</div>
-</a>
+</div>
 <div class="card-btn" onclick="showPreventive()">
 <div class="icon">&#9989;</div>
 <div class="label">Preventive<br>Maintenance</div>
@@ -58,7 +59,24 @@ body{background:#f5f3ef;min-height:100vh;overflow-x:hidden}
 </div>
 <div class="brand">Enovar &middot; Akij Light Engineering</div>
 </div>
-<div id="sub-preventive">
+
+<div id="sub-daily" class="sub-panel">
+<div class="sub-title">Daily Maintenance Task</div>
+<div class="sub-desc">Select an option</div>
+<div class="sub-cards">
+<a href="https://docs.google.com/forms/d/e/1FAIpQLScfy7359C_3VXHVz6FWQ8pedDX3WzC81spACyUpnrv_HqslGA/viewform" target="_blank" class="sub-btn">
+<div class="sicon">&#128221;</div>
+<div class="slabel">Data Entry</div>
+</a>
+<a href="daily_dashboard.html" class="sub-btn">
+<div class="sicon">&#128202;</div>
+<div class="slabel">Daily Status</div>
+</a>
+</div>
+<button class="sub-back" onclick="goBackFromDaily()">&#8592; Back to Main Menu</button>
+</div>
+
+<div id="sub-preventive" class="sub-panel">
 <div class="sub-title">Preventive Maintenance</div>
 <div class="sub-desc">Select a department</div>
 <div class="sub-cards">
@@ -79,19 +97,16 @@ body{background:#f5f3ef;min-height:100vh;overflow-x:hidden}
 <div class="slabel">HAP</div>
 </a>
 </div>
-<button class="sub-back" onclick="goBack()">&#8592; Back to Main Menu</button>
+<button class="sub-back" onclick="goBackFromPreventive()">&#8592; Back to Main Menu</button>
 </div>
+
 <script>
-function showPreventive(){
-  document.getElementById('landing').style.display='none';
-  document.getElementById('sub-preventive').classList.add('show');
-  window.scrollTo(0,0);
-}
-function goBack(){
-  document.getElementById('sub-preventive').classList.remove('show');
-  document.getElementById('landing').style.display='flex';
-  window.scrollTo(0,0);
-}
+function hideAll(){document.getElementById('landing').style.display='none';document.getElementById('sub-daily').classList.remove('show');document.getElementById('sub-preventive').classList.remove('show')}
+function showLanding(){document.getElementById('landing').style.display='flex';window.scrollTo(0,0)}
+function showDaily(){hideAll();document.getElementById('sub-daily').classList.add('show');window.scrollTo(0,0)}
+function showPreventive(){hideAll();document.getElementById('sub-preventive').classList.add('show');window.scrollTo(0,0)}
+function goBackFromDaily(){document.getElementById('sub-daily').classList.remove('show');showLanding()}
+function goBackFromPreventive(){document.getElementById('sub-preventive').classList.remove('show');showLanding()}
 </script>
 </body>
 </html>
