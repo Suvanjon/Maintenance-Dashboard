@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Maintenance Dashboard - Akij Light Engineering</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#f5f3ef;font-family:Segoe UI,Arial,sans-serif;min-height:100vh;color:#222}
+.hdr{background:#005151;padding:14px 16px 10px;text-align:center;border-bottom:3px solid #003838}
+.hdr-text{color:#fff;font-size:20px;font-weight:700;letter-spacing:.5px}
+.hdr-sub{color:rgba(255,255,255,.7);font-size:12px;margin-top:2px}
+.wrap{max-width:1100px;margin:18px auto;padding:0 12px 40px}
+.card{background:#fff;border-radius:10px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,.1);margin-bottom:16px}
+.top-bar{display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap}
+.field{display:flex;flex-direction:column;gap:3px;flex:1;min-width:180px}
+.field label{font-size:13px;font-weight:600;color:#555}
+.field select{padding:8px 10px;border:1.5px solid #ccc;border-radius:6px;font-size:14px}
+.field select:focus{border-color:#005151;outline:none}
+.back-link{display:inline-block;margin:16px 0 0;padding:8px 18px;background:#005151;color:#fff;text-decoration:none;border-radius:6px;font-size:13px;font-weight:600;transition:background .2s}
+.back-link:hover{background:#003838}
+.tbl-wrap{overflow-x:auto;margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:#005151;color:#fff;padding:10px 8px;text-align:left;position:sticky;top:0;font-weight:600}
+td{padding:8px;border-bottom:1px solid #e0e0e0;vertical-align:middle}
+tr:hover{background:#f5f5f5}
+.sl{text-align:center;font-weight:700;color:#005151;width:40px}
+.no-data{text-align:center;padding:40px;color:#888;font-size:15px}
+.stat{padding:10px 18px;border-radius:8px;font-size:14px;font-weight:600;color:#fff;min-width:120px;text-align:center}
+.stats{display:flex;gap:16px;margin:14px 0;flex-wrap:wrap}
+.stat.total{background:#005151}
+.stat.done{background:#2e7d32}
+.stat.pending{background:#ff9800}
+</style>
+</head>
+<body>
+<div class="hdr">
+<div class="hdr-text">AKIJ LIGHT ENGINEERING LTD.</div>
+<div class="hdr-sub">Maintenance Management System</div>
+</div>
+<div class="wrap">
+<a href="index.html" class="back-link">&#8592; Back to Dashboard</a>
+<div class="card" style="margin-top:14px">
+<div style="font-size:20px;font-weight:700;color:#005151;margin-bottom:14px">Daily Maintenance Task Dashboard</div>
+<div class="top-bar">
+<div class="field"><label>Section</label><select id="sectionFilter"><option value="">All Sections</option></select></div>
+<div class="field"><label>Machine Name</label><select id="machineFilter"><option value="">All Machines</option></select></div>
+</div>
+</div>
+<div class="stats" id="stats">
+<div class="stat total" id="stTotal">Records: 0</div>
+<div class="stat done" id="stDone">Completed: 0</div>
+<div class="stat pending" id="stPending">Pending: 0</div>
+</div>
+<div class="card">
+<div class="tbl-wrap">
+<table id="dataTable">
+<thead><tr><th>S/L</th><th>Date</th><th>Section</th><th>Machine</th><th>Problem</th><th>Action Taken</th><th>Spare Parts</th><th>Person</th><th>Start</th><th>End</th></tr></thead>
+<tbody id="tbody"></tbody>
+</table>
+<div class="no-data" id="noData">No records found.</div>
+</div>
+</div>
+</div>
+<script>
+var DATA = [];
+
+function init(){
+  var sec=document.getElementById('sectionFilter');
+  var mach=document.getElementById('machineFilter');
+  var secs={},machs={};
+  DATA.forEach(function(r){
+    if(r.section) secs[r.section]=1;
+    if(r.machine) machs[r.machine]=1;
+  });
+  Object.keys(secs).sort().forEach(function(s){
+    var o=document.createElement('option');o.value=s;o.textContent=s;sec.appendChild(o);
+  });
+  Object.keys(machs).sort().forEach(function(s){
+    var o=document.createElement('option');o.value=s;o.textContent=s;mach.appendChild(o);
+  });
+  sec.onchange=render;mach.onchange=render;
+  render();
+}
+
+function render(){
+  var sv=document.getElementById('sectionFilter').value;
+  var mv=document.getElementById('machineFilter').value;
+  var filtered=DATA.filter(function(r){
+    if(sv && r.section!==sv) return false;
+    if(mv && r.machine!==mv) return false;
+    return true;
+  });
+  var tb=document.getElementById('tbody');
+  tb.innerHTML='';
+  document.getElementById('noData').style.display=filtered.length?'none':'block';
+  filtered.forEach(function(r,i){
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td class="sl">'+(i+1)+'</td><td>'+esc(r.date)+'</td><td>'+esc(r.section)+'</td><td>'+esc(r.machine)+'</td><td>'+esc(r.problem)+'</td><td>'+esc(r.action)+'</td><td>'+esc(r.spare)+'</td><td>'+esc(r.person)+'</td><td>'+esc(r.start)+'</td><td>'+esc(r.end)+'</td>';
+    tb.appendChild(tr);
+  });
+  document.getElementById('stTotal').textContent='Records: '+filtered.length;
+  document.getElementById('stDone').textContent='Completed: '+filtered.length;
+  document.getElementById('stPending').textContent='Pending: 0';
+}
+
+function esc(s){return s?s.replace(/&/g,'&amp;').replace(/</g,'&lt;'):''}
+
+init();
+</script>
+</body>
+</html>
