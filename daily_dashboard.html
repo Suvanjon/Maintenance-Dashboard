@@ -13,19 +13,21 @@ body{background:#f5f3ef;font-family:Segoe UI,Arial,sans-serif;min-height:100vh;c
 .wrap{max-width:1100px;margin:18px auto;padding:0 12px 40px}
 .card{background:#fff;border-radius:10px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,.1);margin-bottom:16px}
 .top-bar{display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap}
-.field{display:flex;flex-direction:column;gap:3px;flex:1;min-width:180px}
+.field{display:flex;flex-direction:column;gap:3px;flex:1;min-width:150px}
 .field label{font-size:13px;font-weight:600;color:#555}
-.field select{padding:8px 10px;border:1.5px solid #ccc;border-radius:6px;font-size:14px}
-.field select:focus{border-color:#005151;outline:none}
+.field select,.field input[type=date]{padding:8px 10px;border:1.5px solid #ccc;border-radius:6px;font-size:14px}
+.field select:focus,.field input:focus{border-color:#005151;outline:none}
 .back-link{display:inline-block;margin:16px 0 0;padding:8px 18px;background:#005151;color:#fff;text-decoration:none;border-radius:6px;font-size:13px;font-weight:600;transition:background .2s}
 .back-link:hover{background:#003838}
 .tbl-wrap{overflow-x:auto;margin-top:10px}
 table{width:100%;border-collapse:collapse;font-size:13px}
-th{background:#005151;color:#fff;padding:10px 8px;text-align:left;position:sticky;top:0;font-weight:600}
+th{background:#005151;color:#fff;padding:10px 8px;text-align:left;position:sticky;top:0;font-weight:600;cursor:pointer;user-select:none}
+th:hover{background:#003838}
 td{padding:8px;border-bottom:1px solid #e0e0e0;vertical-align:middle}
 tr:hover{background:#f5f5f5}
 .sl{text-align:center;font-weight:700;color:#005151;width:40px}
 .no-data{text-align:center;padding:40px;color:#888;font-size:15px}
+.loading{text-align:center;padding:40px;color:#005151;font-size:15px}
 .stat{padding:10px 18px;border-radius:8px;font-size:14px;font-weight:600;color:#fff;min-width:120px;text-align:center}
 .stats{display:flex;gap:16px;margin:14px 0;flex-wrap:wrap}
 .stat.total{background:#005151}
@@ -43,57 +45,120 @@ tr:hover{background:#f5f5f5}
 <div class="card" style="margin-top:14px">
 <div style="font-size:20px;font-weight:700;color:#005151;margin-bottom:14px">Daily Maintenance Task Dashboard</div>
 <div class="top-bar">
+<div class="field"><label>Date From</label><input type="date" id="dateFrom"></div>
+<div class="field"><label>Date To</label><input type="date" id="dateTo"></div>
 <div class="field"><label>Section</label><select id="sectionFilter"><option value="">All Sections</option></select></div>
 <div class="field"><label>Machine Name</label><select id="machineFilter"><option value="">All Machines</option></select></div>
 </div>
 </div>
 <div class="stats" id="stats">
-<div class="stat total" id="stTotal">Records: 0</div>
-<div class="stat done" id="stDone">Completed: 0</div>
-<div class="stat pending" id="stPending">Pending: 0</div>
+<div class="stat total" id="stTotal">Loading...</div>
+<div class="stat done" id="stDone">&nbsp;</div>
+<div class="stat pending" id="stPending">&nbsp;</div>
 </div>
 <div class="card">
 <div class="tbl-wrap">
 <table id="dataTable">
-<thead><tr><th>S/L</th><th>Date</th><th>Section</th><th>Machine</th><th>Problem</th><th>Action Taken</th><th>Spare Parts</th><th>Person</th><th>Start</th><th>End</th></tr></thead>
+<thead><tr>
+<th data-col="sl">S/L</th>
+<th data-col="date">Date &#x25B4</th>
+<th data-col="section">Section</th>
+<th data-col="machine">Machine</th>
+<th data-col="problem">Problem</th>
+<th data-col="action">Action Taken</th>
+<th data-col="spare">Spare Parts</th>
+<th data-col="person">Person</th>
+<th data-col="start">Start</th>
+<th data-col="end">End</th>
+</tr></thead>
 <tbody id="tbody"></tbody>
 </table>
-<div class="no-data" id="noData">No records found.</div>
+<div class="no-data" id="noData" style="display:none">No records found.</div>
+<div class="loading" id="loadingMsg">Loading data from Google Sheets...</div>
 </div>
 </div>
 </div>
 <script>
-var DATA = [];
+var DATA=[];
+var CSV_URL='https://docs.google.com/spreadsheets/d/1y1ArRCAvY5SBDtuqfFpLQduwJ2_OzvwrhgWbw1ciwF8/gviz/tq?tqx=out:csv&gid=1523854953';
 
-function init(){
+function parseCSV(text){
+  var lines=[],row=[],field='',inQ=false;
+  for(var i=0;i<text.length;i++){
+    var c=text[i];
+    if(inQ){if(c==='"'){if(i+1<text.length&&text[i+1]==='"'){field+='"';i++}else{inQ=false}}else{field+=c}}
+    else{if(c==='"'){inQ=true}else if(c===','){row.push(field);field=''}else if(c==='\n'||c==='\r'){if(c==='\r'&&i+1<text.length&&text[i+1]==='\n')i++;row.push(field);field='';if(row.length>1)lines.push(row);row=[]}else{field+=c}}}
+  if(field||row.length>0){row.push(field);if(row.length>1)lines.push(row)}
+  return lines;
+}
+
+function parseDateMMDDYYYY(s){
+  var p=s.split('/');
+  if(p.length===3){return new Date(parseInt(p[2]),parseInt(p[0])-1,parseInt(p[1]))}
+  return new Date(s);
+}
+
+function loadData(){
+  fetch(CSV_URL).then(function(r){return r.text()}).then(function(csv){
+    var rows=parseCSV(csv);
+    for(var i=1;i<rows.length;i++){
+      var r=rows[i];if(!r||r.length<11)continue;
+      var date=(r[2]||'').trim();
+      var section=(r[3]||'').trim();
+      var machine=(r[4]||'').trim();
+      var problem=(r[5]||'').trim();
+      var action=(r[6]||'').trim();
+      var spare=(r[7]||'').trim();
+      var start=(r[8]||'').trim();
+      var end=(r[9]||'').trim();
+      var person=(r[10]||'').trim();
+      if(!date&&!section&&!machine)continue;
+      DATA.push({date:date,section:section,machine:machine,problem:problem,action:action,spare:spare,person:person,start:start,end:end});
+    }
+    document.getElementById('loadingMsg').style.display='none';
+    initFilters();
+    render();
+  }).catch(function(e){
+    document.getElementById('loadingMsg').textContent='Failed to load data: '+e.message;
+  });
+}
+
+function initFilters(){
   var sec=document.getElementById('sectionFilter');
   var mach=document.getElementById('machineFilter');
   var secs={},machs={};
-  DATA.forEach(function(r){
-    if(r.section) secs[r.section]=1;
-    if(r.machine) machs[r.machine]=1;
-  });
-  Object.keys(secs).sort().forEach(function(s){
-    var o=document.createElement('option');o.value=s;o.textContent=s;sec.appendChild(o);
-  });
-  Object.keys(machs).sort().forEach(function(s){
-    var o=document.createElement('option');o.value=s;o.textContent=s;mach.appendChild(o);
-  });
+  DATA.forEach(function(r){if(r.section)secs[r.section]=1;if(r.machine)machs[r.machine]=1});
+  Object.keys(secs).sort().forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;sec.appendChild(o)});
+  Object.keys(machs).sort().forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;mach.appendChild(o)});
   sec.onchange=render;mach.onchange=render;
-  render();
+  document.getElementById('dateFrom').onchange=render;
+  document.getElementById('dateTo').onchange=render;
 }
+
+var sortCol='date',sortAsc=false;
 
 function render(){
   var sv=document.getElementById('sectionFilter').value;
   var mv=document.getElementById('machineFilter').value;
+  var df=document.getElementById('dateFrom').value;
+  var dt=document.getElementById('dateTo').value;
   var filtered=DATA.filter(function(r){
-    if(sv && r.section!==sv) return false;
-    if(mv && r.machine!==mv) return false;
+    if(sv&&r.section!==sv)return false;
+    if(mv&&r.machine!==mv)return false;
+    if(df&&r.date<df)return false;
+    if(dt&&r.date>dt)return false;
     return true;
   });
-  var tb=document.getElementById('tbody');
-  tb.innerHTML='';
+  if(sortCol!=='sl'){
+    filtered.sort(function(a,b){
+      var av=a[sortCol]||'',bv=b[sortCol]||'';
+      if(sortCol==='date'){var da=parseDateMMDDYYYY(av),db=parseDateMMDDYYYY(bv);return sortAsc?da-db:db-da}
+      return sortAsc?av.localeCompare(bv):bv.localeCompare(av);
+    });
+  }
+  var tb=document.getElementById('tbody');tb.innerHTML='';
   document.getElementById('noData').style.display=filtered.length?'none':'block';
+  document.getElementById('dataTable').style.display=filtered.length?'table':'none';
   filtered.forEach(function(r,i){
     var tr=document.createElement('tr');
     tr.innerHTML='<td class="sl">'+(i+1)+'</td><td>'+esc(r.date)+'</td><td>'+esc(r.section)+'</td><td>'+esc(r.machine)+'</td><td>'+esc(r.problem)+'</td><td>'+esc(r.action)+'</td><td>'+esc(r.spare)+'</td><td>'+esc(r.person)+'</td><td>'+esc(r.start)+'</td><td>'+esc(r.end)+'</td>';
@@ -102,11 +167,31 @@ function render(){
   document.getElementById('stTotal').textContent='Records: '+filtered.length;
   document.getElementById('stDone').textContent='Completed: '+filtered.length;
   document.getElementById('stPending').textContent='Pending: 0';
+  updateSortIndicators();
 }
+
+function updateSortIndicators(){
+  var ths=document.querySelectorAll('th[data-col]');
+  for(var i=0;i<ths.length;i++){
+    var col=ths[i].getAttribute('data-col');
+    var txt=ths[i].textContent.replace(/\s*[▴▾]\s*$/,'');
+    if(col===sortCol)txt+=sortAsc?' ▴':' ▾';
+    ths[i].textContent=txt;
+  }
+}
+
+document.querySelectorAll('th[data-col]').forEach(function(th){
+  th.addEventListener('click',function(){
+    var col=this.getAttribute('data-col');
+    if(col==='sl')return;
+    if(sortCol===col){sortAsc=!sortAsc}else{sortCol=col;sortAsc=true}
+    render();
+  });
+});
 
 function esc(s){return s?s.replace(/&/g,'&amp;').replace(/</g,'&lt;'):''}
 
-init();
+loadData();
 </script>
 </body>
 </html>
