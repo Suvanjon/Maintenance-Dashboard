@@ -61,18 +61,18 @@
   </div>
 
   <div class="card-container">
-    <!-- Option 1: Links to your Daily Dashboard -->
+    <!-- Option 1: Daily Maintenance Task -->
     <a href="daily_dashboard.html" class="app-card">
       <div class="icon">⚙️</div>
       <h2>Daily Maintenance Task</h2>
-      <p>View the live dashboard for daily routine maintenance, machine breakdowns, and tasks.</p>
+      <p>View routine maintenance logs, daily task breakdowns, and live machine statistics.</p>
     </a>
 
-    <!-- Option 2: Placeholder for Preventive Maintenance -->
+    <!-- Option 2: Preventive Maintenance -->
     <a href="#" class="app-card">
       <div class="icon">🛡️</div>
       <h2>Preventive Maintenance</h2>
-      <p>Access scheduled maintenance logs, machine health checks, and upcoming preventive tasks.</p>
+      <p>Access scheduled machine servicing, preventive logs, and planned maintenance cycles.</p>
     </a>
   </div>
 
