@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Data Entry - Daily Maintenance</title>
@@ -37,33 +35,33 @@ body{background:#f5f3ef;min-height:100vh;color:#222}
 <div class="hdr-sub">Maintenance Management System</div>
 </div>
 <div class="wrap">
-<a href="index.html" class="back-link">&#8592; Back to Dashboard</a>
+<a href="index.html" class="back-link">← Back to Dashboard</a>
 <div class="card">
 <h2>Daily Maintenance - Data Entry</h2>
 <form id="mainForm">
 <div class="field">
 <label>Date <span class="req">*</span></label>
-<input type="date" name="entry.713877233" id="fDate" required>
+<input type="date" name="entry.713877233" id="fDate" required="">
 </div>
 <div class="field">
 <label>Section</label>
 <select name="entry.938132357" id="fSection">
 <option value="">-- Select Section --</option>
-</select>
+<option value="Circuit Breaker">Circuit Breaker</option><option value="Gang Switch">Gang Switch</option><option value="Home Appliance">Home Appliance</option><option value="IMM In house">IMM In house</option><option value="LED">LED</option><option value="PVC Tape">PVC Tape</option><option value="Piano &amp; Holder">Piano &amp; Holder</option><option value="RnD Lab">RnD Lab</option><option value="Utility">Utility</option><option value="Workshop">Workshop</option></select>
 </div>
 <div class="field" id="machineWrapper">
 <label>Machine Name <span class="req">*</span></label>
-<select name="entry.1679877274" id="fMachine" required>
+<select name="entry.1679877274" id="fMachine" required="">
 <option value="">-- Select Machine --</option>
 </select>
 </div>
 <div class="field">
 <label>Problem <span class="req">*</span></label>
-<textarea name="entry.1180419638" id="fProblem" required placeholder="Describe the problem..."></textarea>
+<textarea name="entry.1180419638" id="fProblem" required="" placeholder="Describe the problem..."></textarea>
 </div>
 <div class="field">
 <label>Action Taken <span class="req">*</span></label>
-<textarea name="entry.910944777" id="fAction" required placeholder="Describe action taken..."></textarea>
+<textarea name="entry.910944777" id="fAction" required="" placeholder="Describe action taken..."></textarea>
 </div>
 <div class="field">
 <label>Spare Parts Required</label>
@@ -71,21 +69,21 @@ body{background:#f5f3ef;min-height:100vh;color:#222}
 </div>
 <div class="field">
 <label>Working Person <span class="req">*</span></label>
-<input type="text" name="entry.35703696" id="fPerson" required placeholder="Name of person">
+<input type="text" name="entry.35703696" id="fPerson" required="" placeholder="Name of person">
 </div>
 <div class="row">
 <div class="field">
 <label>Start Time <span class="req">*</span></label>
-<input type="time" name="entry.639063494" id="fStart" required>
+<input type="time" name="entry.639063494" id="fStart" required="">
 </div>
 <div class="field">
 <label>End Time <span class="req">*</span></label>
-<input type="time" name="entry.1162737553" id="fEnd" required>
+<input type="time" name="entry.1162737553" id="fEnd" required="">
 </div>
 </div>
 <button type="submit" class="btn">Submit Entry</button>
 <div class="error-msg" id="errMsg"></div>
-<div class="success-msg" id="succMsg">&#10003; Entry submitted successfully!</div>
+<div class="success-msg" id="succMsg">✓ Entry submitted successfully!</div>
 </form>
 </div>
 </div><script>
@@ -97,5 +95,6 @@ var form=document.getElementById('mainForm'),errMsg=document.getElementById('err
 form.addEventListener('submit',function(e){errMsg.style.display='none';succMsg.style.display='none';if(!sec.value){e.preventDefault();errMsg.textContent='Please select a Section';errMsg.style.display='block';return}if(!mach.value){e.preventDefault();errMsg.textContent='Please select a Machine';errMsg.style.display='block';return}e.preventDefault();var fd=new FormData(form);fd.append('fvv','1');fd.append('partialResponse','[null,null,"-1483795683298799273"]');fd.append('pageHistory','0');fd.append('draftResponse','[,,]');fd.append('fbzx','-1483795683298799273');var params=new URLSearchParams(fd).toString();var xhr=new XMLHttpRequest();xhr.open('POST','https://docs.google.com/forms/d/e/1FAIpQLScfy7359C_3VXHVz6FWQ8pedDX3WzC81spACyUpnrv_HqslGA/formResponse',true);xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');xhr.onload=function(){if(xhr.status>=200&&xhr.status<400){succMsg.style.display='block';form.reset();machWrap.style.display='none';mach.innerHTML='<option value="">-- Select Machine --</option>';document.getElementById('fDate').value=new Date().toISOString().split('T')[0];setTimeout(function(){succMsg.style.display='none'},5000)}else{errMsg.textContent='Submission failed. Please try again.';errMsg.style.display='block'}};xhr.onerror=function(){errMsg.textContent='Network error. Please try again.';errMsg.style.display='block'};xhr.send(params)});
 document.getElementById('fDate').value=new Date().toISOString().split('T')[0];
 </script>
-</body>
-</html>
+
+
+</body></html>
