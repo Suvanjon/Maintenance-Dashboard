@@ -119,13 +119,27 @@ function normDate(d){
   return d;
 }
 
+var SECTION_ORDER=["In house IMM Section","LED","Switch & Socket","Circuit Breaker","Home Appliance","PVC Tape","Exhaust Fan","RnD Lab","Tool Room","Utility"];
+
+function normSection(s){
+  var t=(s||'').trim();
+  if(!t)return '';
+  for(var i=0;i<SECTION_ORDER.length;i++){if(t===SECTION_ORDER[i])return t;}
+  var low=t.toLowerCase();
+  if(low.indexOf('chiller')!==-1||low.indexOf('comprossor')!==-1||low.indexOf('compressor')!==-1||low.indexOf('cfc')!==-1||low.indexOf('schedule clean')!==-1||low.indexOf('water filter')!==-1||low.indexOf('ac power')!==-1||low.indexOf('clock')!==-1||low.indexOf('store')!==-1||low.indexOf('house keeping')!==-1||low.indexOf('complian')!==-1||low.indexOf('running work')!==-1||low.indexOf('all section')!==-1||low.indexOf('fan setup')!==-1||low.indexOf('sub station')!==-1||low.indexOf('generator')!==-1)return 'Utility';
+  if(low.indexOf('qc')!==-1||low.indexOf('check board')!==-1)return 'Switch & Socket';
+  if(low.indexOf('cfs')!==-1||low.indexOf('central feeding')!==-1||low.indexOf('silo')!==-1||low.indexOf('crusher')!==-1||low.indexOf('imm')!==-1)return 'In house IMM Section';
+  if(low.indexOf('4th floor')!==-1||low.indexOf('hvl')!==-1||low.indexOf('exhaust')!==-1)return 'Exhaust Fan';
+  return 'Utility';
+}
+
 function loadData(){
   fetch(CSV_URL).then(function(r){return r.text()}).then(function(csv){
     var rows=parseCSV(csv);
     for(var i=1;i<rows.length;i++){
       var r=rows[i];if(!r||r.length<11)continue;
       var date=(r[2]||'').trim();
-      var section=(r[3]||'').trim();
+      var section=normSection(r[3]);
       var machine=(r[4]||'').trim();
       var problem=(r[5]||'').trim();
       var action=(r[6]||'').trim();
@@ -149,7 +163,10 @@ function initFilters(){
   var mach=document.getElementById('machineFilter');
   var secs={},machs={};
   DATA.forEach(function(r){if(r.section)secs[r.section]=1;if(r.machine)machs[r.machine]=1});
-  Object.keys(secs).sort().forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;sec.appendChild(o)});
+  var ordered=[];
+  SECTION_ORDER.forEach(function(s){if(secs[s])ordered.push(s)});
+  Object.keys(secs).sort().forEach(function(s){if(ordered.indexOf(s)===-1)ordered.push(s)});
+  ordered.forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;sec.appendChild(o)});
   Object.keys(machs).sort().forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;mach.appendChild(o)});
   sec.onchange=render;mach.onchange=render;
   document.getElementById('dateFrom').onchange=render;
@@ -197,9 +214,12 @@ function renderChart(filtered){
   if(!el)return;
   var counts={};
   filtered.forEach(function(r){if(r.section)counts[r.section]=(counts[r.section]||0)+1});
-  var keys=Object.keys(counts).sort(function(a,b){return counts[b]-counts[a]||a.localeCompare(b)});
-  if(!keys.length){el.innerHTML='<div class="chart-empty">No data to chart.</div>';return}
-  var max=counts[keys[0]];
+  if(!Object.keys(counts).length){el.innerHTML='<div class="chart-empty">No data to chart.</div>';return}
+  var keys=[];
+  SECTION_ORDER.forEach(function(s){if(counts[s])keys.push(s)});
+  Object.keys(counts).sort(function(a,b){return counts[b]-counts[a]||a.localeCompare(b)}).forEach(function(s){if(keys.indexOf(s)===-1)keys.push(s)});
+  var max=1;
+  keys.forEach(function(k){if(counts[k]>max)max=counts[k]});
   var html='';
   keys.forEach(function(k){
     var pct=Math.round(counts[k]/max*100);
