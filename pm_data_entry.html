@@ -30,7 +30,9 @@ body{background:#f5f3ef;min-height:100vh}
 .opt .ok{color:#2e7d32}
 .opt .nok{color:#e53935}
 .problem-box{display:none;margin-top:9px}
-.problem-box textarea{width:100%;padding:10px 12px;border:1px solid #bbb;border-radius:8px;font-size:14px;font-family:inherit;resize:vertical;min-height:50px;box-sizing:border-box}
+.pb-field{margin-top:8px}
+.pb-field label{display:block;color:#b23c17;font-size:13px;font-weight:600;margin-bottom:4px}
+.problem-box textarea{width:100%;padding:10px 12px;border:1px solid #bbb;border-radius:8px;font-size:14px;font-family:inherit;resize:vertical;min-height:44px;box-sizing:border-box}
 .actions{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
 .submit-btn{background:#005151;color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s}
 .submit-btn:hover{background:#006868;transform:scale(1.02)}
@@ -91,14 +93,20 @@ ITEMS.forEach(function(it){
   var nok=document.createElement('label');nok.className='opt';
   nok.innerHTML='<input type="radio" name="'+it[0]+'" value="nok"><span class="nok">Not OK</span>';
   var pb=document.createElement('div');pb.className='problem-box';
-  var ta=document.createElement('textarea');ta.placeholder='Describe the problem / corrective action';
-  pb.appendChild(ta);
+  var pb1=document.createElement('div');pb1.className='pb-field';
+  var l1=document.createElement('label');l1.textContent='Describe the problem';
+  var ta=document.createElement('textarea');ta.placeholder='Describe the problem';
+  pb1.appendChild(l1);pb1.appendChild(ta);
+  var pb2=document.createElement('div');pb2.className='pb-field';
+  var l2=document.createElement('label');l2.textContent='Corrective action';
+  var ta2=document.createElement('textarea');ta2.placeholder='Corrective action';
+  pb2.appendChild(l2);pb2.appendChild(ta2);
+  pb.appendChild(pb1);pb.appendChild(pb2);
   var rads=[ok.querySelector('input'),nok.querySelector('input')];
   rads.forEach(function(r){
     r.addEventListener('change',function(){
       pb.style.display=(nok.querySelector('input').checked)?'block':'none';
-      if(r.value==='nok')ta.focus();
-    });
+      if(r.value==='nok')ta.focus();    });
   });
   opts.appendChild(ok);opts.appendChild(nok);
   box.appendChild(q);box.appendChild(opts);box.appendChild(pb);
@@ -113,7 +121,7 @@ mach.addEventListener('change',function(){
 });
 function resetForm(){
   document.querySelectorAll('#items input[type=radio]').forEach(function(r){r.checked=false});
-  document.querySelectorAll('#items .problem-box').forEach(function(p){p.style.display='none';p.querySelector('textarea').value=''});
+  document.querySelectorAll('#items .problem-box').forEach(function(p){p.style.display='none';p.querySelectorAll('textarea').forEach(function(t){t.value=''})});
   document.getElementById('ifmWrap').style.display='none';
   document.getElementById('fMachine').value='';
   document.getElementById('fOtherMachine').value='';
@@ -130,10 +138,13 @@ function buildPayload(){
     }
     if(input.value==='ok'){payload[it[0]]='OK'}
     else{
-      var desc=it[0];
       var names=document.querySelectorAll('input[name="'+it[0]+'"]');
       var box=names[0].closest('.item').querySelector('.problem-box');
-      var text=box.querySelector('textarea').value.trim();
+      var tas=box.querySelectorAll('textarea');
+      var prob=tas[0].value.trim();
+      var action=tas[1].value.trim();
+      var text=prob;
+      if(action)text+=text?(' | Corrective action: '+action):('Corrective action: '+action);
       payload[it[0]]=text?('Not OK - '+text):'Not OK';
     }
   });
