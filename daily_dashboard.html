@@ -98,6 +98,17 @@ function parseDateMMDDYYYY(s){
   return new Date(s);
 }
 
+function normDate(d){
+  if(!d)return '';
+  var p=d.split('/');
+  if(p.length===3){
+    var mm=(p[0].length<2?'0':'')+p[0];
+    var dd=(p[1].length<2?'0':'')+p[1];
+    return p[2]+'-'+mm+'-'+dd;
+  }
+  return d;
+}
+
 function loadData(){
   fetch(CSV_URL).then(function(r){return r.text()}).then(function(csv){
     var rows=parseCSV(csv);
@@ -145,8 +156,8 @@ function render(){
   var filtered=DATA.filter(function(r){
     if(sv&&r.section!==sv)return false;
     if(mv&&r.machine!==mv)return false;
-    if(df&&r.date<df)return false;
-    if(dt&&r.date>dt)return false;
+    if(df&&normDate(r.date)<df)return false;
+    if(dt&&normDate(r.date)>dt)return false;
     return true;
   });
   if(sortCol!=='sl'){
