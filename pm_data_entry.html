@@ -148,17 +148,20 @@ function buildPayload(){
       payload[it[0]]=text?('Not OK - '+text):'Not OK';
     }
   });
-  payload['entry.320623283']=document.getElementById('fDate').value;
+  var dv=document.getElementById('fDate').value;
+  if(dv){var dp=dv.split('-');payload['entry.320623283_year']=dp[0];payload['entry.320623283_month']=dp[1];payload['entry.320623283_day']=dp[2];}
   if(mach.value==='__other__'){
     payload['entry.1935773684.other_option_response']=document.getElementById('fOtherMachine').value.trim();
   }else{
     payload['entry.1935773684']=mach.value;
   }
   payload['fvv']='1';
-  payload['partialResponse']='[null,null,"1313122699805347038"]';
+  payload['partialResponse']='[null,null,"6417378854475023374"]';
   payload['pageHistory']='0';
   payload['draftResponse']='[,,]';
-  payload['fbzx']='1313122699805347038';
+  payload['submissionTimestamp']='-1';
+  payload['dlut']='1787978941369';
+  payload['fbzx']='992855313309910902';
   return {payload:payload,firstMissing:firstMissing};
 }
 var errMsg=document.getElementById('errMsg'),succMsg=document.getElementById('succMsg');

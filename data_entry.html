@@ -87,7 +87,7 @@ body{background:#f5f3ef;min-height:100vh;color:#222}
 </div>
 
 <input type="hidden" name="fvv" value="1">
-<input type="hidden" name="partialResponse" value='[null,null,"-3317017233260532449"]'>
+<input type="hidden" name="partialResponse" value='[null,null,"8203609132818112779"]'>
 <input type="hidden" name="pageHistory" value="0">
 <input type="hidden" name="draftResponse" value="[,,]">
 <input type="hidden" name="fbzx" value="-3317017233260532449">
@@ -122,12 +122,15 @@ form.addEventListener('submit',function(e){
   }
   e.preventDefault();
   var fd=new FormData(form);
+  var dv=document.getElementById('fDate').value;
+  fd.delete('entry.713877233');
+  if(dv){var dp=dv.split('-');fd.append('entry.713877233_year',dp[0]);fd.append('entry.713877233_month',dp[1]);fd.append('entry.713877233_day',dp[2]);}
   if(otherVal){
     fd.set('entry.1679877274','__other_option__');
     fd.append('entry.1679877274.other_option_response',otherVal);
   }
   fd.append('fvv','1');
-  fd.append('partialResponse','[null,null,"-3317017233260532449"]');
+  fd.append('partialResponse','[null,null,"8203609132818112779"]');
   fd.append('pageHistory','0');
   fd.append('draftResponse','[,,]');
   fd.append('fbzx','-3317017233260532449');
