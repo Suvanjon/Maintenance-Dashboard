@@ -119,12 +119,13 @@ function normDate(d){
   return d;
 }
 
-var SECTION_ORDER=["Plastic Unit","LED","Switch & Socket","Circuit Breaker","Home Appliance","PVC Tape","Exhaust Fan","RnD Lab","Tool Room","Utility"];
+var SECTION_ORDER=["Plastic Unit","LED Unit","Switch & Socket","Circuit Breaker","Home Appliance","PVC Tape","Exhaust Fan","RnD Lab","Tool Room","Utility"];
 
 function normSection(s){
   var t=(s||'').trim();
   if(!t)return '';
   for(var i=0;i<SECTION_ORDER.length;i++){if(t===SECTION_ORDER[i])return t;}
+  if(t==='LED')return 'LED Unit';
   var low=t.toLowerCase();
   if(low.indexOf('chiller')!==-1||low.indexOf('comprossor')!==-1||low.indexOf('compressor')!==-1||low.indexOf('cfc')!==-1||low.indexOf('schedule clean')!==-1||low.indexOf('water filter')!==-1||low.indexOf('ac power')!==-1||low.indexOf('clock')!==-1||low.indexOf('store')!==-1||low.indexOf('house keeping')!==-1||low.indexOf('complian')!==-1||low.indexOf('running work')!==-1||low.indexOf('all section')!==-1||low.indexOf('fan setup')!==-1||low.indexOf('sub station')!==-1||low.indexOf('generator')!==-1)return 'Utility';
   if(low.indexOf('qc')!==-1||low.indexOf('check board')!==-1)return 'Switch & Socket';
