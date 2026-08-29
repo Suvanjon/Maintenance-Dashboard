@@ -19,9 +19,18 @@ body{background:#f5f3ef;min-height:100vh}
 .field{margin-bottom:16px}
 .field label{display:block;color:#333;font-size:14px;font-weight:600;margin-bottom:6px}
 .field .req{color:#e53935}
-.field input[type=date],.field select,.field textarea{width:100%;padding:10px 12px;border:1px solid #bbb;border-radius:8px;font-size:14px;font-family:inherit;background:#fff}
-.field textarea{resize:vertical;min-height:52px}
+.field input[type=date],.field select{width:100%;padding:10px 12px;border:1px solid #bbb;border-radius:8px;font-size:14px;font-family:inherit;background:#fff}
 #ifmWrap{display:none}
+.item{background:#fafaf8;border:1px solid #eee;border-radius:8px;padding:12px 14px;margin-bottom:10px}
+.item .q{color:#333;font-size:14px;font-weight:600;line-height:1.4}
+.item .q .req{color:#e53935}
+.opts{display:flex;gap:18px;margin-top:9px}
+.opt{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:600;cursor:pointer}
+.opt input{width:16px;height:16px;cursor:pointer}
+.opt .ok{color:#2e7d32}
+.opt .nok{color:#e53935}
+.problem-box{display:none;margin-top:9px}
+.problem-box textarea{width:100%;padding:10px 12px;border:1px solid #bbb;border-radius:8px;font-size:14px;font-family:inherit;resize:vertical;min-height:50px;box-sizing:border-box}
 .actions{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
 .submit-btn{background:#005151;color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s}
 .submit-btn:hover{background:#006868;transform:scale(1.02)}
@@ -30,7 +39,6 @@ body{background:#f5f3ef;min-height:100vh}
 .clear-btn:hover{background:#ddd}
 .success-msg{display:none;background:#2e7d32;color:#fff;padding:16px;border-radius:8px;text-align:center;font-size:16px;font-weight:600;margin-top:16px}
 .error-msg{display:none;background:#e53935;color:#fff;padding:12px;border-radius:8px;text-align:center;font-size:14px;font-weight:600;margin-top:12px}
-.hint{color:#777;font-size:12px;margin-top:4px}
 </style>
 </head>
 <body>
@@ -43,14 +51,13 @@ body{background:#f5f3ef;min-height:100vh}
 <div class="card">
 <h2>Preventive Data Entry</h2>
 <div class="sec-badge" id="secBadge">IMM Inhouse</div>
-<form id="mainForm" method="POST">
 <div class="field">
 <label>Date <span class="req">*</span></label>
-<input type="date" name="entry.320623283" id="fDate" required="">
+<input type="date" id="fDate" required="">
 </div>
 <div class="field">
 <label>Machine Name <span class="req">*</span></label>
-<select name="entry.1935773684" id="fMachine" required="">
+<select id="fMachine" required="">
 <option value="">-- Select Machine --</option>
 </select>
 </div>
@@ -58,164 +65,45 @@ body{background:#f5f3ef;min-height:100vh}
 <label>Machine Name (Other)</label>
 <input type="text" id="fOtherMachine" placeholder="Type the machine name">
 </div>
-<div class="field">
-<label>Electrical panel board net &amp; clean and ensure inside wiring as per compliance <span class="req">*</span></label>
-<textarea name="entry.218005557" required=""></textarea>
-</div>
-<div class="field">
-<label>Panel exhaust fan, SSR, relay, fuse, MCB check and corrective action <span class="req">*</span></label>
-<textarea name="entry.1458090673" required=""></textarea>
-</div>
-<div class="field">
-<label>Heater, blower and thermocouple check and corrective action <span class="req">*</span></label>
-<textarea name="entry.940823359" required=""></textarea>
-</div>
-<div class="field">
-<label>Gate safety, limit switch, sensor check and corrective action <span class="req">*</span></label>
-<textarea name="entry.1485189514" required=""></textarea>
-</div>
-<div class="field">
-<label>Must ensure machine breaker knob active and working properly <span class="req">*</span></label>
-<textarea name="entry.542758492" required=""></textarea>
-</div>
-<div class="field">
-<label>Machine Transducer check properly <span class="req">*</span></label>
-<textarea name="entry.569862239" required=""></textarea>
-</div>
-<div class="field">
-<label>Machine front and back side emergency switch check and corrective action <span class="req">*</span></label>
-<textarea name="entry.1277314249" required=""></textarea>
-</div>
-<div class="field">
-<label>MMI board key pad check <span class="req">*</span></label>
-<textarea name="entry.30582981" required=""></textarea>
-</div>
-<div class="field">
-<label>Cables, terminals &amp; connections check for heat, damage or looseness <span class="req">*</span></label>
-<textarea name="entry.1317825503" required=""></textarea>
-</div>
-<div class="field">
-<label>Panel cooling fan / ventilation &amp; compartment cleanliness check <span class="req">*</span></label>
-<textarea name="entry.1517800487" required=""></textarea>
-</div>
-<div class="field">
-<label>Ensure machine system pressure and flow are OK <span class="req">*</span></label>
-<textarea name="entry.1412437944" required=""></textarea>
-</div>
-<div class="field">
-<label>Suction filter clean <span class="req">*</span></label>
-<textarea name="entry.1062724479" required=""></textarea>
-</div>
-<div class="field">
-<label>Inverter cooling system check and corrective action <span class="req">*</span></label>
-<textarea name="entry.1700644856" required=""></textarea>
-</div>
-<div class="field">
-<label>Lubrication distributors check <span class="req">*</span></label>
-<textarea name="entry.867299511" required=""></textarea>
-</div>
-<div class="field">
-<label>Lubrication check in toggle pin &amp; bush <span class="req">*</span></label>
-<textarea name="entry.490902443" required=""></textarea>
-</div>
-<div class="field">
-<label>Tie bar scratch check and measure the gap <span class="req">*</span></label>
-<textarea name="entry.1572939011" required=""></textarea>
-</div>
-<div class="field">
-<label>Machine level check by spirit level <span class="req">*</span></label>
-<textarea name="entry.1648505022" required=""></textarea>
-</div>
-<div class="field">
-<label>Nut &amp; Bolt check <span class="req">*</span></label>
-<textarea name="entry.1912192025" required=""></textarea>
-</div>
-<div class="field">
-<label>Machine gate spring, stopper, etc. check and corrective action</label>
-<textarea name="entry.1073228339"></textarea>
-</div>
-<div class="field">
-<label>Lubrication pump filter clean <span class="req">*</span></label>
-<textarea name="entry.1501232017" required=""></textarea>
-</div>
-<div class="field">
-<label>Purge guard limit, rod, cover, glass check and corrective action <span class="req">*</span></label>
-<textarea name="entry.1169424761" required=""></textarea>
-</div>
-<div class="field">
-<label>Oil cooler clean properly with nylon brush <span class="req">*</span></label>
-<textarea name="entry.1025988752" required=""></textarea>
-</div>
-<div class="field">
-<label>If hydraulic oil needs to be poured (top-up) <span class="req">*</span></label>
-<textarea name="entry.86892409" required=""></textarea>
-</div>
-<div class="field">
-<label>Water header IN/OUT line check <span class="req">*</span></label>
-<textarea name="entry.982157472" required=""></textarea>
-</div>
-<div class="field">
-<label>Hopper, nut bolt, clamp check &amp; corrective action <span class="req">*</span></label>
-<textarea name="entry.528482425" required=""></textarea>
-</div>
-<div class="field">
-<label>Hopper drier blower, heater, controlling check and corrective action <span class="req">*</span></label>
-<textarea name="entry.1351057645" required=""></textarea>
-</div>
-<div class="field">
-<label>Machine all jam nut check with cotter bolt <span class="req">*</span></label>
-<textarea name="entry.253109376" required=""></textarea>
-</div>
-<div class="field">
-<label>Unwanted noise find out in hydraulic system, motor and pump to solve <span class="req">*</span></label>
-<textarea name="entry.436504984" required=""></textarea>
-</div>
-<div class="field">
-<label>Wastage oil and water clean <span class="req">*</span></label>
-<textarea name="entry.1783376924" required=""></textarea>
-</div>
-<div class="field">
-<label>Injection unit nozzle centering &amp; alignment check <span class="req">*</span></label>
-<textarea name="entry.1561889870" required=""></textarea>
-</div>
-<div class="field">
-<label>Total machine clean <span class="req">*</span></label>
-<textarea name="entry.1157330180" required=""></textarea>
-</div>
-<div class="field">
-<label>Emergency stop (E-Stop) button functioning test <span class="req">*</span></label>
-<textarea name="entry.137137975" required=""></textarea>
-</div>
-<div class="field">
-<label>Safety guards, interlocks &amp; light curtains functional <span class="req">*</span></label>
-<textarea name="entry.1189099842" required=""></textarea>
-</div>
-<div class="field">
-<label>Lockout / Tagout (LOTO) used <span class="req">*</span></label>
-<textarea name="entry.1147334062" required=""></textarea>
-</div>
-<div class="field">
-<label>Spill, oil leakage &amp; housekeeping around machine checked <span class="req">*</span></label>
-<textarea name="entry.33958766" required=""></textarea>
-</div>
-<div class="field">
-<label>Operator PPE compliance &amp; machine area clear of obstructions <span class="req">*</span></label>
-<textarea name="entry.1988329670" required=""></textarea>
-</div>
+<div id="items"></div>
 <div class="actions">
-<button type="submit" class="submit-btn" id="submitBtn">Submit</button>
+<button type="button" class="submit-btn" id="submitBtn">Submit</button>
 <button type="button" class="clear-btn" id="clearBtn">Clear form</button>
 </div>
 <div class="success-msg" id="succMsg">Checklist submitted successfully!</div>
 <div class="error-msg" id="errMsg"></div>
-</form>
 </div>
 </div>
 <script>
+var ITEMS=[["entry.218005557","Electrical panel board net &amp; clean and ensure inside wiring as per compliance",1],["entry.1458090673","Panel exhaust fan, SSR, relay, fuse, MCB check and corrective action",1],["entry.940823359","Heater, blower and thermocouple check and corrective action",1],["entry.1485189514","Gate safety, limit switch, sensor check and corrective action",1],["entry.542758492","Must ensure machine breaker knob active and working properly",1],["entry.569862239","Machine Transducer check properly",1],["entry.1277314249","Machine front and back side emergency switch check and corrective action",1],["entry.30582981","MMI board key pad check",1],["entry.1317825503","Cables, terminals &amp; connections check for heat, damage or looseness",1],["entry.1517800487","Panel cooling fan / ventilation &amp; compartment cleanliness check",1],["entry.1412437944","Ensure machine system pressure and flow are OK",1],["entry.1062724479","Suction filter clean",1],["entry.1700644856","Inverter cooling system check and corrective action",1],["entry.867299511","Lubrication distributors check",1],["entry.490902443","Lubrication check in toggle pin &amp; bush",1],["entry.1572939011","Tie bar scratch check and measure the gap",1],["entry.1648505022","Machine level check by spirit level",1],["entry.1912192025","Nut &amp; Bolt check",1],["entry.1073228339","Machine gate spring, stopper, etc. check and corrective action",0],["entry.1501232017","Lubrication pump filter clean",1],["entry.1169424761","Purge guard limit, rod, cover, glass check and corrective action",1],["entry.1025988752","Oil cooler clean properly with nylon brush",1],["entry.86892409","If hydraulic oil needs to be poured (top-up)",1],["entry.982157472","Water header IN/OUT line check",1],["entry.528482425","Hopper, nut bolt, clamp check &amp; corrective action",1],["entry.1351057645","Hopper drier blower, heater, controlling check and corrective action",1],["entry.253109376","Machine all jam nut check with cotter bolt",1],["entry.436504984","Unwanted noise find out in hydraulic system, motor and pump to solve",1],["entry.1783376924","Wastage oil and water clean",1],["entry.1561889870","Injection unit nozzle centering &amp; alignment check",1],["entry.1157330180","Total machine clean",1],["entry.137137975","Emergency stop (E-Stop) button functioning test",1],["entry.1189099842","Safety guards, interlocks &amp; light curtains functional",1],["entry.1147334062","Lockout / Tagout (LOTO) used",1],["entry.33958766","Spill, oil leakage &amp; housekeeping around machine checked",1],["entry.1988329670","Operator PPE compliance &amp; machine area clear of obstructions",1]];
 var MACHINES=["IMM-360T-PP-A1","IMM-300T-PP-A2","IMM-258T-PP-A3","IMM-250T-PP-A4","IMM-250T-PP-A5","IMM-120T-PP-B1","IMM-208T-PP-B2","IMM-200T-PP-B3","IMM-168T-PP-B4","IMM-128T-PP-B5","IMM-160T-PP-B6","IMM-160T-PP-B7"];
 var sec=new URLSearchParams(location.search).get('section')||'IMM Inhouse';
 document.getElementById('secBadge').textContent=sec;
 document.title='Preventive Data Entry - '+sec;
+var itemsHost=document.getElementById('items');
+ITEMS.forEach(function(it){
+  var box=document.createElement('div');box.className='item';
+  var q=document.createElement('div');q.className='q';
+  q.innerHTML=(it[2]?it[1]+' <span class="req">*</span>':it[1]);
+  var opts=document.createElement('div');opts.className='opts';
+  var ok=document.createElement('label');ok.className='opt';
+  ok.innerHTML='<input type="radio" name="'+it[0]+'" value="ok"><span class="ok">OK</span>';
+  var nok=document.createElement('label');nok.className='opt';
+  nok.innerHTML='<input type="radio" name="'+it[0]+'" value="nok"><span class="nok">Not OK</span>';
+  var pb=document.createElement('div');pb.className='problem-box';
+  var ta=document.createElement('textarea');ta.placeholder='Describe the problem / corrective action';
+  pb.appendChild(ta);
+  var rads=[ok.querySelector('input'),nok.querySelector('input')];
+  rads.forEach(function(r){
+    r.addEventListener('change',function(){
+      pb.style.display=(nok.querySelector('input').checked)?'block':'none';
+      if(r.value==='nok')ta.focus();
+    });
+  });
+  opts.appendChild(ok);opts.appendChild(nok);
+  box.appendChild(q);box.appendChild(opts);box.appendChild(pb);
+  itemsHost.appendChild(box);
+});
 var mach=document.getElementById('fMachine'),machWrap=document.getElementById('ifmWrap');
 MACHINES.forEach(function(m){var o=document.createElement('option');o.value=m;o.textContent=m;mach.appendChild(o)});
 var oo=document.createElement('option');oo.value='__other__';oo.textContent='Other (type manually)';mach.appendChild(oo);
@@ -223,35 +111,64 @@ mach.addEventListener('change',function(){
   if(mach.value==='__other__'){machWrap.style.display='block';document.getElementById('fOtherMachine').focus()}
   else{machWrap.style.display='none'}
 });
-var form=document.getElementById('mainForm'),errMsg=document.getElementById('errMsg'),succMsg=document.getElementById('succMsg');
-form.addEventListener('submit',function(e){
-  errMsg.style.display='none';succMsg.style.display='none';
-  var firstErr='';
-  Array.prototype.forEach.call(form.querySelectorAll('textarea'),function(t){
-    if(t.required&&!t.value.trim()){if(!firstErr)firstErr='Please fill: '+t.parentElement.querySelector('label').textContent.replace(' *','').trim();t.focus()}
-  });
-  if(firstErr){e.preventDefault();errMsg.textContent=firstErr;errMsg.style.display='block';return}
-  if(!mach.value){e.preventDefault();errMsg.textContent='Please select a Machine';errMsg.style.display='block';return}
-  var otherVal='';
-  if(mach.value==='__other__'){
-    otherVal=document.getElementById('fOtherMachine').value.trim();
-    if(!otherVal){e.preventDefault();errMsg.textContent='Please type the machine name';errMsg.style.display='block';return}
-  }
-  e.preventDefault();
-  var fd=new FormData(form);
-  if(otherVal){
-    fd.set('entry.1935773684','__other_option__');
-    fd.append('entry.1935773684.other_option_response',otherVal);
-  }
-  fd.append('fvv','1');
-  fd.append('partialResponse','[null,null,"1313122699805347038"]');
-  fd.append('pageHistory','0');
-  fd.append('draftResponse','[,,]');
-  fd.append('fbzx','1313122699805347038');
+function resetForm(){
+  document.querySelectorAll('#items input[type=radio]').forEach(function(r){r.checked=false});
+  document.querySelectorAll('#items .problem-box').forEach(function(p){p.style.display='none';p.querySelector('textarea').value=''});
+  document.getElementById('ifmWrap').style.display='none';
+  document.getElementById('fMachine').value='';
+  document.getElementById('fOtherMachine').value='';
+  document.getElementById('fDate').value=new Date().toISOString().split('T')[0];
+}
+function buildPayload(){
   var payload={};
-  fd.forEach(function(val,key){payload[key]=val});
-  var body=Object.keys(payload).map(function(k){
-    return encodeURIComponent(k)+'='+encodeURIComponent(payload[k]);
+  var firstMissing='';
+  ITEMS.forEach(function(it){
+    var input=document.querySelector('input[name="'+it[0]+'"]:checked');
+    if(!input){
+      if(it[2]&&!firstMissing)firstMissing=it[1].replace(/<[^>]*>/g,'');
+      return;
+    }
+    if(input.value==='ok'){payload[it[0]]='OK'}
+    else{
+      var desc=it[0];
+      var names=document.querySelectorAll('input[name="'+it[0]+'"]');
+      var box=names[0].closest('.item').querySelector('.problem-box');
+      var text=box.querySelector('textarea').value.trim();
+      payload[it[0]]=text?('Not OK - '+text):'Not OK';
+    }
+  });
+  payload['entry.320623283']=document.getElementById('fDate').value;
+  if(mach.value==='__other__'){
+    payload['entry.1935773684.other_option_response']=document.getElementById('fOtherMachine').value.trim();
+  }else{
+    payload['entry.1935773684']=mach.value;
+  }
+  payload['fvv']='1';
+  payload['partialResponse']='[null,null,"1313122699805347038"]';
+  payload['pageHistory']='0';
+  payload['draftResponse']='[,,]';
+  payload['fbzx']='1313122699805347038';
+  return {payload:payload,firstMissing:firstMissing};
+}
+var errMsg=document.getElementById('errMsg'),succMsg=document.getElementById('succMsg');
+document.getElementById('submitBtn').addEventListener('click',function(){
+  errMsg.style.display='none';succMsg.style.display='none';
+  if(!mach.value){
+    errMsg.textContent='Please select a Machine';errMsg.style.display='block';return;
+  }
+  if(mach.value==='__other__'&&!document.getElementById('fOtherMachine').value.trim()){
+    errMsg.textContent='Please type the machine name';errMsg.style.display='block';return;
+  }
+  if(!document.getElementById('fDate').value){
+    errMsg.textContent='Please enter the Date';errMsg.style.display='block';return;
+  }
+  var res=buildPayload();
+  if(res.firstMissing){
+    errMsg.textContent='Please select OK or Not OK for: '+res.firstMissing;
+    errMsg.style.display='block';return;
+  }
+  var body=Object.keys(res.payload).map(function(k){
+    return encodeURIComponent(k)+'='+encodeURIComponent(res.payload[k]);
   }).join('&');
   fetch('https://docs.google.com/forms/d/e/1FAIpQLSf-7t7TnOfNZiX4ZKFKLN37SmAxdNDBnCBjH1bJTy761prpZA/formResponse',{
     method:'POST',
@@ -261,18 +178,13 @@ form.addEventListener('submit',function(e){
   }).then(function(){
     succMsg.style.display='block';
   }).catch(function(){
-    errMsg.textContent='Network error. Please try again.';
-    errMsg.style.display='block';
-    return;
+    errMsg.textContent='Network error. Please try again.';errMsg.style.display='block';return;
   });
-  form.reset();
-  machWrap.style.display='none';
-  mach.value='';
-  document.getElementById('fDate').value=new Date().toISOString().split('T')[0];
+  resetForm();
   setTimeout(function(){succMsg.style.display='none'},5000);
   window.scrollTo(0,0);
 });
-document.getElementById('clearBtn').addEventListener('click',function(){form.reset();machWrap.style.display='none';mach.value='';document.getElementById('fDate').value=new Date().toISOString().split('T')[0]});
+document.getElementById('clearBtn').addEventListener('click',function(){errMsg.style.display='none';succMsg.style.display='none';resetForm()});
 document.getElementById('fDate').value=new Date().toISOString().split('T')[0];
 </script>
 </body>
