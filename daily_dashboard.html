@@ -216,8 +216,8 @@ function renderChart(filtered){
   filtered.forEach(function(r){if(r.section)counts[r.section]=(counts[r.section]||0)+1});
   if(!Object.keys(counts).length){el.innerHTML='<div class="chart-empty">No data to chart.</div>';return}
   var keys=[];
-  SECTION_ORDER.forEach(function(s){if(counts[s])keys.push(s)});
-  Object.keys(counts).sort(function(a,b){return counts[b]-counts[a]||a.localeCompare(b)}).forEach(function(s){if(keys.indexOf(s)===-1)keys.push(s)});
+  SECTION_ORDER.forEach(function(s){if(s!=='Utility'&&counts[s])keys.push(s)});
+  Object.keys(counts).sort(function(a,b){return counts[b]-counts[a]||a.localeCompare(b)}).forEach(function(s){if(s==='Utility')return;if(keys.indexOf(s)===-1)keys.push(s)});
   var max=1;
   keys.forEach(function(k){if(counts[k]>max)max=counts[k]});
   var html='';
