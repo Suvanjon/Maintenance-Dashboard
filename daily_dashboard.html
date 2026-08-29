@@ -33,6 +33,12 @@ tr:hover{background:#f5f5f5}
 .stat.total{background:#005151}
 .stat.done{background:#2e7d32}
 .stat.pending{background:#ff9800}
+.chart{display:flex;flex-direction:column;gap:7px}
+.chart-row{display:flex;align-items:center;gap:10px;font-size:13px}
+.chart-label{width:210px;text-align:right;color:#333;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chart-bar-wrap{flex:1;background:#efece8;border-radius:6px;height:24px;overflow:hidden}
+.chart-bar{height:100%;background:linear-gradient(90deg,#003838,#005151,#0a7d7d);border-radius:6px;color:#fff;font-weight:700;white-space:nowrap;text-align:right;line-height:24px;padding-right:6px;box-sizing:border-box}
+.chart-empty{text-align:center;color:#888;padding:18px;font-size:14px}
 </style>
 </head>
 <body>
@@ -50,6 +56,10 @@ tr:hover{background:#f5f5f5}
 <div class="field"><label>Section</label><select id="sectionFilter"><option value="">All Sections</option></select></div>
 <div class="field"><label>Machine Name</label><select id="machineFilter"><option value="">All Machines</option></select></div>
 </div>
+</div>
+<div class="card">
+<div style="font-size:16px;font-weight:700;color:#005151;margin-bottom:12px">Work by Section</div>
+<div id="chart" class="chart"><div class="chart-empty">Loading...</div></div>
 </div>
 <div class="stats" id="stats">
 <div class="stat total" id="stTotal">Loading...</div>
@@ -160,6 +170,7 @@ function render(){
     if(dt&&normDate(r.date)>dt)return false;
     return true;
   });
+  renderChart(filtered);
   if(sortCol!=='sl'){
     filtered.sort(function(a,b){
       var av=a[sortCol]||'',bv=b[sortCol]||'';
@@ -179,6 +190,23 @@ function render(){
   document.getElementById('stDone').textContent='Completed: '+filtered.length;
   document.getElementById('stPending').textContent='Pending: 0';
   updateSortIndicators();
+}
+
+function renderChart(filtered){
+  var el=document.getElementById('chart');
+  if(!el)return;
+  var counts={};
+  filtered.forEach(function(r){if(r.section)counts[r.section]=(counts[r.section]||0)+1});
+  var keys=Object.keys(counts).sort(function(a,b){return counts[b]-counts[a]||a.localeCompare(b)});
+  if(!keys.length){el.innerHTML='<div class="chart-empty">No data to chart.</div>';return}
+  var max=counts[keys[0]];
+  var html='';
+  keys.forEach(function(k){
+    var pct=Math.round(counts[k]/max*100);
+    if(pct<4)pct=4;
+    html+='<div class="chart-row"><div class="chart-label" title="'+esc(k)+'">'+esc(k)+'</div><div class="chart-bar-wrap"><div class="chart-bar" style="width:'+pct+'%">'+counts[k]+'</div></div></div>';
+  });
+  el.innerHTML=html;
 }
 
 function updateSortIndicators(){
