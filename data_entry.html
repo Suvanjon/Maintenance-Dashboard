@@ -132,41 +132,28 @@ form.addEventListener('submit',function(e){
   fd.append('draftResponse','[,,]');
   fd.append('fbzx','-3317017233260532449');
   
-  var iframeName='gf_'+Date.now();
-  var iframe=document.createElement('iframe');
-  iframe.name=iframeName;
-  iframe.style.display='none';
-  document.body.appendChild(iframe);
-  
-  var tempForm=document.createElement('form');
-  tempForm.method='POST';
-  tempForm.action='https://docs.google.com/forms/d/e/1FAIpQLScfy7359C_3VXHVz6FWQ8pedDX3WzC81spACyUpnrv_HqslGA/formResponse';
-  tempForm.target=iframeName;
-  
-  fd.forEach(function(val,key){
-    var inp=document.createElement('input');
-    inp.type='hidden';
-    inp.name=key;
-    inp.value=val;
-    tempForm.appendChild(inp);
-  });
-  
-  document.body.appendChild(tempForm);
-  
-  iframe.onload=function(){
+  var payload={};
+  fd.forEach(function(val,key){payload[key]=val});
+  var body=Object.keys(payload).map(function(k){
+    return encodeURIComponent(k)+'='+encodeURIComponent(payload[k]);
+  }).join('&');
+  fetch('https://docs.google.com/forms/d/e/1FAIpQLScfy7359C_3VXHVz6FWQ8pedDX3WzC81spACyUpnrv_HqslGA/formResponse',{
+    method:'POST',
+    mode:'no-cors',
+    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:body
+  }).then(function(){
     succMsg.style.display='block';
-    form.reset();machWrap.style.display='none';
-    mach.innerHTML='<option value="">-- Select Machine --</option>';
-    document.getElementById('fDate').value=new Date().toISOString().split('T')[0];
-    setTimeout(function(){succMsg.style.display='none'},5000);
-    setTimeout(function(){
-      document.body.removeChild(iframe);
-      document.body.removeChild(tempForm);
-    },1000);
-    iframe.onload=null;
-  };
-  
-  tempForm.submit();
+  }).catch(function(){
+    errMsg.textContent='Network error. Please try again.';
+    errMsg.style.display='block';
+    return;
+  });
+  form.reset();machWrap.style.display='none';
+  mach.innerHTML='<option value="">-- Select Machine --</option>';
+  var ow=document.getElementById('otherMachineWrap');if(ow)ow.style.display='none';
+  document.getElementById('fDate').value=new Date().toISOString().split('T')[0];
+  setTimeout(function(){succMsg.style.display='none'},5000);
 });
 document.getElementById('fDate').value=new Date().toISOString().split('T')[0];
 </script>
