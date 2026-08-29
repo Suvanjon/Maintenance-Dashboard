@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preventive Data Entry - Akij Light Engineering Ltd.</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Roboto,Arial,sans-serif}
+body{background:#f5f3ef;min-height:100vh}
+.hdr{background:#005151;padding:14px 16px 10px;text-align:center;border-bottom:3px solid #003838}
+.hdr-text{color:#fff;font-size:17px;font-weight:700;letter-spacing:.5px}
+.hdr-sub{color:rgba(255,255,255,.7);font-size:12px;margin-top:2px}
+.wrap{max-width:720px;margin:40px auto;padding:0 20px;text-align:center}
+.title{color:#005151;font-size:22px;font-weight:700;margin-bottom:8px}
+.section-badge{display:inline-block;background:#005151;color:#fff;font-size:14px;font-weight:700;padding:6px 18px;border-radius:20px;margin-bottom:24px}
+.msg{background:#fff;border:1px solid #ddd;border-radius:10px;padding:28px 22px;color:#555;font-size:15px;line-height:1.6;text-align:center;box-shadow:0 4px 16px rgba(0,81,81,.08)}
+.back{margin-top:24px;display:inline-block;background:none;border:none;color:#005151;font-size:14px;font-weight:600;cursor:pointer;padding:8px 20px;border-radius:6px;text-decoration:none}
+.back:hover{background:rgba(0,81,81,.08)}
+</style>
+</head>
+<body>
+<div class="hdr">
+<div class="hdr-text">AKIJ LIGHT ENGINEERING LTD.</div>
+<div class="hdr-sub">Maintenance Management System</div>
+</div>
+<div class="wrap">
+<div class="title">Preventive Data Entry</div>
+<div id="secBadge" class="section-badge"></div>
+<div class="msg">
+This page will be the preventive maintenance entry form for the selected section.<br><br>
+The form is currently being prepared. Please check back later or inform the admin to activate it.
+</div>
+<a class="back" href="index.html">&#8592; Back to Main Menu</a>
+</div>
+<script>
+(function(){var s=new URLSearchParams(location.search).get('section')||'All Sections';document.getElementById('secBadge').textContent=s;document.title='Preventive Data Entry - '+s})();
+</script>
+</body>
+</html>
