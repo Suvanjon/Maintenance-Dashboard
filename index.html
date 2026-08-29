@@ -20,8 +20,6 @@ body{background:#f5f3ef;min-height:100vh;overflow-x:hidden}
 .card-btn .icon{width:64px;height:64px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,.28);margin-bottom:12px;color:#005151}
 .card-btn .icon svg{width:34px;height:34px;fill:#005151}
 .card-btn .label{color:#fff;font-size:16px;font-weight:700;text-align:center;line-height:1.3;padding:0 16px}
-.card-btn .arrow{position:absolute;bottom:24px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;transition:background .3s}
-.card-btn:hover .arrow{background:rgba(255,255,255,.35)}
 .brand{color:#005151;font-size:13px;font-weight:600;text-align:center;margin-top:30px;opacity:.5}
 .sub-panel{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:82vh;background:#f5f3ef}
 .sub-panel.show{display:flex}
@@ -50,12 +48,10 @@ body{background:#f5f3ef;min-height:100vh;overflow-x:hidden}
 <div class="card-btn" onclick="showDaily()">
 <div class="icon"><svg viewBox="0 0 24 24"><path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.3 6.8 1.5l9.1 9.1c.2.2.5.3.7.3.3 0 .6-.1.8-.3l2.4-2.4c.2-.2.3-.4.3-.8 0-.2-.1-.4-.3-.5z"/></svg></div>
 <div class="label">Daily Maintenance<br>Task</div>
-<div class="arrow">&#10132;</div>
 </div>
 <div class="card-btn" onclick="showPreventive()">
 <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg></div>
 <div class="label">Preventive<br>Maintenance</div>
-<div class="arrow">&#10132;</div>
 </div>
 </div>
 </div>
