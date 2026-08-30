@@ -89,18 +89,70 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 
 <div id="sub-daily-check" class="sub-panel">
 <div class="sub-title">Daily Checking</div>
+<div class="sub-desc">Select a section</div>
+<div class="sub-cards">
+<div class="sub-btn" onclick="showDC('sub-dc-ss')">
+<div class="sicon">&#9889;</div>
+<div class="slabel">Sub Station</div>
+</div>
+<div class="sub-btn" onclick="showDC('sub-dc-ch')">
+<div class="sicon">&#10052;</div>
+<div class="slabel">Chiller</div>
+</div>
+<div class="sub-btn" onclick="showDC('sub-dc-cp')">
+<div class="sicon">&#9881;</div>
+<div class="slabel">Compressor</div>
+</div>
+</div>
+<button class="sub-back" onclick="goBackFromDailyCheck()">&#8592; Back to Main Menu</button>
+</div>
+
+<div id="sub-dc-ss" class="sub-panel">
+<div class="sub-title">Sub Station</div>
 <div class="sub-desc">Select an option</div>
 <div class="sub-cards">
-<a href="dc_data_entry.html" class="sub-btn">
+<a href="dc_data_entry.html?section=Sub%20Station" class="sub-btn">
 <div class="sicon">&#128203;</div>
 <div class="slabel">Data Entry</div>
 </a>
-<a href="dc_dashboard.html" class="sub-btn">
+<a href="dc_dashboard.html?section=Sub%20Station" class="sub-btn">
 <div class="sicon">&#128200;</div>
 <div class="slabel">Dashboard</div>
 </a>
 </div>
-<button class="sub-back" onclick="goBackFromDailyCheck()">&#8592; Back to Main Menu</button>
+<button class="sub-back" onclick="goBackFromDC()">&#8592; Back to Daily Checking</button>
+</div>
+
+<div id="sub-dc-ch" class="sub-panel">
+<div class="sub-title">Chiller</div>
+<div class="sub-desc">Select an option</div>
+<div class="sub-cards">
+<a href="dc_data_entry.html?section=Chiller" class="sub-btn">
+<div class="sicon">&#128203;</div>
+<div class="slabel">Data Entry</div>
+</a>
+<a href="dc_dashboard.html?section=Chiller" class="sub-btn">
+<div class="sicon">&#128200;</div>
+<div class="slabel">Dashboard</div>
+</a>
+</div>
+<button class="sub-back" onclick="goBackFromDC()">&#8592; Back to Daily Checking</button>
+</div>
+
+<div id="sub-dc-cp" class="sub-panel">
+<div class="sub-title">Compressor</div>
+<div class="sub-desc">Select an option</div>
+<div class="sub-cards">
+<a href="dc_data_entry.html?section=Compressor" class="sub-btn">
+<div class="sicon">&#128203;</div>
+<div class="slabel">Data Entry</div>
+</a>
+<a href="dc_dashboard.html?section=Compressor" class="sub-btn">
+<div class="sicon">&#128200;</div>
+<div class="slabel">Dashboard</div>
+</a>
+</div>
+<button class="sub-back" onclick="goBackFromDC()">&#8592; Back to Daily Checking</button>
 </div>
 
 <div id="sub-preventive" class="sub-panel">
@@ -192,14 +244,16 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 </div>
 
 <script>
-function hideAll(){document.getElementById('landing').style.display='none';['sub-daily','sub-daily-check','sub-preventive','sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap'].forEach(function(id){document.getElementById(id).classList.remove('show')})}
+function hideAll(){document.getElementById('landing').style.display='none';['sub-daily','sub-daily-check','sub-dc-ss','sub-dc-ch','sub-dc-cp','sub-preventive','sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap'].forEach(function(id){document.getElementById(id).classList.remove('show')})}
 function showLanding(){document.getElementById('landing').style.display='flex';window.scrollTo(0,0)}
 function showDaily(){hideAll();document.getElementById('sub-daily').classList.add('show');window.scrollTo(0,0)}
 function showDailyCheck(){hideAll();document.getElementById('sub-daily-check').classList.add('show');window.scrollTo(0,0)}
+function showDC(id){hideAll();document.getElementById(id).classList.add('show');window.scrollTo(0,0)}
 function showPreventive(){hideAll();document.getElementById('sub-preventive').classList.add('show');window.scrollTo(0,0)}
 function showPM(id){hideAll();document.getElementById(id).classList.add('show');window.scrollTo(0,0)}
 function goBackFromDaily(){document.getElementById('sub-daily').classList.remove('show');showLanding()}
 function goBackFromDailyCheck(){document.getElementById('sub-daily-check').classList.remove('show');showLanding()}
+function goBackFromDC(){var p=document.getElementById('sub-daily-check');['sub-dc-ss','sub-dc-ch','sub-dc-cp'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');window.scrollTo(0,0)}
 function goBackFromPreventive(){document.getElementById('sub-preventive').classList.remove('show');showLanding()}
 function goBackFromPM(){var p=document.getElementById('sub-preventive');['sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');window.scrollTo(0,0)}
 </script>
