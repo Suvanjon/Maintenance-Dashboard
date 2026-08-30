@@ -3,21 +3,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Completed Dashboard - Akij Light Engineering Ltd.</title>
+<title>IMM Preventive Completed Dashboard - Akij Light Engineering Ltd.</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Roboto,Arial,sans-serif}
-body{background:#f5f3ef;min-height:100vh}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#f5f3ef;font-family:Segoe UI,Arial,sans-serif;min-height:100vh;color:#222}
 .hdr{background:#00565c;padding:14px 16px 12px;text-align:center;border-bottom:4px solid #004448}
-
-
 .hdr-text{color:#fff;font-size:13px;font-weight:700;letter-spacing:.5px}
 .hdr-sub{color:rgba(255,255,255,.7);font-size:12px;margin-top:2px}
-.wrap{max-width:720px;margin:40px auto;padding:0 20px;text-align:center}
-.title{color:#005151;font-size:22px;font-weight:700;margin-bottom:8px}
-.section-badge{display:inline-block;background:#005151;color:#fff;font-size:14px;font-weight:700;padding:6px 18px;border-radius:20px;margin-bottom:24px}
-.msg{background:#fff;border:1px solid #ddd;border-radius:10px;padding:28px 22px;color:#555;font-size:15px;line-height:1.6;text-align:center;box-shadow:0 4px 16px rgba(0,81,81,.08)}
-.back{margin-top:24px;display:inline-block;background:none;border:none;color:#005151;font-size:14px;font-weight:600;cursor:pointer;padding:8px 20px;border-radius:6px;text-decoration:none}
-.back:hover{background:rgba(0,81,81,.08)}
+.wrap{max-width:1150px;margin:18px auto;padding:0 12px 40px}
+.back-link{display:inline-block;margin:16px 0 0;padding:8px 18px;background:#005151;color:#fff;text-decoration:none;border-radius:6px;font-size:13px;font-weight:600;transition:background .2s}
+.back-link:hover{background:#003838}
+.card{background:#fff;border-radius:10px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,.1);margin-bottom:16px}
+.card-title{font-size:16px;font-weight:700;color:#005151;margin-bottom:12px}
+.top-bar{display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap;margin-top:14px}
+.field{display:flex;flex-direction:column;gap:3px;flex:1;min-width:150px}
+.field label{font-size:13px;font-weight:600;color:#555}
+.field select,.field input[type=date]{padding:8px 10px;border:1.5px solid #ccc;border-radius:6px;font-size:14px}
+.field select:focus,.field input:focus{border-color:#005151;outline:none}
+.stats{display:flex;gap:16px;margin:14px 0;flex-wrap:wrap}
+.stat{padding:14px 20px;border-radius:10px;font-size:14px;font-weight:600;color:#fff;min-width:150px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.stat .num{font-size:26px;font-weight:700;display:block;margin-bottom:2px}
+.stat.total{background:#005151}
+.stat.ok{background:#2e7d32}
+.stat.attention{background:#ff9800}
+.stat.machines{background:#1565c0}
+.stat .lbl{font-size:12px;opacity:.9}
+.chart{display:flex;flex-direction:column;gap:7px;margin-top:6px}
+.chart-row{display:flex;align-items:center;gap:10px;font-size:13px}
+.chart-label{width:340px;text-align:right;color:#333;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chart-bar-wrap{flex:1;background:#efece8;border-radius:6px;height:24px;overflow:hidden}
+.chart-bar{height:100%;background:linear-gradient(90deg,#e65100,#ff9800);border-radius:6px;color:#fff;font-weight:700;white-space:nowrap;text-align:right;line-height:24px;padding-right:6px;box-sizing:border-box}
+.chart-bar.green{background:linear-gradient(90deg,#1b5e20,#2e7d32)}
+.chart-empty{text-align:center;color:#888;padding:18px;font-size:14px}
+.tbl-wrap{overflow-x:auto;margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:#005151;color:#fff;padding:10px 8px;text-align:left;position:sticky;top:0;font-weight:600;cursor:pointer;user-select:none}
+th:hover{background:#003838}
+td{padding:8px;border-bottom:1px solid #e0e0e0;vertical-align:top}
+tr:hover{background:#f5f5f5}
+.sl{text-align:center;font-weight:700;color:#005151;width:40px}
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:700;color:#fff}
+.badge.ok{background:#2e7d32}
+.badge.attention{background:#ff9800}
+.attn{color:#e65100;font-size:12px;font-weight:600;margin-top:3px}
+.attn-item{font-size:12px;color:#5a5a5a;margin-top:2px;padding-left:12px}
+.no-data{text-align:center;padding:40px;color:#888;font-size:15px}
+.loading{text-align:center;padding:40px;color:#005151;font-size:15px}
+.byte{width:94%;margin-left:3%;}
 </style>
 </head>
 <body>
@@ -26,16 +58,267 @@ body{background:#f5f3ef;min-height:100vh}
 <div class="hdr-sub">Maintenance Management System</div>
 </div>
 <div class="wrap">
-<div class="title">Completed Dashboard</div>
-<div id="secBadge" class="section-badge"></div>
-<div class="msg">
-This page will show the completed preventive maintenance records for the selected section.<br><br>
-The dashboard is currently being prepared. Please check back later or inform the admin to activate it.
+<a href="index.html" class="back-link">&#8592; Back to Dashboard</a>
+<div class="card" style="margin-top:12px">
+<div style="font-size:20px;font-weight:700;color:#005151">IMM Preventive Completed Dashboard</div>
+<div id="secBadge" style="display:inline-block;background:#005151;color:#fff;font-size:12px;font-weight:700;padding:4px 14px;border-radius:16px;margin-top:6px"></div>
+<div class="top-bar">
+<div class="field"><label>Date From</label><input type="date" id="dateFrom"></div>
+<div class="field"><label>Date To</label><input type="date" id="dateTo"></div>
+<div class="field"><label>Machine Name</label><select id="machineFilter"><option value="">All Machines</option></select></div>
+<div class="field"><label>Status</label><select id="statusFilter"><option value="">All Status</option><option value="ok">All OK</option><option value="attn">Needs Attention</option></select></div>
 </div>
-<a class="back" href="index.html">&#8592; Back to Main Menu</a>
+</div>
+<div class="stats" id="stats">
+<div class="stat total"><span class="num" id="stTotal">-</span><span class="lbl">Total Checks</span></div>
+<div class="stat ok"><span class="num" id="stOk">-</span><span class="lbl">All OK</span></div>
+<div class="stat attention"><span class="num" id="stAttn">-</span><span class="lbl">Needs Attention</span></div>
+<div class="stat machines"><span class="num" id="stMachines">-</span><span class="lbl">Machines</span></div>
+</div>
+<div class="card">
+<div class="card-title">Check Items Needing Attention</div>
+<div id="chart" class="chart"><div class="chart-empty">Loading...</div></div>
+</div>
+<div class="card">
+<div class="card-title">Preventive Check Records</div>
+<div class="tbl-wrap">
+<table id="dataTable">
+<thead><tr>
+<th data-col="sl">S/L</th>
+<th data-col="date">Date &#x25B4;</th>
+<th data-col="machine">Machine Name</th>
+<th data-col="status">Status</th>
+<th>Attention Details</th>
+</tr></thead>
+<tbody id="tbody"></tbody>
+</table>
+<div class="no-data" id="noData" style="display:none">No records found.</div>
+<div class="loading" id="loadingMsg">Loading data from Google Sheets...</div>
+</div>
+</div>
 </div>
 <script>
-(function(){var s=new URLSearchParams(location.search).get('section')||'All Sections';document.getElementById('secBadge').textContent=s;document.title='Completed Dashboard - '+s})();
+var DATA=[];
+var CHECK_KEYS=[];
+var CSV_URL='https://docs.google.com/spreadsheets/d/15zQZ2KjFw2KFcU1lUlbxXqryHlttQVap0kFnv_cbrkk/gviz/tq?tqx=out:csv&gid=1267535245';
+
+function parseCSV(text){
+  var lines=[],row=[],field='',inQ=false;
+  for(var i=0;i<text.length;i++){
+    var c=text[i];
+    if(inQ){if(c==='"'){if(i+1<text.length&&text[i+1]==='"'){field+='"';i++}else{inQ=false}}else{field+=c}}
+    else{if(c==='"'){inQ=true}else if(c===','){row.push(field);field=''}else if(c==='\n'||c==='\r'){if(c==='\r'&&i+1<text.length&&text[i+1]==='\n')i++;row.push(field);field='';if(row.length>1)lines.push(row);row=[]}else{field+=c}}}
+  if(field||row.length>0){row.push(field);if(row.length>1)lines.push(row)}
+  return lines;
+}
+
+function normDate(d){
+  if(!d)return '';
+  var p=d.split('/');
+  if(p.length===3){
+    var mm=(p[0].length<2?'0':'')+p[0];
+    var dd=(p[1].length<2?'0':'')+p[1];
+    return p[2]+'-'+mm+'-'+dd;
+  }
+  return d;
+}
+
+function shortName(full){
+  var map={
+    'Electrical panel board net & clean and ensure inside wiring as per compliance':'Panel board net & clean',
+    'Panel exhaust fan, SSR, relay, fuse, MCB check and corrective action':'Exhaust fan, SSR, relay, fuse, MCB',
+    'Heater, blower and thermocouple check and corrective action':'Heater, blower & thermocouple',
+    'Gate safety, limit switch, sensor check and corrective action':'Gate safety, limit switch & sensor',
+    'Must ensure machine breaker knob active and working properly':'Breaker knob active',
+    'Machine Transducer check properly':'Transducer',
+    'Machine front and back side emergency switch check and corrective action':'Emergency switches (front/back)',
+    'MMI board key pad check':'MMI key pad',
+    'Motor insulation resistance & earth continuity check (Megger if required)':'Motor insulation (Megger)',
+    'Cables, terminals & connections check for heat, damage or looseness':'Cables, terminals & connections',
+    'Panel cooling fan / ventilation & compartment cleanliness check':'Panel cooling fan & cleanliness',
+    'Ensure machine system pressure and flow are OK':'System pressure & flow',
+    'Suction filter clean':'Suction filter clean',
+    'Inverter cooling system check and corrective action':'Inverter cooling system',
+    'Lubrication distributors check':'Lubrication distributors',
+    'Lubrication check in toggle pin & bush':'Toggle pin & bush lube',
+    'Tie bar scratch check and measure the gap':'Tie bar scratch & gap',
+    'Machine level check by spirit level':'Machine level',
+    'Nut & Bolt check':'Nut & bolt',
+    'Machine gate spring, stopper, etc. check and corrective action':'Gate spring & stopper',
+    'Lubrication pump filter clean':'Lube pump filter clean',
+    'Purge guard limit, rod, cover, glass check and corrective action':'Purge guard & glass',
+    'Oil cooler clean properly with nylon brush':'Oil cooler clean',
+    'If hydraulic oil needs to be poured (top-up)':'Hydraulic oil top-up',
+    'Water header IN/OUT line check':'Water header IN/OUT',
+    'Hopper, nut bolt, clamp check & corrective action':'Hopper & clamp',
+    'Hopper drier blower, heater, controlling check and corrective action':'Hopper drier',
+    'Machine all jam nut check with cotter bolt':'Jam nuts & cotter bolt',
+    'Unwanted noise find out in hydraulic system, motor and pump to solve':'Hydraulic/motor noise',
+    'Wastage oil and water clean':'Wastage oil & water clean',
+    'Injection unit nozzle centering & alignment check':'Nozzle centering & alignment',
+    'Total machine clean':'Total machine clean',
+    'Emergency stop (E-Stop) button functioning test':'E-Stop test',
+    'Safety guards, interlocks & light curtains functional':'Safety guards, interlocks & light curtains',
+    'Lockout / Tagout (LOTO) used':'LOTO used',
+    'Spill, oil leakage & housekeeping around machine checked':'Spill & housekeeping',
+    'Operator PPE compliance & machine area clear of obstructions':'Operator PPE compliance'
+  };
+  return map[full]||full;
+}
+
+function loadData(){
+  fetch(CSV_URL).then(function(r){return r.text()}).then(function(csv){
+    var rows=parseCSV(csv);
+    if(!rows.length){document.getElementById('loadingMsg').textContent='No data found.';return}
+    var header=rows[0];
+    for(var i=3;i<header.length;i++){
+      var h=(header[i]||'').trim();
+      if(h&&h!=='Column '+i)CHECK_KEYS.push(h);
+    }
+    for(var i=1;i<rows.length;i++){
+      var r=rows[i];if(!r||r.length<4)continue;
+      var machine=(r[2]||'').trim();
+      if(machine==='Column 3'||/^Column \d+$/.test(machine))continue;
+      var date=(r[1]||'').trim();
+      if(!date&&!machine)continue;
+      var items=[];
+      CHECK_KEYS.forEach(function(k,idx){
+        var raw=(r[3+idx]||'').trim();
+        var ok=(raw===''||raw.toUpperCase()==='OK');
+        var detail='';
+        if(!ok){
+          detail=raw;
+          var m=raw.match(/Corrective action:\s*(.*)/i);
+          var issue=raw.split('|')[0].replace(/^Not\s*OK\s*-\s*/i,'').trim();
+          if(!issue)issue=raw;
+          detail=issue+(m&&m[1]?(' | '+m[1].trim()):'');
+        }
+        items.push({key:k,ok:ok,detail:detail});
+      });
+      DATA.push({timestamp:r[0]||'',date:date,machine:machine,items:items});
+    }
+    document.getElementById('loadingMsg').style.display='none';
+    initFilters();
+    var last='';
+    DATA.forEach(function(r){var n=normDate(r.date);if(n>last)last=n});
+    if(last){document.getElementById('dateFrom').value=last;document.getElementById('dateTo').value=last;}
+    render();
+  }).catch(function(e){
+    document.getElementById('loadingMsg').textContent='Failed to load data: '+e.message;
+  });
+}
+
+function initFilters(){
+  var mach=document.getElementById('machineFilter');
+  var machs={};
+  DATA.forEach(function(r){if(r.machine)machs[r.machine]=1});
+  Object.keys(machs).sort().forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;mach.appendChild(o)});
+  mach.onchange=render;
+  document.getElementById('statusFilter').onchange=render;
+  document.getElementById('dateFrom').onchange=render;
+  document.getElementById('dateTo').onchange=render;
+}
+
+var sortCol='date',sortAsc=false;
+
+function statusOf(r){
+  var attn=r.items.filter(function(it){return !it.ok});
+  return attn.length?attn:[];
+}
+
+function render(){
+  var mv=document.getElementById('machineFilter').value;
+  var sv=document.getElementById('statusFilter').value;
+  var df=document.getElementById('dateFrom').value;
+  var dt=document.getElementById('dateTo').value;
+  var filtered=DATA.filter(function(r){
+    if(mv&&r.machine!==mv)return false;
+    if(sv==='ok'&&statusOf(r).length)return false;
+    if(sv==='attn'&&!statusOf(r).length)return false;
+    if(df&&normDate(r.date)<df)return false;
+    if(dt&&normDate(r.date)>dt)return false;
+    return true;
+  });
+  renderChart(filtered);
+  var okCount=filtered.filter(function(r){return !statusOf(r).length}).length;
+  var attnCount=filtered.length-okCount;
+  document.getElementById('stTotal').textContent=filtered.length;
+  document.getElementById('stOk').textContent=okCount;
+  document.getElementById('stAttn').textContent=attnCount;
+  var machSet={};
+  filtered.forEach(function(r){machSet[r.machine]=1});
+  document.getElementById('stMachines').textContent=Object.keys(machSet).length;
+  if(sortCol!=='sl'){
+    filtered.sort(function(a,b){
+      var av=a[sortCol]||'',bv=b[sortCol]||'';
+      return sortAsc?av.localeCompare(bv):bv.localeCompare(av);
+    });
+  }
+  var tb=document.getElementById('tbody');tb.innerHTML='';
+  document.getElementById('noData').style.display=filtered.length?'none':'block';
+  document.getElementById('dataTable').style.display=filtered.length?'table':'none';
+  filtered.forEach(function(r,i){
+    var attn=statusOf(r);
+    var tr=document.createElement('tr');
+    var statusHtml=attn.length
+      ?'<span class="badge attention">Attention</span>'
+      :'<span class="badge ok">All OK</span>';
+    var attnHtml=attn.length
+      ?('<div class="attn">'+attn.length+' item(s) &#9888;</div>'+attn.slice(0,4).map(function(it){return '<div class="attn-item">&#8226; '+esc(shortName(it.key))+': '+esc(it.detail)+'</div>'}).join(''))
+      :'<span style="color:#2e7d32;font-size:12px">&#10003; All '+CHECK_KEYS.length+' items passed</span>';
+    tr.innerHTML='<td class="sl">'+(i+1)+'</td><td>'+esc(r.date)+'</td><td><b>'+esc(r.machine)+'</b></td><td>'+statusHtml+'</td><td>'+attnHtml+'</td>';
+    tb.appendChild(tr);
+  });
+  updateSortIndicators();
+}
+
+function renderChart(filtered){
+  var el=document.getElementById('chart');
+  if(!el)return;
+  var counts={};
+  filtered.forEach(function(r){
+    r.items.forEach(function(it){
+      if(!it.ok)counts[shortName(it.key)]=(counts[shortName(it.key)]||0)+1;
+    });
+  });
+  var keys=Object.keys(counts);
+  if(!keys.length){el.innerHTML='<div class="chart-empty">No items needing attention &#10003; All checks passed.</div>';return}
+  keys.sort(function(a,b){return counts[b]-counts[a]||a.localeCompare(b)});
+  var top=keys.slice(0,10);
+  var max=1;
+  top.forEach(function(k){if(counts[k]>max)max=counts[k]});
+  var html='';
+  top.forEach(function(k){
+    var pct=Math.round(counts[k]/max*100);
+    if(pct<6)pct=6;
+    html+='<div class="chart-row"><div class="chart-label" title="'+esc(k)+'">'+esc(k)+'</div><div class="chart-bar-wrap"><div class="chart-bar" style="width:'+pct+'%">'+counts[k]+'</div></div></div>';
+  });
+  el.innerHTML=html;
+}
+
+function updateSortIndicators(){
+  var ths=document.querySelectorAll('th[data-col]');
+  for(var i=0;i<ths.length;i++){
+    var col=ths[i].getAttribute('data-col');
+    var txt=ths[i].textContent.replace(/\s*[▴▾]\s*$/,'');
+    if(col===sortCol)txt+=sortAsc?' ▴':' ▾';
+    ths[i].textContent=txt;
+  }
+}
+
+document.querySelectorAll('th[data-col]').forEach(function(th){
+  th.addEventListener('click',function(){
+    var col=this.getAttribute('data-col');
+    if(col==='sl'||col==='status')return;
+    if(sortCol===col){sortAsc=!sortAsc}else{sortCol=col;sortAsc=true}
+    render();
+  });
+});
+
+function esc(s){return s?s.replace(/&/g,'&amp;').replace(/</g,'&lt;'):''}
+
+(function(){var s=new URLSearchParams(location.search).get('section')||'All Sections';document.getElementById('secBadge').textContent=s;document.title='IMM Preventive Completed Dashboard - '+s})();
+loadData();
 </script>
 </body>
 </html>
