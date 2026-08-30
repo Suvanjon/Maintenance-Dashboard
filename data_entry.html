@@ -1,11 +1,13 @@
-<html lang="en"><head>
+﻿<html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Data Entry - Daily Maintenance</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Roboto,Arial,sans-serif}
 body{background:#f5f3ef;min-height:100vh;color:#222}
-.hdr{background:#005151;padding:14px 16px 10px;text-align:center;border-bottom:3px solid #003838}
+.hdr{background:#00565c;padding:14px 16px 12px;text-align:center;border-bottom:4px solid #004448}
+.hdr-logo-wrap{display:inline-flex;background:#fff;border-radius:10px;padding:6px 18px;box-shadow:0 2px 8px rgba(0,0,0,.18);margin-bottom:4px}
+.hdr-logo{height:34px;width:auto;display:block}
 .hdr-text{color:#fff;font-size:17px;font-weight:700;letter-spacing:.5px}
 .hdr-sub{color:rgba(255,255,255,.7);font-size:12px;margin-top:2px}
 .wrap{max-width:700px;margin:18px auto;padding:0 12px 40px}
@@ -31,7 +33,7 @@ body{background:#f5f3ef;min-height:100vh;color:#222}
 </head>
 <body>
 <div class="hdr">
-<div class="hdr-text">AKIJ LIGHT ENGINEERING LTD.</div>
+<div class="hdr-logo-wrap"><img class="hdr-logo" src="logo_hd.png" alt="Akij Light Engineering Ltd."></div>
 <div class="hdr-sub">Maintenance Management System</div>
 </div>
 <div class="wrap">
@@ -163,4 +165,5 @@ document.getElementById('fDate').value=new Date().toISOString().split('T')[0];
 
 
 </body></html>
+
 
