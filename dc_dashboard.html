@@ -22,10 +22,11 @@ body{background:#f5f3ef;min-height:100vh}
 <div class="wrap">
 <a href="index.html" class="back-link">&#8592; Back to Dashboard</a>
 <div class="card">
-<div class="sec-badge">Daily Checking</div>
+<div class="sec-badge" id="secBadge">Daily Checking</div>
 <h2>Daily Checking - Dashboard</h2>
 <p>This page will show the Daily Checking dashboard.<br>It is currently being prepared.</p>
 </div>
 </div>
+<script>var s=(new URLSearchParams(location.search).get('section'))||'Daily Checking';document.getElementById('secBadge').innerHTML='Daily Checking &#8226; '+s;document.title='Daily Checking Dashboard - '+s</script>
 </body>
 </html>
