@@ -105,6 +105,7 @@ tr:hover{background:#f5f5f5}
 var DATA=[];
 var CHECK_KEYS=[];
 var READING_FIELDS=['LT Voltage (V)','LT Current (A)','Frequency (Hz)','Power Factor','Transformer Oil Temperature (°C)'];
+var TEXT_FIELDS=['Any Abnormal Observation'];
 var CSV_URL='https://docs.google.com/spreadsheets/d/12DyzDyOnHgoO7odTCq_X_B2syWaf_Z0d-v-Hb3rZ6qw/gviz/tq?tqx=out:csv&gid=156220258';
 
 function parseCSV(text){
@@ -170,6 +171,7 @@ function statusOf(rec){
   var attn=[];
   CHECK_KEYS.forEach(function(k){
     if(READING_FIELDS.indexOf(k)!==-1)return;
+    if(TEXT_FIELDS.indexOf(k)!==-1)return;
     if(!rec.items[k].ok)attn.push({key:k,raw:rec.items[k].raw});
   });
   return attn;
