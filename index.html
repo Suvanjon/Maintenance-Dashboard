@@ -194,10 +194,6 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 <div class="sicon">&#128300;</div>
 <div class="slabel">Inhouse Plastic</div>
 </div>
-<div class="sub-btn" onclick="showPM('sub-pm-imm')">
-<div class="sicon imm-icon"><img src="haitian_imm.png" alt="HAITIAN injection molding machine"></div>
-<div class="slabel">IMM</div>
-</div>
 <div class="sub-btn" onclick="showPM('sub-pm-gss')">
 <div class="sicon gss-icon"><img src="enovar_gang_switch.webp" alt="Enovar gang switch"></div>
 <div class="slabel">GSS</div>
@@ -227,7 +223,7 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 <div class="slabel">Completed Dashboard</div>
 </a>
 </div>
-<button class="sub-back" onclick="goBackFromPM()">&#8592; Back to Preventive Maintenance</button>
+<button class="sub-back" onclick="goBackFromIMM()">&#8592; Back to Inhouse Plastic</button>
 </div>
 
 <div id="sub-pm-gss" class="sub-panel">
@@ -280,16 +276,12 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 
 <div id="sub-pm-ip" class="sub-panel">
 <div class="sub-title">Inhouse Plastic</div>
-<div class="sub-desc">Select an option</div>
+<div class="sub-desc">Select a machine group</div>
 <div class="sub-cards">
-<a href="pm_data_entry.html?section=Inhouse%20Plastic" target="_blank" class="sub-btn">
-<div class="sicon">&#128203;</div>
-<div class="slabel">Data Entry</div>
-</a>
-<a href="pm_dashboard.html?section=Inhouse%20Plastic" class="sub-btn">
-<div class="sicon">&#128200;</div>
-<div class="slabel">Completed Dashboard</div>
-</a>
+<div class="sub-btn" onclick="showPM('sub-pm-imm')">
+<div class="sicon imm-icon"><img src="haitian_imm.png" alt="HAITIAN injection molding machine"></div>
+<div class="slabel">IMM</div>
+</div>
 </div>
 <button class="sub-back" onclick="goBackFromPM()">&#8592; Back to Preventive Maintenance</button>
 </div>
@@ -306,6 +298,7 @@ function goBackFromDaily(){document.getElementById('sub-daily').classList.remove
 function goBackFromDailyCheck(){document.getElementById('sub-daily-check').classList.remove('show');showLanding()}
 function goBackFromDC(){var p=document.getElementById('sub-daily-check');['sub-dc-ss','sub-dc-ch','sub-dc-cp','sub-dc-gen'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');window.scrollTo(0,0)}
 function goBackFromPreventive(){document.getElementById('sub-preventive').classList.remove('show');showLanding()}
+function goBackFromIMM(){var p=document.getElementById('sub-pm-ip');document.getElementById('sub-pm-imm').classList.remove('show');p.classList.add('show');window.scrollTo(0,0)}
 function goBackFromPM(){var p=document.getElementById('sub-preventive');['sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap','sub-pm-ip'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');window.scrollTo(0,0)}
 </script>
 </body>
