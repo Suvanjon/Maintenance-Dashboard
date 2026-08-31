@@ -62,7 +62,7 @@ tr:hover{background:#f5f5f5}
 <div class="wrap">
 <a href="index.html" class="back-link">&#8592; Back to Dashboard</a>
 <div class="card" style="margin-top:12px">
-<div style="font-size:20px;font-weight:700;color:#005151">Sub Station Daily Checking Dashboard</div>
+<div style="font-size:20px;font-weight:700;color:#005151" id="pageTitle">Daily Checking Dashboard</div>
 <div id="secBadge" style="display:inline-block;background:#005151;color:#fff;font-size:12px;font-weight:700;padding:4px 14px;border-radius:16px;margin-top:6px"></div>
 <div class="top-bar">
 <div class="field"><label>Date From</label><input type="date" id="dateFrom"></div>
@@ -104,9 +104,25 @@ tr:hover{background:#f5f5f5}
 <script>
 var DATA=[];
 var CHECK_KEYS=[];
-var READING_FIELDS=['LT Voltage (V)','LT Current (A)','Frequency (Hz)','Power Factor','Transformer Oil Temperature (°C)'];
-var TEXT_FIELDS=['Any Abnormal Observation'];
-var CSV_URL='https://docs.google.com/spreadsheets/d/12DyzDyOnHgoO7odTCq_X_B2syWaf_Z0d-v-Hb3rZ6qw/gviz/tq?tqx=out:csv&gid=156220258';
+var CONFIGS={
+'Sub Station':{
+csv:'https://docs.google.com/spreadsheets/d/12DyzDyOnHgoO7odTCq_X_B2syWaf_Z0d-v-Hb3rZ6qw/gviz/tq?tqx=out:csv&gid=156220258',
+title:'Sub Station Daily Checking Dashboard',
+readingFields:['LT Voltage (V)','LT Current (A)','Frequency (Hz)','Power Factor','Transformer Oil Temperature (°C)'],
+textFields:['Any Abnormal Observation']
+},
+'Compressor':{
+csv:'https://docs.google.com/spreadsheets/d/1NOFHjVB-1iOFzewo4iQ2DcYkYp9lBFghtzLOq3ibZJo/gviz/tq?tqx=out:csv&gid=999064570',
+title:'Compressor Daily Checking Dashboard',
+readingFields:['Air Pressure','Receiver Tank Pressure','Running Hours'],
+textFields:['Any Abnormal Observation']
+}
+};
+var sec=new URLSearchParams(location.search).get('section')||'Sub Station';
+var CFG=CONFIGS[sec]||CONFIGS['Sub Station'];
+var READING_FIELDS=CFG.readingFields;
+var TEXT_FIELDS=CFG.textFields;
+var CSV_URL=CFG.csv;
 
 function parseCSV(text){
   var lines=[],row=[],field='',inQ=false;
@@ -285,7 +301,7 @@ document.querySelectorAll('th[data-col]').forEach(function(th){
 
 function esc(s){return s?s.replace(/&/g,'&amp;').replace(/</g,'&lt;'):''}
 
-(function(){var s=new URLSearchParams(location.search).get('section')||'Sub Station';document.getElementById('secBadge').textContent='Daily Checking &#8226; '+s;document.title='Sub Station Daily Checking Dashboard - '+s})();
+(function(){var s=new URLSearchParams(location.search).get('section')||'Sub Station';document.getElementById('secBadge').textContent='Daily Checking &#8226; '+s;document.getElementById('pageTitle').textContent=CFG.title;document.title=CFG.title+' - '+s})();
 loadData();
 </script>
 </body>
