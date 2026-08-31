@@ -103,6 +103,10 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 <div class="sicon">&#9881;</div>
 <div class="slabel">Compressor</div>
 </div>
+<div class="sub-btn" onclick="showDC('sub-dc-gen')">
+<div class="sicon">&#9889;</div>
+<div class="slabel">Generator</div>
+</div>
 </div>
 <button class="sub-back" onclick="goBackFromDailyCheck()">&#8592; Back to Main Menu</button>
 </div>
@@ -148,6 +152,22 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 <div class="slabel">Data Entry</div>
 </a>
 <a href="dc_dashboard.html?section=Compressor" class="sub-btn">
+<div class="sicon">&#128200;</div>
+<div class="slabel">Dashboard</div>
+</a>
+</div>
+<button class="sub-back" onclick="goBackFromDC()">&#8592; Back to Daily Checking</button>
+</div>
+
+<div id="sub-dc-gen" class="sub-panel">
+<div class="sub-title">Generator</div>
+<div class="sub-desc">Select an option</div>
+<div class="sub-cards">
+<a href="dc_data_entry.html?section=Generator" class="sub-btn">
+<div class="sicon">&#128203;</div>
+<div class="slabel">Data Entry</div>
+</a>
+<a href="dc_dashboard.html?section=Generator" class="sub-btn">
 <div class="sicon">&#128200;</div>
 <div class="slabel">Dashboard</div>
 </a>
@@ -244,7 +264,7 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 </div>
 
 <script>
-function hideAll(){document.getElementById('landing').style.display='none';['sub-daily','sub-daily-check','sub-dc-ss','sub-dc-ch','sub-dc-cp','sub-preventive','sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap'].forEach(function(id){document.getElementById(id).classList.remove('show')})}
+function hideAll(){document.getElementById('landing').style.display='none';['sub-daily','sub-daily-check','sub-dc-ss','sub-dc-ch','sub-dc-cp','sub-dc-gen','sub-preventive','sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap'].forEach(function(id){document.getElementById(id).classList.remove('show')})}
 function showLanding(){document.getElementById('landing').style.display='flex';window.scrollTo(0,0)}
 function showDaily(){hideAll();document.getElementById('sub-daily').classList.add('show');window.scrollTo(0,0)}
 function showDailyCheck(){hideAll();document.getElementById('sub-daily-check').classList.add('show');window.scrollTo(0,0)}
@@ -253,7 +273,7 @@ function showPreventive(){hideAll();document.getElementById('sub-preventive').cl
 function showPM(id){hideAll();document.getElementById(id).classList.add('show');window.scrollTo(0,0)}
 function goBackFromDaily(){document.getElementById('sub-daily').classList.remove('show');showLanding()}
 function goBackFromDailyCheck(){document.getElementById('sub-daily-check').classList.remove('show');showLanding()}
-function goBackFromDC(){var p=document.getElementById('sub-daily-check');['sub-dc-ss','sub-dc-ch','sub-dc-cp'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');window.scrollTo(0,0)}
+function goBackFromDC(){var p=document.getElementById('sub-daily-check');['sub-dc-ss','sub-dc-ch','sub-dc-cp','sub-dc-gen'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');window.scrollTo(0,0)}
 function goBackFromPreventive(){document.getElementById('sub-preventive').classList.remove('show');showLanding()}
 function goBackFromPM(){var p=document.getElementById('sub-preventive');['sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');window.scrollTo(0,0)}
 </script>
