@@ -70,6 +70,7 @@ body{background:#f5f3ef;min-height:100vh}
 var FORM_ACTION='https://docs.google.com/forms/u/0/d/e/1FAIpQLSencfdTok-5_tZrBB-J8aiWNl6685bCYk7ClcJNWNrpHbBqPg/formResponse';
 var ITEMS=[["entry.538831844","Substation room clean &amp; dry"],["entry.1054792211","Room temperature &amp; ventilation normal"],["entry.1699581924","HT Panel Indication Healthy"],["entry.1813447317","VCB Healthy"],["entry.720518481","Protection Relay Healthy"],["entry.923970122","Transformer Oil Level Normal"],["entry.596779494","Transformer Oil Temperature (°C)"],["entry.1388715219","Cooling Fan Working"],["entry.366753566","Breather Silica Gel Condition"],["entry.1514750668","Oil Leakage"],["entry.2004393373","Abnormal Noise/Vibration"],["entry.573730844","LT Panel Healthy"],["entry.864856075","LT Voltage (V)"],["entry.144146257","LT Current (A)"],["entry.832599652","Frequency (Hz)"],["entry.1894083496","Power Factor"],["entry.1791184360","Capacitor Bank Working"],["entry.229430055","DC Panel Healthy"],["entry.214313603","DC All Battery Voltage Checking "],["entry.2004114277","Earthing System OK"],["entry.1951082701","Fire Extinguisher Available"],["entry.1720737898","Any Abnormal Observation"]];
 var READING_IDS={6:'entry.596779494',12:'entry.864856075',13:'entry.144146257',14:'entry.832599652',15:'entry.1894083496'};
+var READING_ONLY={12:1,13:1,14:1,15:1};
 var sec=new URLSearchParams(location.search).get('section')||'Sub Station';
 document.getElementById('secBadge').textContent=sec;
 document.title='Sub Station Daily Checking - '+sec;
@@ -78,17 +79,17 @@ ITEMS.forEach(function(it,idx){
   var box=document.createElement('div');box.className='item';
   var q=document.createElement('div');q.className='q';
   q.innerHTML=it[1];
-  var opts=document.createElement('div');opts.className='opts';
-  var ok=document.createElement('label');ok.className='opt';
-  ok.innerHTML='<input type="radio" name="'+it[0]+'" value="ok"><span class="ok">OK</span>';
-  var nok=document.createElement('label');nok.className='opt';
-  nok.innerHTML='<input type="radio" name="'+it[0]+'" value="nok"><span class="nok">Not OK</span>';
   var reading=null;
   if(READING_IDS[String(idx)]){
     var ri=document.createElement('input');ri.type='number';ri.step='any';ri.className='reading-input';
     ri.placeholder='Enter reading value';
     box.appendChild(ri);reading=ri;
   }
+  var opts=document.createElement('div');opts.className='opts';
+  var ok=document.createElement('label');ok.className='opt';
+  ok.innerHTML='<input type="radio" name="'+it[0]+'" value="ok"><span class="ok">OK</span>';
+  var nok=document.createElement('label');nok.className='opt';
+  nok.innerHTML='<input type="radio" name="'+it[0]+'" value="nok"><span class="nok">Not OK</span>';
   var pb=document.createElement('div');pb.className='problem-box';
   var pb1=document.createElement('div');pb1.className='pb-field';
   var l1=document.createElement('label');l1.textContent='Describe the problem';
@@ -107,7 +108,10 @@ ITEMS.forEach(function(it,idx){
     });
   });
   opts.appendChild(ok);opts.appendChild(nok);
-  box.appendChild(q);box.appendChild(opts);box.appendChild(pb);
+  box.appendChild(q);
+  if(!READING_ONLY[String(idx)]){
+    box.appendChild(opts);box.appendChild(pb);
+  }
   itemsHost.appendChild(box);
 });
 function resetForm(){
@@ -119,12 +123,16 @@ function resetForm(){
 function buildPayload(){
   var payload={};
   var firstMissing='';
-  ITEMS.forEach(function(it){
+  ITEMS.forEach(function(it,idx){
     var input=document.querySelector('input[name="'+it[0]+'"]:checked');
     var box=document.querySelector('input[name="'+it[0]+'"]');
     var reading=box?box.closest('.item').querySelector('.reading-input'):null;
     if(reading&&reading.value){
       payload[it[0]]=reading.value;
+      return;
+    }
+    if(READING_ONLY[String(idx)]){
+      if(!firstMissing)firstMissing=it[1].replace(/<[^>]*>/g,'');
       return;
     }
     if(!input){
