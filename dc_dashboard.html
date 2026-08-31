@@ -120,7 +120,7 @@ textFields:['Any Abnormal Observation']
 'Chiller':{
 csv:'https://docs.google.com/spreadsheets/d/1xullNA42RF6T2QemmvpjdAspdcqcluq8qp1PhVY9Opg/gviz/tq?tqx=out:csv&gid=1157389417',
 title:'Chiller Daily Checking Dashboard',
-readingFields:['Set Temperature ','  Chilled Water Supply Temperature  ','Normal Water Supply Temperature  ','  Suction Pressure  ','  Discharge Pressure  ','  Running Hours  '],
+readingFields:['Set Temperature','Chilled Water Supply Temperature','Normal Water Supply Temperature','Suction Pressure','Discharge Pressure','Running Hours'],
 textFields:[]
 },
 'Generator':{
@@ -178,7 +178,8 @@ function loadData(){
       for(var j=0;j<CHECK_KEYS.length;j++){
         var k=CHECK_KEYS[j];
         var raw=(r[j+1]||'').trim();
-        var ok=(raw===''||raw.toUpperCase()==='OK');
+        var up=raw.toUpperCase();
+        var ok=(raw===''||up==='OK'||up==='OPTION 1');
         items[k]={raw:raw,ok:ok};
       }
       DATA.push({timestamp:ts,date:normDate(ts.split(' ')[0]),items:items});
