@@ -190,6 +190,10 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 <div class="sub-title">Preventive Maintenance</div>
 <div class="sub-desc">Select a department</div>
 <div class="sub-cards">
+<div class="sub-btn" onclick="showPM('sub-pm-ip')">
+<div class="sicon">&#128300;</div>
+<div class="slabel">Inhouse Plastic</div>
+</div>
 <div class="sub-btn" onclick="showPM('sub-pm-imm')">
 <div class="sicon imm-icon"><img src="haitian_imm.png" alt="HAITIAN injection molding machine"></div>
 <div class="slabel">IMM</div>
@@ -205,10 +209,6 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 <div class="sub-btn" onclick="showPM('sub-pm-hap')">
 <div class="sicon hap-icon"><img src="enovar_hap.png" alt="Enovar home appliance"></div>
 <div class="slabel">HAP</div>
-</div>
-<div class="sub-btn" onclick="showPM('sub-pm-ip')">
-<div class="sicon">&#128300;</div>
-<div class="slabel">Inhouse Plastic</div>
 </div>
 </div>
 <button class="sub-back" onclick="goBackFromPreventive()">&#8592; Back to Main Menu</button>
