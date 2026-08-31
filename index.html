@@ -206,6 +206,10 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 <div class="sicon hap-icon"><img src="enovar_hap.png" alt="Enovar home appliance"></div>
 <div class="slabel">HAP</div>
 </div>
+<div class="sub-btn" onclick="showPM('sub-pm-ip')">
+<div class="sicon">&#128300;</div>
+<div class="slabel">Inhouse Plastic</div>
+</div>
 </div>
 <button class="sub-back" onclick="goBackFromPreventive()">&#8592; Back to Main Menu</button>
 </div>
@@ -274,8 +278,24 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 <button class="sub-back" onclick="goBackFromPM()">&#8592; Back to Preventive Maintenance</button>
 </div>
 
+<div id="sub-pm-ip" class="sub-panel">
+<div class="sub-title">Inhouse Plastic</div>
+<div class="sub-desc">Select an option</div>
+<div class="sub-cards">
+<a href="pm_data_entry.html?section=Inhouse%20Plastic" target="_blank" class="sub-btn">
+<div class="sicon">&#128203;</div>
+<div class="slabel">Data Entry</div>
+</a>
+<a href="pm_dashboard.html?section=Inhouse%20Plastic" class="sub-btn">
+<div class="sicon">&#128200;</div>
+<div class="slabel">Completed Dashboard</div>
+</a>
+</div>
+<button class="sub-back" onclick="goBackFromPM()">&#8592; Back to Preventive Maintenance</button>
+</div>
+
 <script>
-function hideAll(){document.getElementById('landing').style.display='none';['sub-daily','sub-daily-check','sub-dc-ss','sub-dc-ch','sub-dc-cp','sub-dc-gen','sub-preventive','sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap'].forEach(function(id){document.getElementById(id).classList.remove('show')})}
+function hideAll(){document.getElementById('landing').style.display='none';['sub-daily','sub-daily-check','sub-dc-ss','sub-dc-ch','sub-dc-cp','sub-dc-gen','sub-preventive','sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap','sub-pm-ip'].forEach(function(id){document.getElementById(id).classList.remove('show')})}
 function showLanding(){document.getElementById('landing').style.display='flex';window.scrollTo(0,0)}
 function showDaily(){hideAll();document.getElementById('sub-daily').classList.add('show');window.scrollTo(0,0)}
 function showDailyCheck(){hideAll();document.getElementById('sub-daily-check').classList.add('show');window.scrollTo(0,0)}
@@ -286,7 +306,7 @@ function goBackFromDaily(){document.getElementById('sub-daily').classList.remove
 function goBackFromDailyCheck(){document.getElementById('sub-daily-check').classList.remove('show');showLanding()}
 function goBackFromDC(){var p=document.getElementById('sub-daily-check');['sub-dc-ss','sub-dc-ch','sub-dc-cp','sub-dc-gen'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');window.scrollTo(0,0)}
 function goBackFromPreventive(){document.getElementById('sub-preventive').classList.remove('show');showLanding()}
-function goBackFromPM(){var p=document.getElementById('sub-preventive');['sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');window.scrollTo(0,0)}
+function goBackFromPM(){var p=document.getElementById('sub-preventive');['sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap','sub-pm-ip'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');window.scrollTo(0,0)}
 </script>
 </body>
 </html>
