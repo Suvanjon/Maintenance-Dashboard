@@ -3,30 +3,287 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daily Checking Dashboard - Akij Light Engineering Ltd.</title>
+<title>Sub Station Daily Checking Dashboard - Akij Light Engineering Ltd.</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Roboto,Arial,sans-serif}
-body{background:#f5f3ef;min-height:100vh}
+body{background:#f5f3ef;min-height:100vh;color:#222}
 .hdr{background:#00565c;padding:14px 16px 12px;text-align:center;border-bottom:4px solid #004448}
 .hdr-text{color:#fff;font-size:16px;font-weight:800;letter-spacing:.5px}
-.wrap{max-width:900px;margin:24px auto;padding:0 12px 40px;text-align:center}
-.back-link{display:inline-block;margin-bottom:24px;padding:8px 18px;background:#005151;color:#fff;text-decoration:none;border-radius:6px;font-size:13px;font-weight:600}
-.card{background:#fff;border-radius:10px;padding:40px 24px;box-shadow:0 2px 12px rgba(0,0,0,.1);text-align:center}
-.sec-badge{display:inline-block;background:#005151;color:#fff;font-size:12px;font-weight:700;padding:4px 14px;border-radius:16px;margin-bottom:16px}
-.card h2{color:#005151;font-size:20px;margin-bottom:10px}
-.card p{color:#6b7073;font-size:14px;line-height:1.6}
+.hdr-sub{color:rgba(255,255,255,.7);font-size:12px;margin-top:2px}
+.wrap{max-width:1150px;margin:18px auto;padding:0 12px 40px}
+.back-link{display:inline-block;margin:16px 0 0;padding:8px 18px;background:#005151;color:#fff;text-decoration:none;border-radius:6px;font-size:13px;font-weight:600;transition:background .2s}
+.back-link:hover{background:#003838}
+.card{background:#fff;border-radius:10px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,.1);margin-bottom:16px}
+.card-title{font-size:16px;font-weight:700;color:#005151;margin-bottom:12px}
+.top-bar{display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap;margin-top:14px}
+.field{display:flex;flex-direction:column;gap:3px;flex:1;min-width:150px}
+.field label{font-size:13px;font-weight:600;color:#555}
+.field select,.field input[type=date]{padding:8px 10px;border:1.5px solid #ccc;border-radius:6px;font-size:14px}
+.field select:focus,.field input:focus{border-color:#005151;outline:none}
+.stats{display:flex;gap:16px;margin:14px 0;flex-wrap:wrap}
+.stat{padding:14px 20px;border-radius:10px;font-size:14px;font-weight:600;color:#fff;min-width:150px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.stat .num{font-size:26px;font-weight:700;display:block;margin-bottom:2px}
+.stat.total{background:#005151}
+.stat.ok{background:#2e7d32}
+.stat.attention{background:#ff9800}
+.stat.readings{background:#1565c0}
+.stat .lbl{font-size:12px;opacity:.9}
+.chart{display:flex;flex-direction:column;gap:7px;margin-top:6px}
+.chart-row{display:flex;align-items:center;gap:10px;font-size:13px}
+.chart-label{width:300px;text-align:right;color:#333;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chart-bar-wrap{flex:1;background:#efece8;border-radius:6px;height:24px;overflow:hidden}
+.chart-bar{height:100%;background:linear-gradient(90deg,#e65100,#ff9800);border-radius:6px;color:#fff;font-weight:700;white-space:nowrap;text-align:right;line-height:24px;padding-right:6px;box-sizing:border-box}
+.chart-empty{text-align:center;color:#888;padding:18px;font-size:14px}
+.read-grid{display:flex;gap:12px;flex-wrap:wrap}
+.read-card{flex:1;min-width:150px;background:#f0f5f5;border:1px solid #cfe0e0;border-radius:8px;padding:12px 16px;text-align:center}
+.read-card .rc-label{font-size:12px;color:#005151;font-weight:600;margin-bottom:4px}
+.read-card .rc-val{font-size:20px;font-weight:700;color:#222}
+.tbl-wrap{overflow-x:auto;margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:#005151;color:#fff;padding:10px 8px;text-align:left;position:sticky;top:0;font-weight:600;cursor:pointer;user-select:none}
+th:hover{background:#003838}
+td{padding:8px;border-bottom:1px solid #e0e0e0;vertical-align:top}
+tr:hover{background:#f5f5f5}
+.sl{text-align:center;font-weight:700;color:#005151;width:40px}
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:700;color:#fff}
+.badge.ok{background:#2e7d32}
+.badge.attention{background:#ff9800}
+.attn{color:#e65100;font-size:12px;font-weight:600;margin-top:3px}
+.attn-item{font-size:12px;color:#5a5a5a;margin-top:2px;padding-left:12px}
+.no-data{text-align:center;padding:40px;color:#888;font-size:15px}
+.loading{text-align:center;padding:40px;color:#005151;font-size:15px}
 </style>
 </head>
 <body>
-<div class="hdr"><div class="hdr-text">AKIJ LIGHT ENGINEERING LTD.</div></div>
+<div class="hdr">
+<div class="hdr-text">AKIJ LIGHT ENGINEERING LTD.</div>
+<div class="hdr-sub">Maintenance Management System</div>
+</div>
 <div class="wrap">
 <a href="index.html" class="back-link">&#8592; Back to Dashboard</a>
+<div class="card" style="margin-top:12px">
+<div style="font-size:20px;font-weight:700;color:#005151">Sub Station Daily Checking Dashboard</div>
+<div id="secBadge" style="display:inline-block;background:#005151;color:#fff;font-size:12px;font-weight:700;padding:4px 14px;border-radius:16px;margin-top:6px"></div>
+<div class="top-bar">
+<div class="field"><label>Date From</label><input type="date" id="dateFrom"></div>
+<div class="field"><label>Date To</label><input type="date" id="dateTo"></div>
+<div class="field"><label>Status</label><select id="statusFilter"><option value="">All Status</option><option value="ok">All OK</option><option value="attn">Needs Attention</option></select></div>
+</div>
+</div>
+<div class="stats" id="stats">
+<div class="stat total"><span class="num" id="stTotal">-</span><span class="lbl">Total Checks</span></div>
+<div class="stat ok"><span class="num" id="stOk">-</span><span class="lbl">All OK</span></div>
+<div class="stat attention"><span class="num" id="stAttn">-</span><span class="lbl">Needs Attention</span></div>
+<div class="stat readings"><span class="num" id="stRead">-</span><span class="lbl">Readings Logged</span></div>
+</div>
 <div class="card">
-<div class="sec-badge" id="secBadge">Daily Checking</div>
-<h2>Daily Checking - Dashboard</h2>
-<p>This page will show the Daily Checking dashboard.<br>It is currently being prepared.</p>
+<div class="card-title">Latest Readings</div>
+<div id="readGrid" class="read-grid"><div class="loading">Loading...</div></div>
+</div>
+<div class="card">
+<div class="card-title">Items Needing Attention</div>
+<div id="chart" class="chart"><div class="chart-empty">Loading...</div></div>
+</div>
+<div class="card">
+<div class="card-title">Daily Checking Records</div>
+<div class="tbl-wrap">
+<table id="dataTable">
+<thead><tr>
+<th data-col="sl">S/L</th>
+<th data-col="timestamp">Timestamp &#x25B4;</th>
+<th data-col="status">Status</th>
+<th>Attention Details</th>
+</tr></thead>
+<tbody id="tbody"></tbody>
+</table>
+<div class="no-data" id="noData" style="display:none">No records found.</div>
+<div class="loading" id="loadingMsg">Loading data from Google Sheets...</div>
 </div>
 </div>
-<script>var s=(new URLSearchParams(location.search).get('section'))||'Daily Checking';document.getElementById('secBadge').innerHTML='Daily Checking &#8226; '+s;document.title='Daily Checking Dashboard - '+s</script>
+</div>
+<script>
+var DATA=[];
+var CHECK_KEYS=[];
+var READING_FIELDS=['LT Voltage (V)','LT Current (A)','Frequency (Hz)','Power Factor','Transformer Oil Temperature (°C)'];
+var CSV_URL='https://docs.google.com/spreadsheets/d/12DyzDyOnHgoO7odTCq_X_B2syWaf_Z0d-v-Hb3rZ6qw/gviz/tq?tqx=out:csv&gid=156220258';
+
+function parseCSV(text){
+  var lines=[],row=[],field='',inQ=false;
+  for(var i=0;i<text.length;i++){
+    var c=text[i];
+    if(inQ){if(c==='"'){if(i+1<text.length&&text[i+1]==='"'){field+='"';i++}else{inQ=false}}else{field+=c}}
+    else{if(c==='"'){inQ=true}else if(c===','){row.push(field);field=''}else if(c==='\n'||c==='\r'){if(c==='\r'&&i+1<text.length&&text[i+1]==='\n')i++;row.push(field);field='';if(row.length>1)lines.push(row);row=[]}else{field+=c}}}
+  if(field||row.length>0){row.push(field);if(row.length>1)lines.push(row)}
+  return lines;
+}
+
+function normDate(d){
+  if(!d)return '';
+  var p=d.split('/');
+  if(p.length===3){
+    var mm=(p[0].length<2?'0':'')+p[0];
+    var dd=(p[1].length<2?'0':'')+p[1];
+    return p[2]+'-'+mm+'-'+dd;
+  }
+  return d;
+}
+
+function loadData(){
+  fetch(CSV_URL).then(function(r){return r.text()}).then(function(csv){
+    var rows=parseCSV(csv);
+    if(!rows.length){document.getElementById('loadingMsg').textContent='No data found.';return}
+    var header=rows[0];
+    for(var i=1;i<header.length;i++){
+      var h=(header[i]||'').trim();
+      if(h&&h!=='Column '+i&&h!=='Column 23')CHECK_KEYS.push(h);
+    }
+    for(var i=1;i<rows.length;i++){
+      var r=rows[i];if(!r||r.length<2)continue;
+      var ts=(r[0]||'').trim();
+      if(!ts&&!r[1])continue;
+      var items={};
+      for(var j=0;j<CHECK_KEYS.length;j++){
+        var k=CHECK_KEYS[j];
+        var raw=(r[j+1]||'').trim();
+        var ok=(raw===''||raw.toUpperCase()==='OK');
+        items[k]={raw:raw,ok:ok};
+      }
+      DATA.push({timestamp:ts,date:normDate(ts.split(' ')[0]),items:items});
+    }
+    document.getElementById('loadingMsg').style.display='none';
+    initFilters();
+    render();
+  }).catch(function(e){
+    document.getElementById('loadingMsg').textContent='Failed to load data: '+e.message;
+  });
+}
+
+function initFilters(){
+  document.getElementById('statusFilter').onchange=render;
+  document.getElementById('dateFrom').onchange=render;
+  document.getElementById('dateTo').onchange=render;
+}
+
+var sortCol='timestamp',sortAsc=false;
+
+function statusOf(rec){
+  var attn=[];
+  CHECK_KEYS.forEach(function(k){
+    if(!rec.items[k].ok)attn.push({key:k,raw:rec.items[k].raw});
+  });
+  return attn;
+}
+
+function latestRec(){
+  if(!DATA.length)return null;
+  var last=DATA[0];
+  DATA.forEach(function(r){if(r.timestamp>last.timestamp)last=r});
+  return last;
+}
+
+function render(){
+  var sv=document.getElementById('statusFilter').value;
+  var df=document.getElementById('dateFrom').value;
+  var dt=document.getElementById('dateTo').value;
+  var filtered=DATA.filter(function(r){
+    if(sv==='ok'&&statusOf(r).length)return false;
+    if(sv==='attn'&&!statusOf(r).length)return false;
+    if(df&&r.date<df)return false;
+    if(dt&&r.date>dt)return false;
+    return true;
+  });
+  renderChart(filtered);
+  var okCount=filtered.filter(function(r){return !statusOf(r).length}).length;
+  var attnCount=filtered.length-okCount;
+  var readCount=0;
+  filtered.forEach(function(r){
+    READING_FIELDS.forEach(function(k){if(r.items[k]&&r.items[k].raw&&r.items[k].raw.toUpperCase()!=='OK')readCount++});
+  });
+  document.getElementById('stTotal').textContent=filtered.length;
+  document.getElementById('stOk').textContent=okCount;
+  document.getElementById('stAttn').textContent=attnCount;
+  document.getElementById('stRead').textContent=readCount;
+  renderReadings(latestRec());
+  if(sortCol!=='sl'){
+    filtered.sort(function(a,b){
+      var av=a[sortCol]||'',bv=b[sortCol]||'';
+      return sortAsc?av.localeCompare(bv):bv.localeCompare(av);
+    });
+  }
+  var tb=document.getElementById('tbody');tb.innerHTML='';
+  document.getElementById('noData').style.display=filtered.length?'none':'block';
+  document.getElementById('dataTable').style.display=filtered.length?'table':'none';
+  filtered.forEach(function(r,i){
+    var attn=statusOf(r);
+    var tr=document.createElement('tr');
+    var statusHtml=attn.length
+      ?'<span class="badge attention">Attention</span>'
+      :'<span class="badge ok">All OK</span>';
+    var attnHtml=attn.length
+      ?('<div class="attn">'+attn.length+' item(s) &#9888;</div>'+attn.slice(0,4).map(function(it){return '<div class="attn-item">&#8226; '+esc(it.key)+': '+esc(it.raw)+'</div>'}).join(''))
+      :'<span style="color:#2e7d32;font-size:12px">&#10003; All items passed</span>';
+    tr.innerHTML='<td class="sl">'+(i+1)+'</td><td>'+esc(r.timestamp)+'</td><td>'+statusHtml+'</td><td>'+attnHtml+'</td>';
+    tb.appendChild(tr);
+  });
+  updateSortIndicators();
+}
+
+function renderChart(filtered){
+  var el=document.getElementById('chart');
+  if(!el)return;
+  var counts={};
+  filtered.forEach(function(r){
+    statusOf(r).forEach(function(it){counts[it.key]=(counts[it.key]||0)+1});
+  });
+  var keys=Object.keys(counts);
+  if(!keys.length){el.innerHTML='<div class="chart-empty">No items needing attention &#10003; All checks passed.</div>';return}
+  keys.sort(function(a,b){return counts[b]-counts[a]||a.localeCompare(b)});
+  var top=keys.slice(0,10);
+  var max=1;
+  top.forEach(function(k){if(counts[k]>max)max=counts[k]});
+  var html='';
+  top.forEach(function(k){
+    var pct=Math.round(counts[k]/max*100);
+    if(pct<6)pct=6;
+    html+='<div class="chart-row"><div class="chart-label" title="'+esc(k)+'">'+esc(k)+'</div><div class="chart-bar-wrap"><div class="chart-bar" style="width:'+pct+'%">'+counts[k]+'</div></div></div>';
+  });
+  el.innerHTML=html;
+}
+
+function renderReadings(rec){
+  var el=document.getElementById('readGrid');
+  if(!rec){el.innerHTML='<div class="chart-empty">No records yet.</div>';return}
+  var html='';
+  READING_FIELDS.forEach(function(k){
+    var raw=rec.items[k]?rec.items[k].raw:'-';
+    html+='<div class="read-card"><div class="rc-label">'+esc(k)+'</div><div class="rc-val">'+esc(raw)+'</div></div>';
+  });
+  el.innerHTML=html;
+}
+
+function updateSortIndicators(){
+  var ths=document.querySelectorAll('th[data-col]');
+  for(var i=0;i<ths.length;i++){
+    var col=ths[i].getAttribute('data-col');
+    var txt=ths[i].textContent.replace(/\s*[▴▾]\s*$/,'');
+    if(col===sortCol)txt+=sortAsc?' ▴':' ▾';
+    ths[i].textContent=txt;
+  }
+}
+
+document.querySelectorAll('th[data-col]').forEach(function(th){
+  th.addEventListener('click',function(){
+    var col=this.getAttribute('data-col');
+    if(col==='sl'||col==='status')return;
+    if(sortCol===col){sortAsc=!sortAsc}else{sortCol=col;sortAsc=true}
+    render();
+  });
+});
+
+function esc(s){return s?s.replace(/&/g,'&amp;').replace(/</g,'&lt;'):''}
+
+(function(){var s=new URLSearchParams(location.search).get('section')||'Sub Station';document.getElementById('secBadge').textContent='Daily Checking &#8226; '+s;document.title='Sub Station Daily Checking Dashboard - '+s})();
+loadData();
+</script>
 </body>
 </html>
