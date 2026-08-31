@@ -85,6 +85,15 @@ items:[["entry.285363324","Compressor Room Clean"],["entry.1952307522","Air Pres
 readingIds:{1:'entry.1952307522',9:'entry.487162414',11:'entry.24867408'},
 readingOnly:{1:1,9:1,11:1},
 textFields:{13:1}
+},
+'Generator':{
+action:'',
+title:'Generator Daily Checking',
+success:'Generator daily checking submitted successfully!',
+items:[["entry.__gen_placeholder__","Generator data entry form not configured yet. Please provide the Google Form link."]],
+readingIds:{},
+readingOnly:{},
+textFields:{0:1}
 }
 };
 var sec=new URLSearchParams(location.search).get('section')||'Sub Station';
@@ -188,6 +197,9 @@ document.getElementById('submitBtn').addEventListener('click',function(){
   if(res.firstMissing){
     errMsg.textContent='Please select OK or Not OK for: '+res.firstMissing;
     errMsg.style.display='block';return;
+  }
+  if(!CFG.action){
+    errMsg.textContent='Data entry form not configured for this section yet.';errMsg.style.display='block';return;
   }
   var body=Object.keys(res.payload).map(function(k){
     return encodeURIComponent(k)+'='+encodeURIComponent(res.payload[k]);
