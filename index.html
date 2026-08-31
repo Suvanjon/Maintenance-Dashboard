@@ -31,6 +31,8 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 .card-btn .icon svg{width:30px;height:30px;fill:var(--teal-dark)}
 .card-btn .icon.dm-icon{background:#fff;border:1px solid var(--teal-dark);overflow:hidden}
 .card-btn .icon.dm-icon img{width:48px;height:48px;display:block;object-fit:contain}
+.card-btn .icon.pm-icon{background:#fff;border:1px solid var(--teal-dark);overflow:hidden}
+.card-btn .icon.pm-icon img{width:50px;height:50px;display:block;object-fit:contain}
 .card-btn .label{color:var(--text);font-size:16px;font-weight:700;text-align:center;line-height:1.3;padding:0 14px}
 .sub-panel{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:82vh;background:var(--bg)}
 .sub-panel.show{display:flex}
@@ -67,7 +69,7 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 <div class="label">Daily Maintenance</div>
 </div>
 <div class="card-btn" onclick="showPreventive()">
-<div class="icon"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg></div>
+<div class="icon pm-icon"><img src="preventive_logo.jpg" alt="Preventive Maintenance logo"></div>
 <div class="label">Preventive<br>Maintenance</div>
 </div>
 <div class="card-btn" onclick="showDailyCheck()">
