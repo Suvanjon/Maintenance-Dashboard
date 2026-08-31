@@ -51,7 +51,7 @@ body{background:#f5f3ef;min-height:100vh}
 <div class="wrap">
 <a href="index.html" class="back-link">&larr; Back to Dashboard</a>
 <div class="card">
-<h2>Sub Station Daily Checking</h2>
+<h2 id="pageTitle">Sub Station Daily Checking</h2>
 <div class="sec-badge" id="secBadge">Sub Station</div>
 <div class="field">
 <label>Date <span class="req">*</span></label>
@@ -62,18 +62,38 @@ body{background:#f5f3ef;min-height:100vh}
 <button type="button" class="submit-btn" id="submitBtn">Submit</button>
 <button type="button" class="clear-btn" id="clearBtn">Clear form</button>
 </div>
-<div class="success-msg" id="succMsg">Sub Station daily checking submitted successfully!</div>
+<div class="success-msg" id="succMsg"></div>
 <div class="error-msg" id="errMsg"></div>
 </div>
 </div>
 <script>
-var FORM_ACTION='https://docs.google.com/forms/u/0/d/e/1FAIpQLSencfdTok-5_tZrBB-J8aiWNl6685bCYk7ClcJNWNrpHbBqPg/formResponse';
-var ITEMS=[["entry.538831844","Substation room clean &amp; dry"],["entry.1054792211","Room temperature &amp; ventilation normal"],["entry.1699581924","HT Panel Indication Healthy"],["entry.1813447317","VCB Healthy"],["entry.720518481","Protection Relay Healthy"],["entry.923970122","Transformer Oil Level Normal"],["entry.596779494","Transformer Oil Temperature (°C)"],["entry.1388715219","Cooling Fan Working"],["entry.366753566","Breather Silica Gel Condition"],["entry.1514750668","Oil Leakage"],["entry.2004393373","Abnormal Noise/Vibration"],["entry.573730844","LT Panel Healthy"],["entry.864856075","LT Voltage (V)"],["entry.144146257","LT Current (A)"],["entry.832599652","Frequency (Hz)"],["entry.1894083496","Power Factor"],["entry.1791184360","Capacitor Bank Working"],["entry.229430055","DC Panel Healthy"],["entry.214313603","DC All Battery Voltage Checking "],["entry.2004114277","Earthing System OK"],["entry.1951082701","Fire Extinguisher Available"],["entry.1720737898","Any Abnormal Observation"]];
-var READING_IDS={6:'entry.596779494',12:'entry.864856075',13:'entry.144146257',14:'entry.832599652',15:'entry.1894083496'};
-var READING_ONLY={12:1,13:1,14:1,15:1};
+var CONFIGS={
+'Sub Station':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSencfdTok-5_tZrBB-J8aiWNl6685bCYk7ClcJNWNrpHbBqPg/formResponse',
+title:'Sub Station Daily Checking',
+success:'Sub Station daily checking submitted successfully!',
+items:[["entry.538831844","Substation room clean &amp; dry"],["entry.1054792211","Room temperature &amp; ventilation normal"],["entry.1699581924","HT Panel Indication Healthy"],["entry.1813447317","VCB Healthy"],["entry.720518481","Protection Relay Healthy"],["entry.923970122","Transformer Oil Level Normal"],["entry.596779494","Transformer Oil Temperature (°C)"],["entry.1388715219","Cooling Fan Working"],["entry.366753566","Breather Silica Gel Condition"],["entry.1514750668","Oil Leakage"],["entry.2004393373","Abnormal Noise/Vibration"],["entry.573730844","LT Panel Healthy"],["entry.864856075","LT Voltage (V)"],["entry.144146257","LT Current (A)"],["entry.832599652","Frequency (Hz)"],["entry.1894083496","Power Factor"],["entry.1791184360","Capacitor Bank Working"],["entry.229430055","DC Panel Healthy"],["entry.214313603","DC All Battery Voltage Checking "],["entry.2004114277","Earthing System OK"],["entry.1951082701","Fire Extinguisher Available"],["entry.1720737898","Any Abnormal Observation"]],
+readingIds:{6:'entry.596779494',12:'entry.864856075',13:'entry.144146257',14:'entry.832599652',15:'entry.1894083496'},
+readingOnly:{12:1,13:1,14:1,15:1},
+textFields:{21:1}
+},
+'Compressor':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSfoQKVGaaxw4A7mmzqp2KAmqjiBwTIQ2qfzM3UKK_L_lgd6DQ/formResponse',
+title:'Compressor Daily Checking',
+success:'Compressor daily checking submitted successfully!',
+items:[["entry.285363324","Compressor Room Clean"],["entry.1952307522","Air Pressure"],["entry.1464937248","Lubricating Oil Level"],["entry.97750340","Oil Leakage"],["entry.285918472","Air Leakage"],["entry.597047713","Cooling Fan Working"],["entry.457519283","Air Filter Clean"],["entry.1592979568","Oil Filter Condition"],["entry.1732896414","Safety Valve"],["entry.487162414","Receiver Tank Pressure"],["entry.1459294832","Auto Drain Working"],["entry.24867408","Running Hours"],["entry.563595847","Emergency Stop OK"],["entry.713331484","Any Abnormal Observation"]],
+readingIds:{1:'entry.1952307522',9:'entry.487162414',11:'entry.24867408'},
+readingOnly:{1:1,9:1,11:1},
+textFields:{13:1}
+}
+};
 var sec=new URLSearchParams(location.search).get('section')||'Sub Station';
+var CFG=CONFIGS[sec]||CONFIGS['Sub Station'];
+document.getElementById('pageTitle').textContent=CFG.title;
 document.getElementById('secBadge').textContent=sec;
-document.title='Sub Station Daily Checking - '+sec;
+document.getElementById('succMsg').textContent=CFG.success;
+document.title=CFG.title+' - '+sec;
+var ITEMS=CFG.items,READING_IDS=CFG.readingIds,READING_ONLY=CFG.readingOnly,TEXT_FIELDS=CFG.textFields||{};
 var itemsHost=document.getElementById('items');
 ITEMS.forEach(function(it,idx){
   var box=document.createElement('div');box.className='item';
@@ -109,7 +129,11 @@ ITEMS.forEach(function(it,idx){
   });
   opts.appendChild(ok);opts.appendChild(nok);
   box.appendChild(q);
-  if(!READING_ONLY[String(idx)]){
+  if(TEXT_FIELDS[String(idx)]){
+    var ti=document.createElement('input');ti.type='text';ti.className='reading-input';
+    ti.placeholder='Enter observation (or type None)';
+    box.appendChild(ti);
+  }else if(!READING_ONLY[String(idx)]){
     box.appendChild(opts);box.appendChild(pb);
   }
   itemsHost.appendChild(box);
@@ -131,7 +155,7 @@ function buildPayload(){
       payload[it[0]]=reading.value;
       return;
     }
-    if(READING_ONLY[String(idx)]){
+    if(READING_ONLY[String(idx)]||TEXT_FIELDS[String(idx)]){
       if(!firstMissing)firstMissing=it[1].replace(/<[^>]*>/g,'');
       return;
     }
@@ -168,7 +192,7 @@ document.getElementById('submitBtn').addEventListener('click',function(){
   var body=Object.keys(res.payload).map(function(k){
     return encodeURIComponent(k)+'='+encodeURIComponent(res.payload[k]);
   }).join('&');
-  fetch(FORM_ACTION,{
+  fetch(CFG.action,{
     method:'POST',
     mode:'no-cors',
     headers:{'Content-Type':'application/x-www-form-urlencoded'},
