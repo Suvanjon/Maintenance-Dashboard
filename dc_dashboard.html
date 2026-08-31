@@ -169,6 +169,7 @@ var sortCol='timestamp',sortAsc=false;
 function statusOf(rec){
   var attn=[];
   CHECK_KEYS.forEach(function(k){
+    if(READING_FIELDS.indexOf(k)!==-1)return;
     if(!rec.items[k].ok)attn.push({key:k,raw:rec.items[k].raw});
   });
   return attn;
