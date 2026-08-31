@@ -116,6 +116,12 @@ csv:'https://docs.google.com/spreadsheets/d/1NOFHjVB-1iOFzewo4iQ2DcYkYp9lBFghtzL
 title:'Compressor Daily Checking Dashboard',
 readingFields:['Air Pressure','Receiver Tank Pressure','Running Hours'],
 textFields:['Any Abnormal Observation']
+},
+'Generator':{
+csv:'',
+title:'Generator Daily Checking Dashboard',
+readingFields:[],
+textFields:[]
 }
 };
 var sec=new URLSearchParams(location.search).get('section')||'Sub Station';
@@ -146,6 +152,10 @@ function normDate(d){
 }
 
 function loadData(){
+  if(!CSV_URL){
+    document.getElementById('loadingMsg').textContent='Dashboard not configured for this section yet. Please provide the Google Sheet link.';
+    return;
+  }
   fetch(CSV_URL).then(function(r){return r.text()}).then(function(csv){
     var rows=parseCSV(csv);
     if(!rows.length){document.getElementById('loadingMsg').textContent='No data found.';return}
