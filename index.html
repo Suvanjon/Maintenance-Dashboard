@@ -67,24 +67,8 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 <div class="icon"><svg viewBox="0 0 24 24"><path d="M10.54 11.77l-1.41 1.41 1.41 1.41 2.83-2.83-2.83-2.83-1.41 1.41 1.41 1.41zm0-8.62L7.6 5.65c-.2.14-.21.42-.03.6.13.12.26.23.39.35.51 4.42-2.11 7.81-2.14 7.84-.85.94-.85 2.44.01 3.38.05.05.1.1.14.15-.07.13-.28.45-.49.86L4 21.65l2.71-1.29c.23-.09.35-.27.32-.5-.08-.51.2-.78.42-.99.05-.05.1-.1.14-.15.08-.32.13-.66.13-1.01 0-1.54-.76-2.9-1.98-3.76l4.53-4.53c-.69-.86-1.1-1.88-1.1-3.01 0-1.57.84-3.06 2.1-4.02.83-.67 1.9-.91 2.83-.85z"/><path d="M9 13.23L7.59 14.64c.13.28.22.5.33.7.34-.4.66-.85 1.02-1.34L9 13.23zm5.71-9.1c-.7.6-1.13 1.48-1.13 2.46 0 .92.36 1.78 1 2.42.86-.7 1.34-1.6 1.36-2.72.01-.54.01-1.07.01-1.6.04-.27.01-.65-.03-.98-.4.03-.8.19-1.21.42zm5.03 4.33c.16-.13.55-.46.6-.9-.59.36-1.07.8-1.47 1.16.28-.03.57-.07.87-.26zm.72-2.72c-.17.09-.34.2-.5.3-.26.18-.46.4-.62.63 1.17-.83 1.98-2.09 1.98-3.53 0-1.73-1.1-3.2-2.66-3.73.06.14.1.29.12.44.19 1.64-.44 2.86-1.5 4.06l-.16.14c.9.3 1.57.63 2.12 1.14.14-.14.37-.35.99-.51l.23-.04zM14.86 8.34c.04.13.06.27.06.41 0 .43-.1.84-.3 1.2l4.04 3.78c.89-.08 1.73.27 2.3 1.02.11.14.2.3.27.47l2.77-1.29-.47.23-3.17-2.54 1.23-.89-.55-.75-1.24.9-.44 1.32-1.47-1.37c-.5.19-1.05.3-1.63.3h-.1L13.1 9.6l-1.05.64-1.36-.86c.27.5.66.94 1.17 1.28l.45-1.5.74-.42.47-.94.49-.8 1.01-.36z"/></svg></div>
 <div class="label">Daily Checking</div>
 </div>
-<div class="card-btn" onclick="showStoreReq()">
-<div class="icon"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg></div>
-<div class="label">Store<br>Requisition</div>
-</div>
 </div>
 <img class="big-logo" src="enovar_logo.svg?v=2" alt="Enovar Logo">
-</div>
-
-<div id="sub-store-req" class="sub-panel">
-<div class="sub-title">Store Requisition</div>
-<div class="sub-desc">Create a material requisition</div>
-<div class="sub-cards">
-<a href="sr_data_entry.html" class="sub-btn">
-<div class="sicon">&#128203;</div>
-<div class="slabel">New Requisition</div>
-</a>
-</div>
-<button class="sub-back" onclick="goBackFromStoreReq()">&#8592; Back to Main Menu</button>
 </div>
 
 <div id="sub-daily" class="sub-panel">
@@ -260,18 +244,16 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 </div>
 
 <script>
-function hideAll(){document.getElementById('landing').style.display='none';['sub-daily','sub-daily-check','sub-dc-ss','sub-dc-ch','sub-dc-cp','sub-store-req','sub-preventive','sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap'].forEach(function(id){document.getElementById(id).classList.remove('show')})}
+function hideAll(){document.getElementById('landing').style.display='none';['sub-daily','sub-daily-check','sub-dc-ss','sub-dc-ch','sub-dc-cp','sub-preventive','sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap'].forEach(function(id){document.getElementById(id).classList.remove('show')})}
 function showLanding(){document.getElementById('landing').style.display='flex';window.scrollTo(0,0)}
 function showDaily(){hideAll();document.getElementById('sub-daily').classList.add('show');window.scrollTo(0,0)}
 function showDailyCheck(){hideAll();document.getElementById('sub-daily-check').classList.add('show');window.scrollTo(0,0)}
 function showDC(id){hideAll();document.getElementById(id).classList.add('show');window.scrollTo(0,0)}
-function showStoreReq(){hideAll();document.getElementById('sub-store-req').classList.add('show');window.scrollTo(0,0)}
 function showPreventive(){hideAll();document.getElementById('sub-preventive').classList.add('show');window.scrollTo(0,0)}
 function showPM(id){hideAll();document.getElementById(id).classList.add('show');window.scrollTo(0,0)}
 function goBackFromDaily(){document.getElementById('sub-daily').classList.remove('show');showLanding()}
 function goBackFromDailyCheck(){document.getElementById('sub-daily-check').classList.remove('show');showLanding()}
 function goBackFromDC(){var p=document.getElementById('sub-daily-check');['sub-dc-ss','sub-dc-ch','sub-dc-cp'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');window.scrollTo(0,0)}
-function goBackFromStoreReq(){document.getElementById('sub-store-req').classList.remove('show');showLanding()}
 function goBackFromPreventive(){document.getElementById('sub-preventive').classList.remove('show');showLanding()}
 function goBackFromPM(){var p=document.getElementById('sub-preventive');['sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');window.scrollTo(0,0)}
 </script>
