@@ -28,6 +28,13 @@ body{background:#f5f3ef;min-height:100vh;color:#222}
 .stat.attention{background:#ff9800}
 .stat.modules{background:#1565c0}
 .stat .lbl{font-size:12px;opacity:.9}
+.cat-stats{display:flex;gap:16px;margin:16px 0 4px;flex-wrap:wrap}
+.cat-stat{padding:16px 22px;border-radius:10px;color:#fff;min-width:180px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.cat-stat .num{font-size:30px;font-weight:700;display:block;margin-bottom:2px}
+.cat-stat .lbl{font-size:13px;opacity:.95;font-weight:600}
+.cat-stat.task{background:linear-gradient(135deg,#004448,#00565c)}
+.cat-stat.prev{background:linear-gradient(135deg,#0d47a1,#1565c0)}
+.cat-stat.check{background:linear-gradient(135deg,#4a148c,#6a1b9a)}
 .tbl-wrap{overflow-x:auto;margin-top:10px}
 table{width:100%;border-collapse:collapse;font-size:13px}
 th{background:#005151;color:#fff;padding:10px 8px;text-align:left;font-weight:600}
@@ -61,6 +68,11 @@ tr:hover{background:#f5f5f5}
 <div class="top-bar">
 <div class="field"><label>Date From</label><input type="date" id="dateFrom"></div>
 <div class="field"><label>Date To</label><input type="date" id="dateTo"></div>
+</div>
+<div class="cat-stats">
+<div class="cat-stat task"><span class="num" id="qTask">-</span><span class="lbl">Daily Task</span></div>
+<div class="cat-stat prev"><span class="num" id="qPrev">-</span><span class="lbl">Preventive Maintenance</span></div>
+<div class="cat-stat check"><span class="num" id="qCheck">-</span><span class="lbl">Daily Checking</span></div>
 </div>
 <div class="stats" id="stats">
 <div class="stat total"><span class="num" id="stTotal">-</span><span class="lbl">Total Records</span></div>
@@ -190,6 +202,7 @@ function render(){
   var dt=document.getElementById('dateTo').value;
   document.getElementById('loadingMsg').style.display='none';
   var total=0,ok=0,attn=0,mods=0;
+  var catTotals={};
   var body=document.getElementById('sumBody');body.innerHTML='';
   var curCat='';
   var attnByModule=[];
@@ -201,6 +214,7 @@ function render(){
       t++;if(r.bad)a++;else o++;
     });
     total+=t;ok+=o;attn+=a;
+    catTotals[m.category]=(catTotals[m.category]||0)+t;
     if(t>0)mods++;
     if(a>0)attnByModule.push({name:m.name,attn:a});
     if(m.category!==curCat){
@@ -217,6 +231,9 @@ function render(){
     tr2.innerHTML='<td>'+esc(m.name)+'</td><td class="num-cell">'+t+'</td><td class="num-cell">'+o+'</td><td class="num-cell">'+(a>0?('<span style="color:#e65100;font-weight:700">'+a+'</span>'):'0')+'</td><td style="text-align:center">'+badge+'</td>';
     body.appendChild(tr2);
   });
+  document.getElementById('qTask').textContent=catTotals['Daily Maintenance']||0;
+  document.getElementById('qPrev').textContent=catTotals['Preventive Maintenance']||0;
+  document.getElementById('qCheck').textContent=catTotals['Daily Checking']||0;
   document.getElementById('stTotal').textContent=total;
   document.getElementById('stOk').textContent=ok;
   document.getElementById('stAttn').textContent=attn;
