@@ -104,6 +104,10 @@ var CONFIGS={
 'IMM':{
 csv:'https://docs.google.com/spreadsheets/d/15zQZ2KjFw2KFcU1lUlbxXqryHlttQVap0kFnv_cbrkk/gviz/tq?tqx=out:csv&gid=1267535245',
 title:'IMM Preventive Completed Dashboard'
+},
+'Crusher Machine':{
+csv:'https://docs.google.com/spreadsheets/d/1ZHLnf4t496MiuueeCu_1mVUanQWi4uef2wXSFS-uK4Q/gviz/tq?tqx=out:csv&gid=0',
+title:'Crusher Machine Completed Dashboard'
 }
 };
 var sec=new URLSearchParams(location.search).get('section')||'IMM';
@@ -169,7 +173,17 @@ function shortName(full){
     'Safety guards, interlocks & light curtains functional':'Safety guards, interlocks & light curtains',
     'Lockout / Tagout (LOTO) used':'LOTO used',
     'Spill, oil leakage & housekeeping around machine checked':'Spill & housekeeping',
-    'Operator PPE compliance & machine area clear of obstructions':'Operator PPE compliance'
+    'Operator PPE compliance & machine area clear of obstructions':'Operator PPE compliance',
+    'Inspect and sharpen/replace crusher blades if required':'Crusher blades',
+    'Check rotor condition and balance':'Rotor condition & balance',
+    'Inspect bearings for wear or damage':'Bearings',
+    'Check motor insulation and electrical connections':'Motor insulation & connections',
+    'Inspect starter, contactor, overload relay and MCCB':'Starter/contactor/MCCB',
+    'Check machine vibration level':'Vibration level',
+    'Check gearbox':'Gearbox',
+    'Inspect machine foundation and frame structure':'Foundation & frame',
+    'Test all safety interlocks and emergency stops':'Safety interlocks & E-stop',
+    'Machine Overall Clean':'Overall clean'
   };
   return map[full]||full;
 }
