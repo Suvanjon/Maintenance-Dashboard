@@ -15,6 +15,11 @@ body{background:#f5f3ef;min-height:100vh;color:#222}
 .back-link:hover{background:#003838}
 .card{background:#fff;border-radius:10px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,.1);margin-bottom:16px}
 .card-title{font-size:16px;font-weight:700;color:#005151;margin-bottom:12px}
+.top-bar{display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap;margin-top:14px}
+.field{display:flex;flex-direction:column;gap:3px;flex:1;min-width:150px}
+.field label{font-size:13px;font-weight:600;color:#555}
+.field input[type=date]{padding:8px 10px;border:1.5px solid #ccc;border-radius:6px;font-size:14px}
+.field input:focus{border-color:#005151;outline:none}
 .stats{display:flex;gap:16px;margin:14px 0;flex-wrap:wrap}
 .stat{padding:14px 20px;border-radius:10px;font-size:14px;font-weight:600;color:#fff;min-width:150px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.08)}
 .stat .num{font-size:26px;font-weight:700;display:block;margin-bottom:2px}
@@ -53,6 +58,10 @@ tr:hover{background:#f5f5f5}
 <div class="card" style="margin-top:12px">
 <div style="font-size:20px;font-weight:700;color:#005151">Overall Maintenance Dashboard</div>
 <div style="font-size:12px;color:#888;margin-top:4px">Summary across all maintenance modules</div>
+<div class="top-bar">
+<div class="field"><label>Date From</label><input type="date" id="dateFrom"></div>
+<div class="field"><label>Date To</label><input type="date" id="dateTo"></div>
+</div>
 <div class="stats" id="stats">
 <div class="stat total"><span class="num" id="stTotal">-</span><span class="lbl">Total Records</span></div>
 <div class="stat ok"><span class="num" id="stOk">-</span><span class="lbl">All OK</span></div>
@@ -98,15 +107,28 @@ function parseCSV(text){
   return lines;
 }
 
+function normDate(d){
+  if(!d)return '';
+  d=(d||'').trim();
+  if(d.indexOf(' ')!==-1)d=d.split(' ')[0];
+  var p=d.split('/');
+  if(p.length===3){
+    var mm=(p[0].length<2?'0':'')+p[0];
+    var dd=(p[1].length<2?'0':'')+p[1];
+    return p[2]+'-'+mm+'-'+dd;
+  }
+  return d;
+}
+
 function parsePrev(rows,cfg){
-  if(!rows.length)return{total:0,ok:0,attn:0};
+  var recs=[];
+  if(!rows.length)return recs;
   var header=rows[0];
   var endCol=cfg.itemCount?(cfg.startCol+cfg.itemCount):header.length;
-  var total=0,ok=0,attn=0;
   for(var i=1;i<rows.length;i++){
     var r=rows[i];if(!r||r.length<=cfg.startCol)continue;
     var machine=(r[cfg.machCol]||'').trim();
-    var date=(r[cfg.dateCol]||'').trim();
+    var date=normDate(r[cfg.dateCol]);
     if(!date&&!machine)continue;
     if(/^Column \d+$/.test(machine))continue;
     var bad=false;
@@ -114,13 +136,14 @@ function parsePrev(rows,cfg){
       var raw=(r[j]||'').trim();
       if(raw&&raw.toUpperCase()!=='OK'){bad=true;break}
     }
-    total++;if(bad)attn++;else ok++;
+    recs.push({date:date,bad:bad});
   }
-  return{total:total,ok:ok,attn:attn};
+  return recs;
 }
 
 function parseCheck(rows,cfg){
-  if(!rows.length)return{total:0,ok:0,attn:0};
+  var recs=[];
+  if(!rows.length)return recs;
   var header=rows[0];
   var cols=[];
   for(var i=1;i<header.length;i++){
@@ -130,45 +153,56 @@ function parseCheck(rows,cfg){
     if(cfg.textFields.indexOf(h)!==-1)continue;
     cols.push(i);
   }
-  var total=0,ok=0,attn=0;
   for(var k=1;k<rows.length;k++){
     var r=rows[k];if(!r||r.length<2)continue;
     var ts=(r[0]||'').trim();
-    if(!ts&&!r[1])continue;
+    if(!ts)continue;
     var bad=false;
     for(var c=0;c<cols.length;c++){
       var raw=(r[cols[c]]||'').trim();
       var up=raw.toUpperCase();
       if(raw&&up!=='OK'&&up!=='OPTION 1'){bad=true;break}
     }
-    total++;if(bad)attn++;else ok++;
+    recs.push({date:normDate(ts),bad:bad});
   }
-  return{total:total,ok:ok,attn:attn};
+  return recs;
 }
 
 function parseWork(rows){
-  var total=0;
+  var recs=[];
   for(var i=1;i<rows.length;i++){
     var r=rows[i];if(!r||r.length<11)continue;
     var date=(r[2]||'').trim();
     var section=(r[3]||'').trim();
     var machine=(r[4]||'').trim();
     if(!date&&!section&&!machine)continue;
-    total++;
+    recs.push({date:normDate(date),bad:false});
   }
-  return{total:total,ok:total,attn:0};
+  return recs;
 }
 
 function esc(s){return s?s.replace(/&/g,'&amp;').replace(/</g,'&lt;'):''}
 
-function render(results){
+var MOD_RESULTS=[];
+
+function render(){
+  var df=document.getElementById('dateFrom').value;
+  var dt=document.getElementById('dateTo').value;
   document.getElementById('loadingMsg').style.display='none';
   var total=0,ok=0,attn=0,mods=0;
   var body=document.getElementById('sumBody');body.innerHTML='';
   var curCat='';
-  results.forEach(function(m){
-    total+=m.total;ok+=m.ok;attn+=m.attn;
-    if(m.total>0)mods++;
+  var attnByModule=[];
+  MOD_RESULTS.forEach(function(m){
+    var t=0,o=0,a=0;
+    m.records.forEach(function(r){
+      if(df&&r.date<df)return;
+      if(dt&&r.date>dt)return;
+      t++;if(r.bad)a++;else o++;
+    });
+    total+=t;ok+=o;attn+=a;
+    if(t>0)mods++;
+    if(a>0)attnByModule.push({name:m.name,attn:a});
     if(m.category!==curCat){
       curCat=m.category;
       var tr=document.createElement('tr');tr.className='cat-row';
@@ -176,11 +210,11 @@ function render(results){
       body.appendChild(tr);
     }
     var badge;
-    if(m.total===0)badge='<span class="badge empty">No data</span>';
-    else if(m.attn===0)badge='<span class="badge ok">All OK</span>';
+    if(t===0)badge='<span class="badge empty">No data</span>';
+    else if(a===0)badge='<span class="badge ok">All OK</span>';
     else badge='<span class="badge attention">Attention</span>';
     var tr2=document.createElement('tr');
-    tr2.innerHTML='<td>'+esc(m.name)+'</td><td class="num-cell">'+m.total+'</td><td class="num-cell">'+m.ok+'</td><td class="num-cell">'+(m.attn>0?('<span style="color:#e65100;font-weight:700">'+m.attn+'</span>'):'0')+'</td><td style="text-align:center">'+badge+'</td>';
+    tr2.innerHTML='<td>'+esc(m.name)+'</td><td class="num-cell">'+t+'</td><td class="num-cell">'+o+'</td><td class="num-cell">'+(a>0?('<span style="color:#e65100;font-weight:700">'+a+'</span>'):'0')+'</td><td style="text-align:center">'+badge+'</td>';
     body.appendChild(tr2);
   });
   document.getElementById('stTotal').textContent=total;
@@ -189,11 +223,11 @@ function render(results){
   document.getElementById('stMods').textContent=mods;
 
   var chart=document.getElementById('chart');
-  var attnMods=results.filter(function(m){return m.attn>0}).sort(function(a,b){return b.attn-a.attn});
-  if(!attnMods.length){chart.innerHTML='<div class="chart-empty">No items needing attention &#10003; All checks passed.</div>';return}
-  var max=attnMods[0].attn;
+  attnByModule.sort(function(x,y){return y.attn-x.attn});
+  if(!attnByModule.length){chart.innerHTML='<div class="chart-empty">No items needing attention &#10003; All checks passed.</div>';return}
+  var max=attnByModule[0].attn;
   var html='';
-  attnMods.forEach(function(m){
+  attnByModule.forEach(function(m){
     var pct=Math.round(m.attn/max*100);if(pct<6)pct=6;
     html+='<div class="chart-row"><div class="chart-label" title="'+esc(m.name)+'">'+esc(m.name)+'</div><div class="chart-bar-wrap"><div class="chart-bar" style="width:'+pct+'%">'+m.attn+'</div></div></div>';
   });
@@ -203,13 +237,21 @@ function render(results){
 Promise.all(MODULES.map(function(m){
   return fetch(m.csv).then(function(r){return r.text()}).then(function(txt){
     var rows=parseCSV(txt);
-    var res;
-    if(m.type==='prev')res=parsePrev(rows,m);
-    else if(m.type==='check')res=parseCheck(rows,m);
-    else res=parseWork(rows);
-    return{category:m.category,name:m.name,total:res.total,ok:res.ok,attn:res.attn};
-  }).catch(function(){return{category:m.category,name:m.name,total:0,ok:0,attn:0}});
-})).then(render);
+    var recs;
+    if(m.type==='prev')recs=parsePrev(rows,m);
+    else if(m.type==='check')recs=parseCheck(rows,m);
+    else recs=parseWork(rows);
+    return{category:m.category,name:m.name,records:recs};
+  }).catch(function(){return{category:m.category,name:m.name,records:[]}});
+})).then(function(results){
+  MOD_RESULTS=results;
+  var last='';
+  MOD_RESULTS.forEach(function(m){m.records.forEach(function(r){if(r.date&&r.date>last)last=r.date})});
+  if(last){document.getElementById('dateFrom').value=last;document.getElementById('dateTo').value=last;}
+  document.getElementById('dateFrom').onchange=render;
+  document.getElementById('dateTo').onchange=render;
+  render();
+});
 </script>
 </body>
 </html>
