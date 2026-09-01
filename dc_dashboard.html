@@ -186,6 +186,9 @@ function loadData(){
     }
     document.getElementById('loadingMsg').style.display='none';
     initFilters();
+    var last='';
+    DATA.forEach(function(r){if(r.date&&r.date>last)last=r.date});
+    if(last){document.getElementById('dateFrom').value=last;document.getElementById('dateTo').value=last;}
     render();
   }).catch(function(e){
     document.getElementById('loadingMsg').textContent='Failed to load data: '+e.message;
