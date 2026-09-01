@@ -165,10 +165,10 @@ function resetForm(){
 function buildPayload(){
   var payload={};
   var firstMissing='';
+  var itemEls=document.querySelectorAll('#items .item');
   ITEMS.forEach(function(it,idx){
-    var input=document.querySelector('input[name="'+it[0]+'"]:checked');
-    var box=document.querySelector('input[name="'+it[0]+'"]');
-    var reading=box?box.closest('.item').querySelector('.reading-input'):null;
+    var itemEl=itemEls[idx];
+    var reading=itemEl?itemEl.querySelector('.reading-input'):null;
     if(reading&&reading.value){
       payload[it[0]]=reading.value;
       return;
@@ -177,14 +177,14 @@ function buildPayload(){
       if(!firstMissing)firstMissing=it[1].replace(/<[^>]*>/g,'');
       return;
     }
+    var input=itemEl?itemEl.querySelector('input[type=radio]:checked'):null;
     if(!input){
       if(!firstMissing)firstMissing=it[1].replace(/<[^>]*>/g,'');
       return;
     }
     if(input.value==='ok'){payload[it[0]]='OK'}
     else{
-      var names=document.querySelectorAll('input[name="'+it[0]+'"]');
-      var pbx=names[0].closest('.item').querySelector('.problem-box');
+      var pbx=itemEl.querySelector('.problem-box');
       var tas=pbx.querySelectorAll('textarea');
       var prob=tas[0].value.trim();
       var action=tas[1].value.trim();
