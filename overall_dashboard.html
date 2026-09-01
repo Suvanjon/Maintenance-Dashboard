@@ -78,7 +78,6 @@ tr:hover{background:#f5f5f5}
 <div class="stat total"><span class="num" id="stTotal">-</span><span class="lbl">Total Records</span></div>
 <div class="stat ok"><span class="num" id="stOk">-</span><span class="lbl">All OK</span></div>
 <div class="stat attention"><span class="num" id="stAttn">-</span><span class="lbl">Needs Attention</span></div>
-<div class="stat modules"><span class="num" id="stMods">-</span><span class="lbl">Modules</span></div>
 </div>
 </div>
 <div class="card">
@@ -201,7 +200,7 @@ function render(){
   var df=document.getElementById('dateFrom').value;
   var dt=document.getElementById('dateTo').value;
   document.getElementById('loadingMsg').style.display='none';
-  var total=0,ok=0,attn=0,mods=0;
+  var total=0,ok=0,attn=0;
   var catTotals={};
   var body=document.getElementById('sumBody');body.innerHTML='';
   var curCat='';
@@ -215,7 +214,6 @@ function render(){
     });
     total+=t;ok+=o;attn+=a;
     catTotals[m.category]=(catTotals[m.category]||0)+t;
-    if(t>0)mods++;
     if(a>0)attnByModule.push({name:m.name,attn:a});
     if(m.category!==curCat){
       curCat=m.category;
@@ -237,7 +235,6 @@ function render(){
   document.getElementById('stTotal').textContent=total;
   document.getElementById('stOk').textContent=ok;
   document.getElementById('stAttn').textContent=attn;
-  document.getElementById('stMods').textContent=mods;
 
   var chart=document.getElementById('chart');
   attnByModule.sort(function(x,y){return y.attn-x.attn});
