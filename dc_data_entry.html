@@ -120,7 +120,7 @@ ITEMS.forEach(function(it,idx){
   var reading=null;
   if(READING_IDS[String(idx)]){
     var ri=document.createElement('input');ri.type='number';ri.step='any';ri.className='reading-input';
-    ri.placeholder='Enter reading value';
+    ri.placeholder='Enter reading value (optional)';
     box.appendChild(ri);reading=ri;
   }
   var opts=document.createElement('div');opts.className='opts';
@@ -173,7 +173,10 @@ function buildPayload(){
       payload[it[0]]=reading.value;
       return;
     }
-    if(READING_ONLY[String(idx)]||TEXT_FIELDS[String(idx)]){
+    if(READING_ONLY[String(idx)]){
+      return;
+    }
+    if(TEXT_FIELDS[String(idx)]){
       if(!firstMissing)firstMissing=it[1].replace(/<[^>]*>/g,'');
       return;
     }
