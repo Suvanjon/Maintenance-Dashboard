@@ -100,7 +100,15 @@ tr:hover{background:#f5f5f5}
 <script>
 var DATA=[];
 var CHECK_KEYS=[];
-var CSV_URL='https://docs.google.com/spreadsheets/d/15zQZ2KjFw2KFcU1lUlbxXqryHlttQVap0kFnv_cbrkk/gviz/tq?tqx=out:csv&gid=1267535245';
+var CONFIGS={
+'IMM':{
+csv:'https://docs.google.com/spreadsheets/d/15zQZ2KjFw2KFcU1lUlbxXqryHlttQVap0kFnv_cbrkk/gviz/tq?tqx=out:csv&gid=1267535245',
+title:'IMM Preventive Completed Dashboard'
+}
+};
+var sec=new URLSearchParams(location.search).get('section')||'IMM';
+var CFG=CONFIGS[sec]||CONFIGS['IMM'];
+var CSV_URL=CFG.csv;
 
 function parseCSV(text){
   var lines=[],row=[],field='',inQ=false;
@@ -317,7 +325,7 @@ document.querySelectorAll('th[data-col]').forEach(function(th){
 
 function esc(s){return s?s.replace(/&/g,'&amp;').replace(/</g,'&lt;'):''}
 
-(function(){var s=new URLSearchParams(location.search).get('section')||'All Sections';document.getElementById('secBadge').textContent=s;document.title='IMM Preventive Completed Dashboard - '+s})();
+(function(){var s=new URLSearchParams(location.search).get('section')||'IMM';document.getElementById('secBadge').textContent=s;document.title=CFG.title+' - '+s})();
 loadData();
 </script>
 </body>
