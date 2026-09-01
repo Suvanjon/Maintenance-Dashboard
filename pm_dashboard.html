@@ -110,6 +110,11 @@ startCol:3,machCol:2,dateCol:1
 csv:'https://docs.google.com/spreadsheets/d/1Yxja5G51_l5FXFwL4sjTGZQ9nRLjqGjMG0uk3iHJhbM/gviz/tq?tqx=out:csv&gid=744958928',
 title:'Crusher Machine Completed Dashboard',
 startCol:4,machCol:3,dateCol:2
+},
+'Mixture Machine':{
+csv:'https://docs.google.com/spreadsheets/d/10FWYGpJplj-Gpeje7_JynuiIXjBKlAjOpkhafKXyumI/gviz/tq?tqx=out:csv&gid=0',
+title:'Mixture Machine Completed Dashboard',
+startCol:3,machCol:2,dateCol:1
 }
 };
 var sec=new URLSearchParams(location.search).get('section')||'IMM';
@@ -185,7 +190,19 @@ function shortName(full){
     'Check gearbox':'Gearbox',
     'Inspect machine foundation and frame structure':'Foundation & frame',
     'Test all safety interlocks and emergency stops':'Safety interlocks & E-stop',
-    'Machine Overall Clean':'Overall clean'
+    'Machine Overall Clean':'Overall clean',
+    'Clean the complete machine and surrounding area':'Clean machine & area',
+    'Check blade condition, wear, cracks, and tightness':'Blade condition',
+    'Check abnormal noise, vibration, overheating, and mounting bolts':'Noise/vibration/bolts',
+    'Inspect bearing condition':'Bearings',
+    'Check and tighten all mounting bolts and fasteners':'Tighten bolts',
+    'Check for abnormal noise, temperature, and lubrication':'Noise/temp/lube',
+    'Clean panel and inspect wiring and terminals':'Clean panel & wiring',
+    'Check for loose, burnt, or damaged connections':'Loose/burnt connections',
+    'Test Start, Stop, Emergency Stop, and selector switches':'Start/Stop/E-stop',
+    'Check all guards and safety covers are properly installed':'Guards & covers',
+    'Check for abnormal vibration during operation':'Vibration during op',
+    'Run the machine and observe overall performance':'Run & observe'
   };
   return map[full]||full;
 }
