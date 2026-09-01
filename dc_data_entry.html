@@ -92,7 +92,7 @@ title:'Chiller Daily Checking',
 success:'Chiller daily checking submitted successfully!',
 items:[["entry.1725173731","Set Temperature "],["entry.162123270","  Chilled Water Supply Temperature  "],["entry.1806355400","Normal Water Supply Temperature  "],["entry.1783865579","  Chilled Water Pump Status  "],["entry.385063388","Normal Water Pump Status"],["entry.1692728634","Evaporator Pump Status"],["entry.397270730","  Condenser Water Pump Status  "],["entry.554797427","Cooling Tower Pump Status"],["entry.1400271151","  Cooling Tower Fan Status  "],["entry.542501661","  Water Leakage  "],["entry.196545547","  Abnormal Noise/Vibration  "],["entry.476390128","  Alarm/Fault  "]],
 readingIds:{0:'entry.1725173731',1:'entry.162123270',2:'entry.1806355400'},
-readingOnly:{0:1,1:1,2:1},
+readingOnly:{0:1,1:1,2:1},requiredReadings:{0:1,1:1,2:1},
 textFields:{}
 },
 'Generator':{
@@ -116,11 +116,12 @@ var itemsHost=document.getElementById('items');
 ITEMS.forEach(function(it,idx){
   var box=document.createElement('div');box.className='item';
   var q=document.createElement('div');q.className='q';
-  q.innerHTML=it[1];
+  var isReqReading = CFG.requiredReadings && CFG.requiredReadings[String(idx)];
+  q.innerHTML=it[1]+(isReqReading?' <span class="req">*</span>':'');
   var reading=null;
   if(READING_IDS[String(idx)]){
     var ri=document.createElement('input');ri.type='number';ri.step='any';ri.className='reading-input';
-    ri.placeholder='Enter reading value (optional)';
+    ri.placeholder=isReqReading?'Enter reading value':'Enter reading value (optional)';
     box.appendChild(ri);reading=ri;
   }
   var opts=document.createElement('div');opts.className='opts';
@@ -174,6 +175,9 @@ function buildPayload(){
       return;
     }
     if(READING_ONLY[String(idx)]){
+      if(CFG.requiredReadings && CFG.requiredReadings[String(idx)]){
+        if(!firstMissing)firstMissing=it[1].replace(/<[^>]*>/g,'');
+      }
       return;
     }
     if(TEXT_FIELDS[String(idx)]){
