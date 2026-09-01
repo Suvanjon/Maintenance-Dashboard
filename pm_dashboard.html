@@ -111,10 +111,15 @@ csv:'https://docs.google.com/spreadsheets/d/1Yxja5G51_l5FXFwL4sjTGZQ9nRLjqGjMG0u
 title:'Crusher Machine Completed Dashboard',
 startCol:4,machCol:3,dateCol:2
 },
-'Mixture Machine':{
+ 'Mixture Machine':{
 csv:'https://docs.google.com/spreadsheets/d/10FWYGpJplj-Gpeje7_JynuiIXjBKlAjOpkhafKXyumI/gviz/tq?tqx=out:csv&gid=0',
 title:'Mixture Machine Completed Dashboard',
 startCol:3,machCol:2,dateCol:1
+},
+'Central Feeding':{
+csv:'https://docs.google.com/spreadsheets/d/123uw-vGdfzH9N47ZISqxIA9qTgiPSFBtl8HJJbhWbCA/gviz/tq?tqx=out:csv&gid=346770020',
+title:'Central Feeding Completed Dashboard',
+startCol:4,machCol:3,dateCol:2
 }
 };
 var sec=new URLSearchParams(location.search).get('section')||'IMM';
@@ -202,7 +207,22 @@ function shortName(full){
     'Test Start, Stop, Emergency Stop, and selector switches':'Start/Stop/E-stop',
     'Check all guards and safety covers are properly installed':'Guards & covers',
     'Check for abnormal vibration during operation':'Vibration during op',
-    'Run the machine and observe overall performance':'Run & observe'
+    'Run the machine and observe overall performance':'Run & observe',
+    'Check overall condition, abnormal noise, vibration, and overheating':'Overall condition/noise/vibration',
+    'Check motor current, terminals, insulation, and cooling fan':'Motor current & terminals',
+    'Clean or replace the filter element if required':'Filter element',
+    'Check vacuum pressure and system performance':'Vacuum pressure',
+    'Check pipe condition, joints, bends, and internal blockage':'Pipes & blockage',
+    'Inspect loader operation and material suction performance':'Loader & suction',
+    'Clean filter and check for damage':'Filter clean',
+    'Check operation, air leakage, and material flow':'Air leakage & flow',
+    'Clean panel and inspect wiring, terminals, and components':'Panel & wiring',
+    'Check alarms, communication, and operational status':'Alarms & comms',
+    'Test all safety devices and emergency functions':'Safety devices & E-stop',
+    'Clean dust, material particles, and contamination from the system':'System cleanliness',
+    'Run trial and confirm smooth material feeding to all machines':'Trial run & feeding',
+    'Clean hopper and check heating/drying performance':'Hopper & heating',
+    'Check heater condition, temperature controller, and wiring':'Heater & controller'
   };
   return map[full]||full;
 }
