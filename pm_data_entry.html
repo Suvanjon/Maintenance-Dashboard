@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -92,6 +92,7 @@ items:[["entry.1935773684","Electrical panel board net &amp; clean and ensure in
 action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSesgecCSjGdCaWkGWAao3-os9BwmiLTfPShZknxoJUji3JVIg/formResponse',
 dateEntry:'entry.2129986677',
 machEntry:'entry.2127064402',
+dateIsText:true,
 machines:["CRUSHER-01","CRUSHER-02","CRUSHER-03","CRUSHER-04","CRUSHER-05"],
 items:[["entry.1467654117","Inspect and sharpen/replace crusher blades if required",1],["entry.1699559701","Check rotor condition and balance",1],["entry.2000116179","Inspect bearings for wear or damage",1],["entry.745713534","Check motor insulation and electrical connections",1],["entry.1111259979","Inspect starter, contactor, overload relay and MCCB",1],["entry.1900816146","Check machine vibration level",1],["entry.439438234","Check gearbox",1],["entry.1737312428","Inspect machine foundation and frame structure",1],["entry.181699187","Test all safety interlocks and emergency stops",1],["entry.1106578527","Machine Overall Clean",1]]
 }
@@ -169,10 +170,14 @@ function buildPayload(){
   });
   var dv=document.getElementById('fDate').value;
   if(dv){
-    var dp=dv.split('-');
-    payload[CFG.dateEntry+'_year']=dp[0];
-    payload[CFG.dateEntry+'_month']=String(parseInt(dp[1],10));
-    payload[CFG.dateEntry+'_day']=String(parseInt(dp[2],10));
+    if(CFG.dateIsText){
+      payload[CFG.dateEntry]=dv;
+    }else{
+      var dp=dv.split('-');
+      payload[CFG.dateEntry+'_year']=dp[0];
+      payload[CFG.dateEntry+'_month']=String(parseInt(dp[1],10));
+      payload[CFG.dateEntry+'_day']=String(parseInt(dp[2],10));
+    }
   }
   if(mach.value==='__other__'){
     payload[CFG.machEntry+'.other_option_response']=document.getElementById('fOtherMachine').value.trim();
