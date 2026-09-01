@@ -119,7 +119,7 @@ startCol:3,machCol:2,dateCol:1
 'Central Feeding':{
 csv:'https://docs.google.com/spreadsheets/d/123uw-vGdfzH9N47ZISqxIA9qTgiPSFBtl8HJJbhWbCA/gviz/tq?tqx=out:csv&gid=346770020',
 title:'Central Feeding Completed Dashboard',
-startCol:4,machCol:3,dateCol:2
+startCol:4,machCol:19,dateCol:2,itemCount:15
 }
 };
 var sec=new URLSearchParams(location.search).get('section')||'IMM';
@@ -232,7 +232,8 @@ function loadData(){
     var rows=parseCSV(csv);
     if(!rows.length){document.getElementById('loadingMsg').textContent='No data found.';return}
     var header=rows[0];
-    for(var i=CFG.startCol;i<header.length;i++){
+    var endCol=CFG.itemCount?(CFG.startCol+CFG.itemCount):header.length;
+    for(var i=CFG.startCol;i<endCol;i++){
       var h=(header[i]||'').trim();
       if(h&&h!=='Column '+i)CHECK_KEYS.push(h);
     }
