@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Overall Dashboard - Akij Light Engineering Ltd.</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Roboto,Arial,sans-serif}
+body{background:#f5f3ef;min-height:100vh;color:#222}
+.hdr{background:#00565c;padding:14px 16px 12px;text-align:center;border-bottom:4px solid #004448}
+.hdr-text{color:#fff;font-size:16px;font-weight:800;letter-spacing:.5px}
+.hdr-sub{color:rgba(255,255,255,.7);font-size:12px;margin-top:2px}
+.wrap{max-width:1150px;margin:18px auto;padding:0 12px 40px}
+.back-link{display:inline-block;margin:16px 0 0;padding:8px 18px;background:#005151;color:#fff;text-decoration:none;border-radius:6px;font-size:13px;font-weight:600;transition:background .2s}
+.back-link:hover{background:#003838}
+.card{background:#fff;border-radius:10px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,.1);margin-bottom:16px}
+.card-title{font-size:16px;font-weight:700;color:#005151;margin-bottom:12px}
+.stats{display:flex;gap:16px;margin:14px 0;flex-wrap:wrap}
+.stat{padding:14px 20px;border-radius:10px;font-size:14px;font-weight:600;color:#fff;min-width:150px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.stat .num{font-size:26px;font-weight:700;display:block;margin-bottom:2px}
+.stat.total{background:#005151}
+.stat.ok{background:#2e7d32}
+.stat.attention{background:#ff9800}
+.stat.modules{background:#1565c0}
+.stat .lbl{font-size:12px;opacity:.9}
+.tbl-wrap{overflow-x:auto;margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:#005151;color:#fff;padding:10px 8px;text-align:left;font-weight:600}
+td{padding:9px 8px;border-bottom:1px solid #e0e0e0;vertical-align:middle}
+tr:hover{background:#f5f5f5}
+.cat-row td{background:#e9f0f0;color:#005151;font-weight:700;font-size:13px;padding:8px}
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:700;color:#fff}
+.badge.ok{background:#2e7d32}
+.badge.attention{background:#ff9800}
+.badge.empty{background:#9e9e9e}
+.num-cell{font-weight:700;text-align:center}
+.loading{text-align:center;padding:40px;color:#005151;font-size:15px}
+.chart{display:flex;flex-direction:column;gap:7px;margin-top:6px}
+.chart-row{display:flex;align-items:center;gap:10px;font-size:13px}
+.chart-label{width:220px;text-align:right;color:#333;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chart-bar-wrap{flex:1;background:#efece8;border-radius:6px;height:24px;overflow:hidden}
+.chart-bar{height:100%;background:linear-gradient(90deg,#e65100,#ff9800);border-radius:6px;color:#fff;font-weight:700;white-space:nowrap;text-align:right;line-height:24px;padding-right:6px;box-sizing:border-box}
+.chart-empty{text-align:center;color:#888;padding:18px;font-size:14px}
+</style>
+</head>
+<body>
+<div class="hdr">
+<div class="hdr-text">AKIJ LIGHT ENGINEERING LTD.</div>
+<div class="hdr-sub">Maintenance Management System</div>
+</div>
+<div class="wrap">
+<a href="index.html" class="back-link">&#8592; Back to Dashboard</a>
+<div class="card" style="margin-top:12px">
+<div style="font-size:20px;font-weight:700;color:#005151">Overall Maintenance Dashboard</div>
+<div style="font-size:12px;color:#888;margin-top:4px">Summary across all maintenance modules</div>
+<div class="stats" id="stats">
+<div class="stat total"><span class="num" id="stTotal">-</span><span class="lbl">Total Records</span></div>
+<div class="stat ok"><span class="num" id="stOk">-</span><span class="lbl">All OK</span></div>
+<div class="stat attention"><span class="num" id="stAttn">-</span><span class="lbl">Needs Attention</span></div>
+<div class="stat modules"><span class="num" id="stMods">-</span><span class="lbl">Modules</span></div>
+</div>
+</div>
+<div class="card">
+<div class="card-title">Needs Attention by Module</div>
+<div id="chart" class="chart"><div class="chart-empty">Loading...</div></div>
+</div>
+<div class="card">
+<div class="card-title">Module Summary</div>
+<div class="tbl-wrap">
+<table id="sumTable">
+<thead><tr><th>Module</th><th style="text-align:center">Records</th><th style="text-align:center">All OK</th><th style="text-align:center">Needs Attention</th><th style="text-align:center">Status</th></tr></thead>
+<tbody id="sumBody"></tbody>
+</table>
+<div class="loading" id="loadingMsg">Loading data from Google Sheets...</div>
+</div>
+</div>
+</div>
+<script>
+var MODULES=[
+{category:'Preventive Maintenance',name:'IMM',type:'prev',csv:'https://docs.google.com/spreadsheets/d/15zQZ2KjFw2KFcU1lUlbxXqryHlttQVap0kFnv_cbrkk/gviz/tq?tqx=out:csv&gid=1267535245',startCol:3,machCol:2,dateCol:1},
+{category:'Preventive Maintenance',name:'Crusher Machine',type:'prev',csv:'https://docs.google.com/spreadsheets/d/1Yxja5G51_l5FXFwL4sjTGZQ9nRLjqGjMG0uk3iHJhbM/gviz/tq?tqx=out:csv&gid=744958928',startCol:4,machCol:3,dateCol:2},
+{category:'Preventive Maintenance',name:'Mixture Machine',type:'prev',csv:'https://docs.google.com/spreadsheets/d/10FWYGpJplj-Gpeje7_JynuiIXjBKlAjOpkhafKXyumI/gviz/tq?tqx=out:csv&gid=0',startCol:3,machCol:2,dateCol:1},
+{category:'Preventive Maintenance',name:'Central Feeding',type:'prev',csv:'https://docs.google.com/spreadsheets/d/123uw-vGdfzH9N47ZISqxIA9qTgiPSFBtl8HJJbhWbCA/gviz/tq?tqx=out:csv&gid=346770020',startCol:4,machCol:19,dateCol:2,itemCount:15},
+{category:'Daily Checking',name:'Sub Station',type:'check',csv:'https://docs.google.com/spreadsheets/d/12DyzDyOnHgoO7odTCq_X_B2syWaf_Z0d-v-Hb3rZ6qw/gviz/tq?tqx=out:csv&gid=156220258',readingFields:['LT Voltage (V)','LT Current (A)','Frequency (Hz)','Power Factor','Transformer Oil Temperature (°C)'],textFields:['Any Abnormal Observation']},
+{category:'Daily Checking',name:'Chiller',type:'check',csv:'https://docs.google.com/spreadsheets/d/1xullNA42RF6T2QemmvpjdAspdcqcluq8qp1PhVY9Opg/gviz/tq?tqx=out:csv&gid=1157389417',readingFields:['Set Temperature','Chilled Water Supply Temperature','Normal Water Supply Temperature','Suction Pressure','Discharge Pressure'],textFields:[]},
+{category:'Daily Checking',name:'Compressor',type:'check',csv:'https://docs.google.com/spreadsheets/d/1NOFHjVB-1iOFzewo4iQ2DcYkYp9lBFghtzLOq3ibZJo/gviz/tq?tqx=out:csv&gid=999064570',readingFields:['Air Pressure','Receiver Tank Pressure','Running Hours'],textFields:['Any Abnormal Observation']},
+{category:'Daily Checking',name:'Generator',type:'check',csv:'https://docs.google.com/spreadsheets/d/1gdlrKGfZ1ugPMJuJP-dCsgmqRRbsPdxpfSq5IAFaWhs/gviz/tq?tqx=out:csv&gid=259556208',readingFields:['Fuel Level','Battery Voltage','Oil Pressure','Coolant Temperature','Output Voltage','Output Current','Frequency','Running Hours'],textFields:['Any Abnormal Observation']},
+{category:'Daily Maintenance',name:'Daily Maintenance',type:'work',csv:'https://docs.google.com/spreadsheets/d/1y1ArRCAvY5SBDtuqfFpLQduwJ2_OzvwrhgWbw1ciwF8/gviz/tq?tqx=out:csv&gid=1523854953'}
+];
+
+function parseCSV(text){
+  var lines=[],row=[],field='',inQ=false;
+  for(var i=0;i<text.length;i++){
+    var c=text[i];
+    if(inQ){if(c==='"'){if(i+1<text.length&&text[i+1]==='"'){field+='"';i++}else{inQ=false}}else{field+=c}}
+    else{if(c==='"'){inQ=true}else if(c===','){row.push(field);field=''}else if(c==='\n'||c==='\r'){if(c==='\r'&&i+1<text.length&&text[i+1]==='\n')i++;row.push(field);field='';if(row.length>1)lines.push(row);row=[]}else{field+=c}}}
+  if(field||row.length>0){row.push(field);if(row.length>1)lines.push(row)}
+  return lines;
+}
+
+function parsePrev(rows,cfg){
+  if(!rows.length)return{total:0,ok:0,attn:0};
+  var header=rows[0];
+  var endCol=cfg.itemCount?(cfg.startCol+cfg.itemCount):header.length;
+  var total=0,ok=0,attn=0;
+  for(var i=1;i<rows.length;i++){
+    var r=rows[i];if(!r||r.length<=cfg.startCol)continue;
+    var machine=(r[cfg.machCol]||'').trim();
+    var date=(r[cfg.dateCol]||'').trim();
+    if(!date&&!machine)continue;
+    if(/^Column \d+$/.test(machine))continue;
+    var bad=false;
+    for(var j=cfg.startCol;j<endCol;j++){
+      var raw=(r[j]||'').trim();
+      if(raw&&raw.toUpperCase()!=='OK'){bad=true;break}
+    }
+    total++;if(bad)attn++;else ok++;
+  }
+  return{total:total,ok:ok,attn:attn};
+}
+
+function parseCheck(rows,cfg){
+  if(!rows.length)return{total:0,ok:0,attn:0};
+  var header=rows[0];
+  var cols=[];
+  for(var i=1;i<header.length;i++){
+    var h=(header[i]||'').trim();
+    if(!h||h==='Column '+i)continue;
+    if(cfg.readingFields.indexOf(h)!==-1)continue;
+    if(cfg.textFields.indexOf(h)!==-1)continue;
+    cols.push(i);
+  }
+  var total=0,ok=0,attn=0;
+  for(var k=1;k<rows.length;k++){
+    var r=rows[k];if(!r||r.length<2)continue;
+    var ts=(r[0]||'').trim();
+    if(!ts&&!r[1])continue;
+    var bad=false;
+    for(var c=0;c<cols.length;c++){
+      var raw=(r[cols[c]]||'').trim();
+      var up=raw.toUpperCase();
+      if(raw&&up!=='OK'&&up!=='OPTION 1'){bad=true;break}
+    }
+    total++;if(bad)attn++;else ok++;
+  }
+  return{total:total,ok:ok,attn:attn};
+}
+
+function parseWork(rows){
+  var total=0;
+  for(var i=1;i<rows.length;i++){
+    var r=rows[i];if(!r||r.length<11)continue;
+    var date=(r[2]||'').trim();
+    var section=(r[3]||'').trim();
+    var machine=(r[4]||'').trim();
+    if(!date&&!section&&!machine)continue;
+    total++;
+  }
+  return{total:total,ok:total,attn:0};
+}
+
+function esc(s){return s?s.replace(/&/g,'&amp;').replace(/</g,'&lt;'):''}
+
+function render(results){
+  document.getElementById('loadingMsg').style.display='none';
+  var total=0,ok=0,attn=0,mods=0;
+  var body=document.getElementById('sumBody');body.innerHTML='';
+  var curCat='';
+  results.forEach(function(m){
+    total+=m.total;ok+=m.ok;attn+=m.attn;
+    if(m.total>0)mods++;
+    if(m.category!==curCat){
+      curCat=m.category;
+      var tr=document.createElement('tr');tr.className='cat-row';
+      tr.innerHTML='<td colspan="5">'+esc(m.category)+'</td>';
+      body.appendChild(tr);
+    }
+    var badge;
+    if(m.total===0)badge='<span class="badge empty">No data</span>';
+    else if(m.attn===0)badge='<span class="badge ok">All OK</span>';
+    else badge='<span class="badge attention">Attention</span>';
+    var tr2=document.createElement('tr');
+    tr2.innerHTML='<td>'+esc(m.name)+'</td><td class="num-cell">'+m.total+'</td><td class="num-cell">'+m.ok+'</td><td class="num-cell">'+(m.attn>0?('<span style="color:#e65100;font-weight:700">'+m.attn+'</span>'):'0')+'</td><td style="text-align:center">'+badge+'</td>';
+    body.appendChild(tr2);
+  });
+  document.getElementById('stTotal').textContent=total;
+  document.getElementById('stOk').textContent=ok;
+  document.getElementById('stAttn').textContent=attn;
+  document.getElementById('stMods').textContent=mods;
+
+  var chart=document.getElementById('chart');
+  var attnMods=results.filter(function(m){return m.attn>0}).sort(function(a,b){return b.attn-a.attn});
+  if(!attnMods.length){chart.innerHTML='<div class="chart-empty">No items needing attention &#10003; All checks passed.</div>';return}
+  var max=attnMods[0].attn;
+  var html='';
+  attnMods.forEach(function(m){
+    var pct=Math.round(m.attn/max*100);if(pct<6)pct=6;
+    html+='<div class="chart-row"><div class="chart-label" title="'+esc(m.name)+'">'+esc(m.name)+'</div><div class="chart-bar-wrap"><div class="chart-bar" style="width:'+pct+'%">'+m.attn+'</div></div></div>';
+  });
+  chart.innerHTML=html;
+}
+
+Promise.all(MODULES.map(function(m){
+  return fetch(m.csv).then(function(r){return r.text()}).then(function(txt){
+    var rows=parseCSV(txt);
+    var res;
+    if(m.type==='prev')res=parsePrev(rows,m);
+    else if(m.type==='check')res=parseCheck(rows,m);
+    else res=parseWork(rows);
+    return{category:m.category,name:m.name,total:res.total,ok:res.ok,attn:res.attn};
+  }).catch(function(){return{category:m.category,name:m.name,total:0,ok:0,attn:0}});
+})).then(render);
+</script>
+</body>
+</html>
