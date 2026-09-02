@@ -49,7 +49,7 @@ body{background:#f5f3ef;min-height:100vh}
 <div class="hdr-sub">Maintenance Management System</div>
 </div>
 <div class="wrap">
-<a href="index.html" class="back-link">&larr; Back to Dashboard</a>
+<a href="index.html" class="back-link" id="backLink">&larr; Back to Previous Page</a>
 <div class="card">
 <h2 id="pageTitle">Sub Station Daily Checking</h2>
 <div class="sec-badge" id="secBadge">Sub Station</div>
@@ -107,6 +107,8 @@ textFields:{17:1}
 };
 var sec=new URLSearchParams(location.search).get('section')||'Sub Station';
 var CFG=CONFIGS[sec]||CONFIGS['Sub Station'];
+var hashMap={'Sub Station':'sub-dc-ss','Chiller':'sub-dc-ch','Compressor':'sub-dc-cp','Generator':'sub-dc-gen'};
+document.getElementById('backLink').href='index.html#'+(hashMap[sec]||'sub-daily-check');
 document.getElementById('pageTitle').textContent=CFG.title;
 document.getElementById('secBadge').textContent=sec;
 document.getElementById('succMsg').textContent=CFG.success;
