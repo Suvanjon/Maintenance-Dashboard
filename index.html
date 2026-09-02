@@ -59,6 +59,8 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 .sub-btn .sicon.apm-icon img{width:75px;height:auto;display:block;object-fit:contain;border-radius:8px}
 .sub-btn .sicon.pvc-icon img{width:75px;height:auto;display:block;object-fit:contain;border-radius:8px}
 .sub-btn .sicon.cb-icon img{width:75px;height:auto;display:block;object-fit:contain;border-radius:8px}
+.sub-btn .sicon.cutting-icon img{width:75px;height:auto;display:block;object-fit:contain;border-radius:8px}
+.sub-btn .sicon.wrapping-icon img{width:75px;height:auto;display:block;object-fit:contain;border-radius:8px}
 .sub-btn:hover .sicon{color:var(--pantone-7722c)}
 .sub-btn .slabel{color:var(--text);font-size:16px;font-weight:700;text-align:center;line-height:1.3;padding:0 14px;transition:color .25s}
 .sub-btn:hover .slabel{color:var(--pantone-7722c)}
@@ -297,18 +299,50 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 
 <div id="sub-pm-pvc" class="sub-panel">
 <div class="sub-title">PVC Tape</div>
+<div class="sub-desc">Select a machine</div>
+<div class="sub-cards">
+<div class="sub-btn" onclick="showPM('sub-pm-pvc-cut')">
+<div class="sicon cutting-icon"><img src="pvc_logo.webp" alt="Cutting Machine"></div>
+<div class="slabel">Cutting Machine</div>
+</div>
+<div class="sub-btn" onclick="showPM('sub-pm-pvc-wrap')">
+<div class="sicon wrapping-icon"><img src="pvc_logo.webp" alt="Wrapping Machine"></div>
+<div class="slabel">Wrapping Machine</div>
+</div>
+</div>
+<button class="sub-back" onclick="goBackFromGSS()">&#8592; Back to GSS Unit</button>
+</div>
+
+<div id="sub-pm-pvc-cut" class="sub-panel">
+<div class="sub-title">Cutting Machine</div>
 <div class="sub-desc">Select an option</div>
 <div class="sub-cards">
-<a href="pm_data_entry.html?section=PVC%20Tape" target="_blank" class="sub-btn">
+<a href="pm_data_entry.html?section=PVC%20Tape%20Cutting" target="_blank" class="sub-btn">
 <div class="sicon">&#128203;</div>
 <div class="slabel">Data Entry</div>
 </a>
-<a href="pm_dashboard.html?section=PVC%20Tape" class="sub-btn">
+<a href="pm_dashboard.html?section=PVC%20Tape%20Cutting" class="sub-btn">
 <div class="sicon">&#128200;</div>
 <div class="slabel">Completed Dashboard</div>
 </a>
 </div>
-<button class="sub-back" onclick="goBackFromGSS()">&#8592; Back to GSS Unit</button>
+<button class="sub-back" onclick="goBackFromPVC()">&#8592; Back to PVC Tape</button>
+</div>
+
+<div id="sub-pm-pvc-wrap" class="sub-panel">
+<div class="sub-title">Wrapping Machine</div>
+<div class="sub-desc">Select an option</div>
+<div class="sub-cards">
+<a href="pm_data_entry.html?section=PVC%20Tape%20Wrapping" target="_blank" class="sub-btn">
+<div class="sicon">&#128203;</div>
+<div class="slabel">Data Entry</div>
+</a>
+<a href="pm_dashboard.html?section=PVC%20Tape%20Wrapping" class="sub-btn">
+<div class="sicon">&#128200;</div>
+<div class="slabel">Completed Dashboard</div>
+</a>
+</div>
+<button class="sub-back" onclick="goBackFromPVC()">&#8592; Back to PVC Tape</button>
 </div>
 
 <div id="sub-pm-cb" class="sub-panel">
@@ -432,7 +466,7 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 </div>
 
 <script>
-function hideAll(){document.getElementById('landing').style.display='none';['sub-daily','sub-daily-check','sub-dc-ss','sub-dc-ch','sub-dc-cp','sub-dc-gen','sub-preventive','sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap','sub-pm-ip','sub-pm-crusher','sub-pm-mixture','sub-pm-feeding','sub-pm-conveyor','sub-pm-apm','sub-pm-pvc','sub-pm-cb'].forEach(function(id){document.getElementById(id).classList.remove('show')})}
+function hideAll(){document.getElementById('landing').style.display='none';['sub-daily','sub-daily-check','sub-dc-ss','sub-dc-ch','sub-dc-cp','sub-dc-gen','sub-preventive','sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap','sub-pm-ip','sub-pm-crusher','sub-pm-mixture','sub-pm-feeding','sub-pm-conveyor','sub-pm-apm','sub-pm-pvc','sub-pm-pvc-cut','sub-pm-pvc-wrap','sub-pm-cb'].forEach(function(id){document.getElementById(id).classList.remove('show')})}
 function showLanding(){hideAll();document.getElementById('landing').style.display='flex';location.hash='';window.scrollTo(0,0)}
 function showDaily(){hideAll();document.getElementById('sub-daily').classList.add('show');location.hash='sub-daily';window.scrollTo(0,0)}
 function showDailyCheck(){hideAll();document.getElementById('sub-daily-check').classList.add('show');location.hash='sub-daily-check';window.scrollTo(0,0)}
@@ -445,8 +479,9 @@ function goBackFromDC(){var p=document.getElementById('sub-daily-check');['sub-d
 function goBackFromPreventive(){document.getElementById('sub-preventive').classList.remove('show');showLanding()}
 function goBackFromIMM(){var p=document.getElementById('sub-pm-ip');document.getElementById('sub-pm-imm').classList.remove('show');p.classList.add('show');location.hash='sub-pm-ip';window.scrollTo(0,0)}
 function goBackFromPMChild(){var p=document.getElementById('sub-pm-ip');['sub-pm-crusher','sub-pm-mixture','sub-pm-feeding'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');location.hash='sub-pm-ip';window.scrollTo(0,0)}
-function goBackFromGSS(){var p=document.getElementById('sub-pm-gss');['sub-pm-conveyor','sub-pm-apm','sub-pm-pvc','sub-pm-cb'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');location.hash='sub-pm-gss';window.scrollTo(0,0)}
-function goBackFromPM(){var p=document.getElementById('sub-preventive');['sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap','sub-pm-ip','sub-pm-crusher','sub-pm-mixture','sub-pm-feeding','sub-pm-conveyor','sub-pm-apm','sub-pm-pvc','sub-pm-cb'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');location.hash='sub-preventive';window.scrollTo(0,0)}
+function goBackFromGSS(){var p=document.getElementById('sub-pm-gss');['sub-pm-conveyor','sub-pm-apm','sub-pm-pvc','sub-pm-pvc-cut','sub-pm-pvc-wrap','sub-pm-cb'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');location.hash='sub-pm-gss';window.scrollTo(0,0)}
+function goBackFromPVC(){var p=document.getElementById('sub-pm-pvc');['sub-pm-pvc-cut','sub-pm-pvc-wrap'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');location.hash='sub-pm-pvc';window.scrollTo(0,0)}
+function goBackFromPM(){var p=document.getElementById('sub-preventive');['sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap','sub-pm-ip','sub-pm-crusher','sub-pm-mixture','sub-pm-feeding','sub-pm-conveyor','sub-pm-apm','sub-pm-pvc','sub-pm-pvc-cut','sub-pm-pvc-wrap','sub-pm-cb'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');location.hash='sub-preventive';window.scrollTo(0,0)}
 function showFromHash(){var h=(location.hash||'').replace(/^#/,'');if(h&&document.getElementById(h)){hideAll();document.getElementById(h).classList.add('show')}else{hideAll();document.getElementById('landing').style.display='flex'}}
 window.addEventListener('DOMContentLoaded',showFromHash);
 window.addEventListener('hashchange',showFromHash);
