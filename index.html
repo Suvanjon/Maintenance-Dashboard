@@ -433,20 +433,23 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 
 <script>
 function hideAll(){document.getElementById('landing').style.display='none';['sub-daily','sub-daily-check','sub-dc-ss','sub-dc-ch','sub-dc-cp','sub-dc-gen','sub-preventive','sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap','sub-pm-ip','sub-pm-crusher','sub-pm-mixture','sub-pm-feeding','sub-pm-conveyor','sub-pm-apm','sub-pm-pvc','sub-pm-cb'].forEach(function(id){document.getElementById(id).classList.remove('show')})}
-function showLanding(){document.getElementById('landing').style.display='flex';window.scrollTo(0,0)}
-function showDaily(){hideAll();document.getElementById('sub-daily').classList.add('show');window.scrollTo(0,0)}
-function showDailyCheck(){hideAll();document.getElementById('sub-daily-check').classList.add('show');window.scrollTo(0,0)}
-function showDC(id){hideAll();document.getElementById(id).classList.add('show');window.scrollTo(0,0)}
-function showPreventive(){hideAll();document.getElementById('sub-preventive').classList.add('show');window.scrollTo(0,0)}
-function showPM(id){hideAll();document.getElementById(id).classList.add('show');window.scrollTo(0,0)}
+function showLanding(){hideAll();document.getElementById('landing').style.display='flex';location.hash='';window.scrollTo(0,0)}
+function showDaily(){hideAll();document.getElementById('sub-daily').classList.add('show');location.hash='sub-daily';window.scrollTo(0,0)}
+function showDailyCheck(){hideAll();document.getElementById('sub-daily-check').classList.add('show');location.hash='sub-daily-check';window.scrollTo(0,0)}
+function showDC(id){hideAll();document.getElementById(id).classList.add('show');location.hash=id;window.scrollTo(0,0)}
+function showPreventive(){hideAll();document.getElementById('sub-preventive').classList.add('show');location.hash='sub-preventive';window.scrollTo(0,0)}
+function showPM(id){hideAll();document.getElementById(id).classList.add('show');location.hash=id;window.scrollTo(0,0)}
 function goBackFromDaily(){document.getElementById('sub-daily').classList.remove('show');showLanding()}
 function goBackFromDailyCheck(){document.getElementById('sub-daily-check').classList.remove('show');showLanding()}
-function goBackFromDC(){var p=document.getElementById('sub-daily-check');['sub-dc-ss','sub-dc-ch','sub-dc-cp','sub-dc-gen'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');window.scrollTo(0,0)}
+function goBackFromDC(){var p=document.getElementById('sub-daily-check');['sub-dc-ss','sub-dc-ch','sub-dc-cp','sub-dc-gen'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');location.hash='sub-daily-check';window.scrollTo(0,0)}
 function goBackFromPreventive(){document.getElementById('sub-preventive').classList.remove('show');showLanding()}
-function goBackFromIMM(){var p=document.getElementById('sub-pm-ip');document.getElementById('sub-pm-imm').classList.remove('show');p.classList.add('show');window.scrollTo(0,0)}
-function goBackFromPMChild(){var p=document.getElementById('sub-pm-ip');['sub-pm-crusher','sub-pm-mixture','sub-pm-feeding'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');window.scrollTo(0,0)}
-function goBackFromGSS(){var p=document.getElementById('sub-pm-gss');['sub-pm-conveyor','sub-pm-apm','sub-pm-pvc','sub-pm-cb'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');window.scrollTo(0,0)}
-function goBackFromPM(){var p=document.getElementById('sub-preventive');['sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap','sub-pm-ip','sub-pm-crusher','sub-pm-mixture','sub-pm-feeding','sub-pm-conveyor','sub-pm-apm','sub-pm-pvc','sub-pm-cb'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');window.scrollTo(0,0)}
+function goBackFromIMM(){var p=document.getElementById('sub-pm-ip');document.getElementById('sub-pm-imm').classList.remove('show');p.classList.add('show');location.hash='sub-pm-ip';window.scrollTo(0,0)}
+function goBackFromPMChild(){var p=document.getElementById('sub-pm-ip');['sub-pm-crusher','sub-pm-mixture','sub-pm-feeding'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');location.hash='sub-pm-ip';window.scrollTo(0,0)}
+function goBackFromGSS(){var p=document.getElementById('sub-pm-gss');['sub-pm-conveyor','sub-pm-apm','sub-pm-pvc','sub-pm-cb'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');location.hash='sub-pm-gss';window.scrollTo(0,0)}
+function goBackFromPM(){var p=document.getElementById('sub-preventive');['sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap','sub-pm-ip','sub-pm-crusher','sub-pm-mixture','sub-pm-feeding','sub-pm-conveyor','sub-pm-apm','sub-pm-pvc','sub-pm-cb'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');location.hash='sub-preventive';window.scrollTo(0,0)}
+function showFromHash(){var h=(location.hash||'').replace(/^#/,'');if(h&&document.getElementById(h)){hideAll();document.getElementById(h).classList.add('show')}else{hideAll();document.getElementById('landing').style.display='flex'}}
+window.addEventListener('DOMContentLoaded',showFromHash);
+window.addEventListener('hashchange',showFromHash);
 </script>
 </body>
 </html>
