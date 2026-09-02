@@ -120,6 +120,11 @@ startCol:3,machCol:2,dateCol:1
 csv:'https://docs.google.com/spreadsheets/d/123uw-vGdfzH9N47ZISqxIA9qTgiPSFBtl8HJJbhWbCA/gviz/tq?tqx=out:csv&gid=346770020',
 title:'Central Feeding Completed Dashboard',
 startCol:4,machCol:19,dateCol:2,itemCount:15
+},
+'Packing Machine':{
+csv:'https://docs.google.com/spreadsheets/d/1neoY7VEG_zL0yXJbu3zJRdcqlrHcqRbJjhnolpR0TUM/gviz/tq?tqx=out:csv&gid=845061143',
+title:'Packing Machine Completed Dashboard',
+startCol:3,machCol:2,dateCol:1
 }
 };
 var sec=new URLSearchParams(location.search).get('section')||'IMM';
@@ -222,7 +227,28 @@ function shortName(full){
     'Clean dust, material particles, and contamination from the system':'System cleanliness',
     'Run trial and confirm smooth material feeding to all machines':'Trial run & feeding',
     'Clean hopper and check heating/drying performance':'Hopper & heating',
-    'Check heater condition, temperature controller, and wiring':'Heater & controller'
+    'Check heater condition, temperature controller, and wiring':'Heater & controller',
+    'Check conveyor belt condition for wear, damage, cracks, and alignment':'Conveyor belt',
+    'Check drive roller and idler roller condition':'Drive/idler rollers',
+    'Check motor mounting bolts and foundation':'Motor bolts & foundation',
+    'Inspect chain, sprocket, coupling, or pulley condition':'Chain/sprocket/coupling',
+    'Check electrical cables, sensors, and limit switches':'Cables, sensors & limit switches',
+    'Clean laser printing head and lens as per manufacturer procedure':'Laser head & lens',
+    'Check printing position and alignment':'Printing position',
+    'Clean dust from control panel and electrical components':'Panel dust & components',
+    'Check electrical connections and grounding':'Connections & grounding',
+    'Check sealing jaw condition and alignment':'Sealing jaw',
+    'Inspect heater and temperature controller operation':'Heater & temp controller',
+    'Check sealing temperature and sealing quality':'Sealing temp & quality',
+    'Inspect cutting knife/blade condition and sharpness':'Cutting knife/blade',
+    'Check film feeding roller and guide roller condition':'Film feeding & guide rollers',
+    'Inspect chain, sprocket, belt, and gears':'Chain/sprocket/belt/gears',
+    'Check pneumatic system, air pressure':'Pneumatic & air pressure',
+    'Inspect sensors and photoelectric switches':'Sensors & photo switches',
+    'Check motor, gearbox, and coupling condition':'Motor/gearbox/coupling',
+    'Check abnormal vibration and noise during operation':'Vibration & noise',
+    'Check machine guards and safety covers':'Guards & safety covers',
+    'Clean complete machine and surrounding area':'Clean machine & area'
   };
   return map[full]||full;
 }
