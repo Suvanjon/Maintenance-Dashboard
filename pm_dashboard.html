@@ -58,7 +58,7 @@ tr:hover{background:#f5f5f5}
 <div class="hdr-sub">Maintenance Management System</div>
 </div>
 <div class="wrap">
-<a href="index.html" class="back-link">&#8592; Back to Dashboard</a>
+<a href="index.html" class="back-link" id="backLink">&#8592; Back to Previous Page</a>
 <div class="card" style="margin-top:12px">
 <div style="font-size:20px;font-weight:700;color:#005151">Preventive Completed Dashboard</div>
 <div id="secBadge" style="display:inline-block;background:#005151;color:#fff;font-size:12px;font-weight:700;padding:4px 14px;border-radius:16px;margin-top:6px"></div>
@@ -134,6 +134,8 @@ startCol:4,machCol:2,dateCol:3,itemCount:17
 };
 var sec=new URLSearchParams(location.search).get('section')||'IMM';
 var CFG=CONFIGS[sec]||CONFIGS['IMM'];
+var hashMap={'IMM':'sub-pm-imm','Crusher Machine':'sub-pm-crusher','Mixture Machine':'sub-pm-mixture','Central Feeding':'sub-pm-feeding','Conveyor Line':'sub-pm-conveyor','Automatic Packing Machine':'sub-pm-apm','PVC Tape':'sub-pm-pvc','Circuit Breaker':'sub-pm-cb'};
+document.getElementById('backLink').href='index.html#'+(hashMap[sec]||'sub-preventive');
 var CSV_URL=CFG.csv;
 
 function parseCSV(text){
