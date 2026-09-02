@@ -51,7 +51,7 @@ body{background:#f5f3ef;min-height:100vh}
 <div class="hdr-sub">Maintenance Management System</div>
 </div>
 <div class="wrap">
-<a href="index.html" class="back-link">&larr; Back to Dashboard</a>
+<a href="index.html" class="back-link" id="backLink">&larr; Back to Previous Page</a>
 <div class="card">
 <h2>Preventive Data Entry</h2>
 <div class="sec-badge" id="secBadge">IMM</div>
@@ -132,6 +132,8 @@ var sec=new URLSearchParams(location.search).get('section')||'IMM';
 var CFG=CONFIGS[sec]||CONFIGS['IMM'];
 document.getElementById('secBadge').textContent=sec;
 document.title='Preventive Data Entry - '+sec;
+var hashMap={'IMM':'sub-pm-imm','Crusher Machine':'sub-pm-crusher','Mixture Machine':'sub-pm-mixture','Central Feeding':'sub-pm-feeding','Conveyor Line':'sub-pm-conveyor','Automatic Packing Machine':'sub-pm-apm','PVC Tape':'sub-pm-pvc','Circuit Breaker':'sub-pm-cb'};
+document.getElementById('backLink').href='index.html#'+(hashMap[sec]||'sub-preventive');
 var ITEMS=CFG.items,MACHINES=CFG.machines,FORM_ACTION=CFG.action;
 var itemsHost=document.getElementById('items');
 ITEMS.forEach(function(it){
