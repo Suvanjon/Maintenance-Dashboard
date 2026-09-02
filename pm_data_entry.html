@@ -132,7 +132,7 @@ var sec=new URLSearchParams(location.search).get('section')||'IMM';
 var CFG=CONFIGS[sec]||CONFIGS['IMM'];
 document.getElementById('secBadge').textContent=sec;
 document.title='Preventive Data Entry - '+sec;
-var hashMap={'IMM':'sub-pm-imm','Crusher Machine':'sub-pm-crusher','Mixture Machine':'sub-pm-mixture','Central Feeding':'sub-pm-feeding','Conveyor Line':'sub-pm-conveyor','Automatic Packing Machine':'sub-pm-apm','PVC Tape':'sub-pm-pvc','Circuit Breaker':'sub-pm-cb'};
+var hashMap={'IMM':'sub-pm-imm','Crusher Machine':'sub-pm-crusher','Mixture Machine':'sub-pm-mixture','Central Feeding':'sub-pm-feeding','Conveyor Line':'sub-pm-conveyor','Automatic Packing Machine':'sub-pm-apm','PVC Tape Cutting':'sub-pm-pvc-cut','PVC Tape Wrapping':'sub-pm-pvc-wrap','Circuit Breaker':'sub-pm-cb'};
 document.getElementById('backLink').href='index.html#'+(hashMap[sec]||'sub-preventive');
 var ITEMS=CFG.items,MACHINES=CFG.machines,FORM_ACTION=CFG.action;
 var itemsHost=document.getElementById('items');
