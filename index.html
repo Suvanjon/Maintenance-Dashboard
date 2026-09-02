@@ -351,6 +351,22 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 <button class="sub-back" onclick="goBackFromPMChild()">&#8592; Back to Inhouse Plastic</button>
 </div>
 
+<div id="sub-pm-feeding" class="sub-panel">
+<div class="sub-title">Central Feeding</div>
+<div class="sub-desc">Select an option</div>
+<div class="sub-cards">
+<a href="pm_data_entry.html?section=Central%20Feeding" target="_blank" class="sub-btn">
+<div class="sicon">&#128203;</div>
+<div class="slabel">Data Entry</div>
+</a>
+<a href="pm_dashboard.html?section=Central%20Feeding" class="sub-btn">
+<div class="sicon">&#128200;</div>
+<div class="slabel">Completed Dashboard</div>
+</a>
+</div>
+<button class="sub-back" onclick="goBackFromPMChild()">&#8592; Back to Inhouse Plastic</button>
+</div>
+
 <script>
 function hideAll(){document.getElementById('landing').style.display='none';['sub-daily','sub-daily-check','sub-dc-ss','sub-dc-ch','sub-dc-cp','sub-dc-gen','sub-preventive','sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap','sub-pm-ip','sub-pm-crusher','sub-pm-mixture','sub-pm-feeding','sub-pm-conveyor'].forEach(function(id){document.getElementById(id).classList.remove('show')})}
 function showLanding(){document.getElementById('landing').style.display='flex';window.scrollTo(0,0)}
