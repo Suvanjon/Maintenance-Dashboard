@@ -243,6 +243,14 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 <div class="sicon">&#128230;</div>
 <div class="slabel">Conveyor Line</div>
 </div>
+<div class="sub-btn" onclick="showPM('sub-pm-apm')">
+<div class="sicon">&#129302;</div>
+<div class="slabel">Automatic Packing Machine</div>
+</div>
+<div class="sub-btn" onclick="showPM('sub-pm-pvc')">
+<div class="sicon">&#128252;</div>
+<div class="slabel">PVC Tape</div>
+</div>
 </div>
 <button class="sub-back" onclick="goBackFromPM()">&#8592; Back to Preventive Maintenance</button>
 </div>
@@ -256,6 +264,38 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 <div class="slabel">Data Entry</div>
 </a>
 <a href="pm_dashboard.html?section=Conveyor%20Line" class="sub-btn">
+<div class="sicon">&#128200;</div>
+<div class="slabel">Completed Dashboard</div>
+</a>
+</div>
+<button class="sub-back" onclick="goBackFromGSS()">&#8592; Back to GSS</button>
+</div>
+
+<div id="sub-pm-apm" class="sub-panel">
+<div class="sub-title">Automatic Packing Machine</div>
+<div class="sub-desc">Select an option</div>
+<div class="sub-cards">
+<a href="pm_data_entry.html?section=Automatic%20Packing%20Machine" target="_blank" class="sub-btn">
+<div class="sicon">&#128203;</div>
+<div class="slabel">Data Entry</div>
+</a>
+<a href="pm_dashboard.html?section=Automatic%20Packing%20Machine" class="sub-btn">
+<div class="sicon">&#128200;</div>
+<div class="slabel">Completed Dashboard</div>
+</a>
+</div>
+<button class="sub-back" onclick="goBackFromGSS()">&#8592; Back to GSS</button>
+</div>
+
+<div id="sub-pm-pvc" class="sub-panel">
+<div class="sub-title">PVC Tape</div>
+<div class="sub-desc">Select an option</div>
+<div class="sub-cards">
+<a href="pm_data_entry.html?section=PVC%20Tape" target="_blank" class="sub-btn">
+<div class="sicon">&#128203;</div>
+<div class="slabel">Data Entry</div>
+</a>
+<a href="pm_dashboard.html?section=PVC%20Tape" class="sub-btn">
 <div class="sicon">&#128200;</div>
 <div class="slabel">Completed Dashboard</div>
 </a>
@@ -368,7 +408,7 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 </div>
 
 <script>
-function hideAll(){document.getElementById('landing').style.display='none';['sub-daily','sub-daily-check','sub-dc-ss','sub-dc-ch','sub-dc-cp','sub-dc-gen','sub-preventive','sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap','sub-pm-ip','sub-pm-crusher','sub-pm-mixture','sub-pm-feeding','sub-pm-conveyor'].forEach(function(id){document.getElementById(id).classList.remove('show')})}
+function hideAll(){document.getElementById('landing').style.display='none';['sub-daily','sub-daily-check','sub-dc-ss','sub-dc-ch','sub-dc-cp','sub-dc-gen','sub-preventive','sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap','sub-pm-ip','sub-pm-crusher','sub-pm-mixture','sub-pm-feeding','sub-pm-conveyor','sub-pm-apm','sub-pm-pvc'].forEach(function(id){document.getElementById(id).classList.remove('show')})}
 function showLanding(){document.getElementById('landing').style.display='flex';window.scrollTo(0,0)}
 function showDaily(){hideAll();document.getElementById('sub-daily').classList.add('show');window.scrollTo(0,0)}
 function showDailyCheck(){hideAll();document.getElementById('sub-daily-check').classList.add('show');window.scrollTo(0,0)}
@@ -381,8 +421,8 @@ function goBackFromDC(){var p=document.getElementById('sub-daily-check');['sub-d
 function goBackFromPreventive(){document.getElementById('sub-preventive').classList.remove('show');showLanding()}
 function goBackFromIMM(){var p=document.getElementById('sub-pm-ip');document.getElementById('sub-pm-imm').classList.remove('show');p.classList.add('show');window.scrollTo(0,0)}
 function goBackFromPMChild(){var p=document.getElementById('sub-pm-ip');['sub-pm-crusher','sub-pm-mixture','sub-pm-feeding'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');window.scrollTo(0,0)}
-function goBackFromGSS(){var p=document.getElementById('sub-pm-gss');document.getElementById('sub-pm-conveyor').classList.remove('show');p.classList.add('show');window.scrollTo(0,0)}
-function goBackFromPM(){var p=document.getElementById('sub-preventive');['sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap','sub-pm-ip','sub-pm-crusher','sub-pm-mixture','sub-pm-feeding','sub-pm-conveyor'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');window.scrollTo(0,0)}
+function goBackFromGSS(){var p=document.getElementById('sub-pm-gss');['sub-pm-conveyor','sub-pm-apm','sub-pm-pvc'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');window.scrollTo(0,0)}
+function goBackFromPM(){var p=document.getElementById('sub-preventive');['sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap','sub-pm-ip','sub-pm-crusher','sub-pm-mixture','sub-pm-feeding','sub-pm-conveyor','sub-pm-apm','sub-pm-pvc'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');window.scrollTo(0,0)}
 </script>
 </body>
 </html>
