@@ -237,18 +237,30 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 
 <div id="sub-pm-gss" class="sub-panel">
 <div class="sub-title">GSS</div>
+<div class="sub-desc">Select a machine</div>
+<div class="sub-cards">
+<div class="sub-btn" onclick="showPM('sub-pm-conveyor')">
+<div class="sicon">&#128230;</div>
+<div class="slabel">Conveyor Line</div>
+</div>
+</div>
+<button class="sub-back" onclick="goBackFromPM()">&#8592; Back to Preventive Maintenance</button>
+</div>
+
+<div id="sub-pm-conveyor" class="sub-panel">
+<div class="sub-title">Conveyor Line</div>
 <div class="sub-desc">Select an option</div>
 <div class="sub-cards">
-<a href="pm_data_entry.html?section=GSS" target="_blank" class="sub-btn">
+<a href="pm_data_entry.html?section=Conveyor%20Line" target="_blank" class="sub-btn">
 <div class="sicon">&#128203;</div>
 <div class="slabel">Data Entry</div>
 </a>
-<a href="pm_dashboard.html?section=GSS" class="sub-btn">
+<a href="pm_dashboard.html?section=Conveyor%20Line" class="sub-btn">
 <div class="sicon">&#128200;</div>
 <div class="slabel">Completed Dashboard</div>
 </a>
 </div>
-<button class="sub-back" onclick="goBackFromPM()">&#8592; Back to Preventive Maintenance</button>
+<button class="sub-back" onclick="goBackFromGSS()">&#8592; Back to GSS</button>
 </div>
 
 <div id="sub-pm-led" class="sub-panel">
@@ -303,28 +315,8 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 <div class="sicon feeding-icon"><img src="central_feeding.webp" alt="Central feeding"></div>
 <div class="slabel">Central Feeding</div>
 </div>
-<div class="sub-btn" onclick="showPM('sub-pm-packing')">
-<div class="sicon">&#128230;</div>
-<div class="slabel">Packing Machine</div>
-</div>
 </div>
 <button class="sub-back" onclick="goBackFromPM()">&#8592; Back to Preventive Maintenance</button>
-</div>
-
-<div id="sub-pm-packing" class="sub-panel">
-<div class="sub-title">Packing Machine</div>
-<div class="sub-desc">Select an option</div>
-<div class="sub-cards">
-<a href="pm_data_entry.html?section=Packing%20Machine" target="_blank" class="sub-btn">
-<div class="sicon">&#128203;</div>
-<div class="slabel">Data Entry</div>
-</a>
-<a href="pm_dashboard.html?section=Packing%20Machine" class="sub-btn">
-<div class="sicon">&#128200;</div>
-<div class="slabel">Completed Dashboard</div>
-</a>
-</div>
-<button class="sub-back" onclick="goBackFromPMChild()">&#8592; Back to Inhouse Plastic</button>
 </div>
 
 <div id="sub-pm-crusher" class="sub-panel">
@@ -359,24 +351,8 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 <button class="sub-back" onclick="goBackFromPMChild()">&#8592; Back to Inhouse Plastic</button>
 </div>
 
-<div id="sub-pm-feeding" class="sub-panel">
-<div class="sub-title">Central Feeding</div>
-<div class="sub-desc">Select an option</div>
-<div class="sub-cards">
-<a href="pm_data_entry.html?section=Central%20Feeding" target="_blank" class="sub-btn">
-<div class="sicon">&#128203;</div>
-<div class="slabel">Data Entry</div>
-</a>
-<a href="pm_dashboard.html?section=Central%20Feeding" class="sub-btn">
-<div class="sicon">&#128200;</div>
-<div class="slabel">Completed Dashboard</div>
-</a>
-</div>
-<button class="sub-back" onclick="goBackFromPMChild()">&#8592; Back to Inhouse Plastic</button>
-</div>
-
 <script>
-function hideAll(){document.getElementById('landing').style.display='none';['sub-daily','sub-daily-check','sub-dc-ss','sub-dc-ch','sub-dc-cp','sub-dc-gen','sub-preventive','sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap','sub-pm-ip','sub-pm-crusher','sub-pm-mixture','sub-pm-feeding','sub-pm-packing'].forEach(function(id){document.getElementById(id).classList.remove('show')})}
+function hideAll(){document.getElementById('landing').style.display='none';['sub-daily','sub-daily-check','sub-dc-ss','sub-dc-ch','sub-dc-cp','sub-dc-gen','sub-preventive','sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap','sub-pm-ip','sub-pm-crusher','sub-pm-mixture','sub-pm-feeding','sub-pm-conveyor'].forEach(function(id){document.getElementById(id).classList.remove('show')})}
 function showLanding(){document.getElementById('landing').style.display='flex';window.scrollTo(0,0)}
 function showDaily(){hideAll();document.getElementById('sub-daily').classList.add('show');window.scrollTo(0,0)}
 function showDailyCheck(){hideAll();document.getElementById('sub-daily-check').classList.add('show');window.scrollTo(0,0)}
@@ -388,8 +364,9 @@ function goBackFromDailyCheck(){document.getElementById('sub-daily-check').class
 function goBackFromDC(){var p=document.getElementById('sub-daily-check');['sub-dc-ss','sub-dc-ch','sub-dc-cp','sub-dc-gen'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');window.scrollTo(0,0)}
 function goBackFromPreventive(){document.getElementById('sub-preventive').classList.remove('show');showLanding()}
 function goBackFromIMM(){var p=document.getElementById('sub-pm-ip');document.getElementById('sub-pm-imm').classList.remove('show');p.classList.add('show');window.scrollTo(0,0)}
-function goBackFromPMChild(){var p=document.getElementById('sub-pm-ip');['sub-pm-crusher','sub-pm-mixture','sub-pm-feeding','sub-pm-packing'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');window.scrollTo(0,0)}
-function goBackFromPM(){var p=document.getElementById('sub-preventive');['sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap','sub-pm-ip','sub-pm-crusher','sub-pm-mixture','sub-pm-feeding','sub-pm-packing'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');window.scrollTo(0,0)}
+function goBackFromPMChild(){var p=document.getElementById('sub-pm-ip');['sub-pm-crusher','sub-pm-mixture','sub-pm-feeding'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');window.scrollTo(0,0)}
+function goBackFromGSS(){var p=document.getElementById('sub-pm-gss');document.getElementById('sub-pm-conveyor').classList.remove('show');p.classList.add('show');window.scrollTo(0,0)}
+function goBackFromPM(){var p=document.getElementById('sub-preventive');['sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap','sub-pm-ip','sub-pm-crusher','sub-pm-mixture','sub-pm-feeding','sub-pm-conveyor'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');window.scrollTo(0,0)}
 </script>
 </body>
 </html>
