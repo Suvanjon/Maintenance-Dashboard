@@ -367,18 +367,190 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 
 <div id="sub-pm-led" class="sub-panel">
 <div class="sub-title">LED</div>
+<div class="sub-desc">Select a machine</div>
+<div class="sub-cards">
+<div class="sub-btn" onclick="showPM('sub-pm-led-aasm')">
+<div class="sicon">&#9881;</div>
+<div class="slabel">Automatic Assembly Machine</div>
+</div>
+<div class="sub-btn" onclick="showPM('sub-pm-led-sasm')">
+<div class="sicon">&#9881;</div>
+<div class="slabel">Semi Automatic Assembly Machine</div>
+</div>
+<div class="sub-btn" onclick="showPM('sub-pm-led-apm')">
+<div class="sicon apm-icon"><img src="apm_logo.jpg" alt="Automatic Packing Machine"></div>
+<div class="slabel">Automatic Packing Machine</div>
+</div>
+<div class="sub-btn" onclick="showPM('sub-pm-led-conveyor')">
+<div class="sicon">&#9881;</div>
+<div class="slabel">LED Assembly Conveyor line</div>
+</div>
+<div class="sub-btn" onclick="showPM('sub-pm-led-crimp')">
+<div class="sicon">&#9881;</div>
+<div class="slabel">Crimping Machine</div>
+</div>
+<div class="sub-btn" onclick="showPM('sub-pm-led-aging')">
+<div class="sicon">&#9881;</div>
+<div class="slabel">Manual Aging Line</div>
+</div>
+<div class="sub-btn" onclick="showPM('sub-pm-led-laser')">
+<div class="sicon">&#9881;</div>
+<div class="slabel">Single Station Laser Printer</div>
+</div>
+<div class="sub-btn" onclick="showPM('sub-pm-led-stamp')">
+<div class="sicon">&#9881;</div>
+<div class="slabel">Belt Stamping Machine</div>
+</div>
+<div class="sub-btn" onclick="showPM('sub-pm-led-chip')">
+<div class="sicon">&#9881;</div>
+<div class="slabel">Chip Cutting Machine</div>
+</div>
+</div>
+<button class="sub-back" onclick="goBackFromPM()">&#8592; Back to Preventive Maintenance</button>
+</div>
+
+<div id="sub-pm-led-aasm" class="sub-panel">
+<div class="sub-title">Automatic Assembly Machine</div>
 <div class="sub-desc">Select an option</div>
 <div class="sub-cards">
-<a href="pm_data_entry.html?section=LED" class="sub-btn">
+<a href="pm_data_entry.html?section=LED%20-%20Automatic%20Assembly" class="sub-btn">
 <div class="sicon">&#128203;</div>
 <div class="slabel">Data Entry</div>
 </a>
-<a href="pm_dashboard.html?section=LED" class="sub-btn">
+<a href="pm_dashboard.html?section=LED%20-%20Automatic%20Assembly" class="sub-btn">
 <div class="sicon">&#128200;</div>
 <div class="slabel">Completed Dashboard</div>
 </a>
 </div>
-<button class="sub-back" onclick="goBackFromPM()">&#8592; Back to Preventive Maintenance</button>
+<button class="sub-back" onclick="goBackFromLED()">&#8592; Back to LED</button>
+</div>
+
+<div id="sub-pm-led-sasm" class="sub-panel">
+<div class="sub-title">Semi Automatic Assembly Machine</div>
+<div class="sub-desc">Select an option</div>
+<div class="sub-cards">
+<a href="pm_data_entry.html?section=LED%20-%20Semi%20Automatic%20Assembly" class="sub-btn">
+<div class="sicon">&#128203;</div>
+<div class="slabel">Data Entry</div>
+</a>
+<a href="pm_dashboard.html?section=LED%20-%20Semi%20Automatic%20Assembly" class="sub-btn">
+<div class="sicon">&#128200;</div>
+<div class="slabel">Completed Dashboard</div>
+</a>
+</div>
+<button class="sub-back" onclick="goBackFromLED()">&#8592; Back to LED</button>
+</div>
+
+<div id="sub-pm-led-apm" class="sub-panel">
+<div class="sub-title">Automatic Packing Machine</div>
+<div class="sub-desc">Select an option</div>
+<div class="sub-cards">
+<a href="pm_data_entry.html?section=Automatic%20Packing%20Machine" class="sub-btn">
+<div class="sicon">&#128203;</div>
+<div class="slabel">Data Entry</div>
+</a>
+<a href="pm_dashboard.html?section=Automatic%20Packing%20Machine" class="sub-btn">
+<div class="sicon">&#128200;</div>
+<div class="slabel">Completed Dashboard</div>
+</a>
+</div>
+<button class="sub-back" onclick="goBackFromLED()">&#8592; Back to LED</button>
+</div>
+
+<div id="sub-pm-led-conveyor" class="sub-panel">
+<div class="sub-title">LED Assembly Conveyor line</div>
+<div class="sub-desc">Select an option</div>
+<div class="sub-cards">
+<a href="pm_data_entry.html?section=LED%20-%20Assembly%20Conveyor" class="sub-btn">
+<div class="sicon">&#128203;</div>
+<div class="slabel">Data Entry</div>
+</a>
+<a href="pm_dashboard.html?section=LED%20-%20Assembly%20Conveyor" class="sub-btn">
+<div class="sicon">&#128200;</div>
+<div class="slabel">Completed Dashboard</div>
+</a>
+</div>
+<button class="sub-back" onclick="goBackFromLED()">&#8592; Back to LED</button>
+</div>
+
+<div id="sub-pm-led-crimp" class="sub-panel">
+<div class="sub-title">Crimping Machine</div>
+<div class="sub-desc">Select an option</div>
+<div class="sub-cards">
+<a href="pm_data_entry.html?section=LED%20-%20Crimping" class="sub-btn">
+<div class="sicon">&#128203;</div>
+<div class="slabel">Data Entry</div>
+</a>
+<a href="pm_dashboard.html?section=LED%20-%20Crimping" class="sub-btn">
+<div class="sicon">&#128200;</div>
+<div class="slabel">Completed Dashboard</div>
+</a>
+</div>
+<button class="sub-back" onclick="goBackFromLED()">&#8592; Back to LED</button>
+</div>
+
+<div id="sub-pm-led-aging" class="sub-panel">
+<div class="sub-title">Manual Aging Line</div>
+<div class="sub-desc">Select an option</div>
+<div class="sub-cards">
+<a href="pm_data_entry.html?section=LED%20-%20Manual%20Aging" class="sub-btn">
+<div class="sicon">&#128203;</div>
+<div class="slabel">Data Entry</div>
+</a>
+<a href="pm_dashboard.html?section=LED%20-%20Manual%20Aging" class="sub-btn">
+<div class="sicon">&#128200;</div>
+<div class="slabel">Completed Dashboard</div>
+</a>
+</div>
+<button class="sub-back" onclick="goBackFromLED()">&#8592; Back to LED</button>
+</div>
+
+<div id="sub-pm-led-laser" class="sub-panel">
+<div class="sub-title">Single Station Laser Printer</div>
+<div class="sub-desc">Select an option</div>
+<div class="sub-cards">
+<a href="pm_data_entry.html?section=LED%20-%20Laser%20Printer" class="sub-btn">
+<div class="sicon">&#128203;</div>
+<div class="slabel">Data Entry</div>
+</a>
+<a href="pm_dashboard.html?section=LED%20-%20Laser%20Printer" class="sub-btn">
+<div class="sicon">&#128200;</div>
+<div class="slabel">Completed Dashboard</div>
+</a>
+</div>
+<button class="sub-back" onclick="goBackFromLED()">&#8592; Back to LED</button>
+</div>
+
+<div id="sub-pm-led-stamp" class="sub-panel">
+<div class="sub-title">Belt Stamping Machine</div>
+<div class="sub-desc">Select an option</div>
+<div class="sub-cards">
+<a href="pm_data_entry.html?section=LED%20-%20Belt%20Stamping" class="sub-btn">
+<div class="sicon">&#128203;</div>
+<div class="slabel">Data Entry</div>
+</a>
+<a href="pm_dashboard.html?section=LED%20-%20Belt%20Stamping" class="sub-btn">
+<div class="sicon">&#128200;</div>
+<div class="slabel">Completed Dashboard</div>
+</a>
+</div>
+<button class="sub-back" onclick="goBackFromLED()">&#8592; Back to LED</button>
+</div>
+
+<div id="sub-pm-led-chip" class="sub-panel">
+<div class="sub-title">Chip Cutting Machine</div>
+<div class="sub-desc">Select an option</div>
+<div class="sub-cards">
+<a href="pm_data_entry.html?section=LED%20-%20Chip%20Cutting" class="sub-btn">
+<div class="sicon">&#128203;</div>
+<div class="slabel">Data Entry</div>
+</a>
+<a href="pm_dashboard.html?section=LED%20-%20Chip%20Cutting" class="sub-btn">
+<div class="sicon">&#128200;</div>
+<div class="slabel">Completed Dashboard</div>
+</a>
+</div>
+<button class="sub-back" onclick="goBackFromLED()">&#8592; Back to LED</button>
 </div>
 
 <div id="sub-pm-hap" class="sub-panel">
@@ -470,7 +642,7 @@ body{background:var(--bg);min-height:100vh;overflow-x:hidden}
 </div>
 
 <script>
-function hideAll(){document.getElementById('landing').style.display='none';['sub-daily','sub-daily-check','sub-dc-ss','sub-dc-ch','sub-dc-cp','sub-dc-gen','sub-preventive','sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap','sub-pm-ip','sub-pm-crusher','sub-pm-mixture','sub-pm-feeding','sub-pm-conveyor','sub-pm-apm','sub-pm-pvc','sub-pm-pvc-cut','sub-pm-pvc-wrap','sub-pm-cb'].forEach(function(id){document.getElementById(id).classList.remove('show')})}
+function hideAll(){document.getElementById('landing').style.display='none';['sub-daily','sub-daily-check','sub-dc-ss','sub-dc-ch','sub-dc-cp','sub-dc-gen','sub-preventive','sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-led-aasm','sub-pm-led-sasm','sub-pm-led-apm','sub-pm-led-conveyor','sub-pm-led-crimp','sub-pm-led-aging','sub-pm-led-laser','sub-pm-led-stamp','sub-pm-led-chip','sub-pm-hap','sub-pm-ip','sub-pm-crusher','sub-pm-mixture','sub-pm-feeding','sub-pm-conveyor','sub-pm-apm','sub-pm-pvc','sub-pm-pvc-cut','sub-pm-pvc-wrap','sub-pm-cb'].forEach(function(id){document.getElementById(id).classList.remove('show')})}
 function showLanding(){hideAll();document.getElementById('landing').style.display='flex';location.hash='';window.scrollTo(0,0)}
 function showDaily(){hideAll();document.getElementById('sub-daily').classList.add('show');location.hash='sub-daily';window.scrollTo(0,0)}
 function showDailyCheck(){hideAll();document.getElementById('sub-daily-check').classList.add('show');location.hash='sub-daily-check';window.scrollTo(0,0)}
@@ -485,7 +657,8 @@ function goBackFromIMM(){var p=document.getElementById('sub-pm-ip');document.get
 function goBackFromPMChild(){var p=document.getElementById('sub-pm-ip');['sub-pm-crusher','sub-pm-mixture','sub-pm-feeding'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');location.hash='sub-pm-ip';window.scrollTo(0,0)}
 function goBackFromGSS(){var p=document.getElementById('sub-pm-gss');['sub-pm-conveyor','sub-pm-apm','sub-pm-pvc','sub-pm-pvc-cut','sub-pm-pvc-wrap','sub-pm-cb'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');location.hash='sub-pm-gss';window.scrollTo(0,0)}
 function goBackFromPVC(){var p=document.getElementById('sub-pm-pvc');['sub-pm-pvc-cut','sub-pm-pvc-wrap'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');location.hash='sub-pm-pvc';window.scrollTo(0,0)}
-function goBackFromPM(){var p=document.getElementById('sub-preventive');['sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-hap','sub-pm-ip','sub-pm-crusher','sub-pm-mixture','sub-pm-feeding','sub-pm-conveyor','sub-pm-apm','sub-pm-pvc','sub-pm-pvc-cut','sub-pm-pvc-wrap','sub-pm-cb'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');location.hash='sub-preventive';window.scrollTo(0,0)}
+function goBackFromLED(){var p=document.getElementById('sub-pm-led');['sub-pm-led-aasm','sub-pm-led-sasm','sub-pm-led-apm','sub-pm-led-conveyor','sub-pm-led-crimp','sub-pm-led-aging','sub-pm-led-laser','sub-pm-led-stamp','sub-pm-led-chip'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');location.hash='sub-pm-led';window.scrollTo(0,0)}
+function goBackFromPM(){var p=document.getElementById('sub-preventive');['sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-led-aasm','sub-pm-led-sasm','sub-pm-led-apm','sub-pm-led-conveyor','sub-pm-led-crimp','sub-pm-led-aging','sub-pm-led-laser','sub-pm-led-stamp','sub-pm-led-chip','sub-pm-hap','sub-pm-ip','sub-pm-crusher','sub-pm-mixture','sub-pm-feeding','sub-pm-conveyor','sub-pm-apm','sub-pm-pvc','sub-pm-pvc-cut','sub-pm-pvc-wrap','sub-pm-cb'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');location.hash='sub-preventive';window.scrollTo(0,0)}
 function showFromHash(){var h=(location.hash||'').replace(/^#/,'');if(h&&document.getElementById(h)){hideAll();document.getElementById(h).classList.add('show')}else{hideAll();document.getElementById('landing').style.display='flex'}}
 window.addEventListener('DOMContentLoaded',showFromHash);
 window.addEventListener('hashchange',showFromHash);
