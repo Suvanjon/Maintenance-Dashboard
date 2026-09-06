@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -17,7 +17,7 @@ body{background:
 .wrap{max-width:1200px;margin:18px auto;padding:0 14px 44px}
 .back-link{display:inline-block;margin:16px 0 14px;padding:9px 20px;background:#fff;color:#00565c;border:1px solid rgba(0,86,92,.3);text-decoration:none;border-radius:999px;font-size:13px;font-weight:600;transition:all .2s;box-shadow:0 2px 6px rgba(13,40,58,.06)}
 .back-link:hover{background:#00565c;color:#fff;border-color:#00565c;box-shadow:0 6px 16px rgba(0,86,92,.24)}
-.card{background:#fff;border:1px solid #e3ebef;border-radius:18px;padding:22px;box-shadow:0 6px 18px rgba(13,40,58,.07);margin-bottom:16px}
+.card{background:#fff;border:2px solid #00565c;border-radius:18px;padding:22px;box-shadow:0 6px 18px rgba(13,40,58,.07);margin-bottom:16px}
 .card-title{font-size:16px;font-weight:700;color:#00565c;margin-bottom:12px}
 .top-bar{display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap;margin-top:14px}
 .field{display:flex;flex-direction:column;gap:3px;flex:1;min-width:150px}
@@ -43,7 +43,7 @@ body{background:
 .read-card{flex:1;min-width:150px;background:#f4f9f9;border:1px solid #d9e8e8;border-radius:14px;padding:14px 16px;text-align:center;box-shadow:0 2px 6px rgba(13,40,58,.05)}
 .read-card .rc-label{font-size:11px;color:#00565c;font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
 .read-card .rc-val{font-size:22px;font-weight:800;color:#12263a}
-.tbl-wrap{overflow-x:auto;margin-top:10px;border:1px solid #e3ebef;border-radius:12px}
+.tbl-wrap{overflow-x:auto;margin-top:10px;border:1px solid rgba(0,86,92,.4);border-radius:12px}
 table{width:100%;border-collapse:collapse;font-size:13px}
 th{background:#eaf3f3;color:#00565c;padding:11px 10px;text-align:left;position:sticky;top:0;font-weight:700;cursor:pointer;user-select:none;border-bottom:2px solid #d7e6e6}
 th:hover{background:#dceeee}
@@ -114,7 +114,7 @@ var CONFIGS={
 'Sub Station':{
 csv:'https://docs.google.com/spreadsheets/d/12DyzDyOnHgoO7odTCq_X_B2syWaf_Z0d-v-Hb3rZ6qw/gviz/tq?tqx=out:csv&gid=156220258',
 title:'Sub Station Daily Checking Dashboard',
-readingFields:['LT Voltage (V)','LT Current (A)','Frequency (Hz)','Power Factor','Transformer Oil Temperature (°C)'],
+readingFields:['LT Voltage (V)','LT Current (A)','Frequency (Hz)','Power Factor','Transformer Oil Temperature (Â°C)'],
 textFields:['Any Abnormal Observation']
 },
 'Compressor':{
@@ -312,8 +312,8 @@ function updateSortIndicators(){
   var ths=document.querySelectorAll('th[data-col]');
   for(var i=0;i<ths.length;i++){
     var col=ths[i].getAttribute('data-col');
-    var txt=ths[i].textContent.replace(/\s*[▴▾]\s*$/,'');
-    if(col===sortCol)txt+=sortAsc?' ▴':' ▾';
+    var txt=ths[i].textContent.replace(/\s*[â–´â–¾]\s*$/,'');
+    if(col===sortCol)txt+=sortAsc?' â–´':' â–¾';
     ths[i].textContent=txt;
   }
 }
