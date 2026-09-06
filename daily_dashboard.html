@@ -5,42 +5,47 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daily Maintenance Dashboard - Akij Light Engineering Ltd.</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:#f5f3ef;font-family:Segoe UI,Arial,sans-serif;min-height:100vh;color:#222}
-.hdr{background:linear-gradient(180deg,#0a7d86 0%,#00565c 48%,#004448 100%);padding:14px 16px 12px;text-align:center;border-bottom:4px solid #004448;box-shadow:0 5px 18px rgba(0,40,44,.42)}
-
-
-.hdr-text{color:#fff;font-size:16px;font-weight:800;letter-spacing:.5px}
-.hdr-sub{color:rgba(255,255,255,.7);font-size:12px;margin-top:2px}
-.wrap{max-width:1100px;margin:18px auto;padding:0 12px 40px}
-.card{background:linear-gradient(160deg,#ffffff 0%,#fbfcfc 60%,#eef4f4 100%);border-radius:14px;padding:22px;box-shadow:0 12px 30px rgba(0,40,44,.16),0 3px 8px rgba(0,40,44,.10),inset 0 1px 0 #fff;margin-bottom:16px}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter','Segoe UI',-apple-system,Roboto,Arial,sans-serif}
+body{background:
+ radial-gradient(1200px 480px at 12% -10%, rgba(42,154,160,.13), transparent 60%),
+ radial-gradient(1000px 440px at 108% -18%, rgba(0,86,92,.11), transparent 55%),
+ #f4f7f9;min-height:100vh;color:#12263a;-webkit-font-smoothing:antialiased}
+.hdr{background:linear-gradient(135deg,#0b7f89 0%,#006066 45%,#003c44 100%);padding:15px 18px 13px;text-align:center;position:relative;overflow:hidden}
+.hdr:after{content:"";position:absolute;inset:0;background:radial-gradient(700px 180px at 50% -80%,rgba(255,255,255,.2),transparent 70%);pointer-events:none}
+.hdr-text{position:relative;color:#fff;font-size:16px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.hdr-sub{position:relative;color:rgba(255,255,255,.72);font-size:12px;margin-top:2px}
+.wrap{max-width:1150px;margin:18px auto;padding:0 14px 44px}
+.card{background:#fff;border:1px solid #e3ebef;border-radius:18px;padding:22px;box-shadow:0 6px 18px rgba(13,40,58,.07);margin-bottom:16px}
 .top-bar{display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap}
 .field{display:flex;flex-direction:column;gap:3px;flex:1;min-width:150px}
-.field label{font-size:13px;font-weight:600;color:#555}
-.field select,.field input[type=date]{padding:8px 10px;border:1.5px solid #ccc;border-radius:6px;font-size:14px}
-.field select:focus,.field input:focus{border-color:#005151;outline:none}
-.back-link{display:inline-block;margin:16px 0 0;padding:8px 18px;background:linear-gradient(180deg,#0a7d86,#00565c);color:#fff;text-decoration:none;border-radius:8px;font-size:13px;font-weight:600;transition:all .2s;box-shadow:0 4px 10px rgba(0,40,44,.24),inset 0 1px 0 rgba(255,255,255,.25)}
-.back-link:hover{background:linear-gradient(180deg,#0f96a1,#004448);box-shadow:0 6px 14px rgba(0,40,44,.3)}
-.tbl-wrap{overflow-x:auto;margin-top:10px}
+.field label{font-size:12px;font-weight:600;color:#5d7283;text-transform:uppercase;letter-spacing:.04em}
+.field select,.field input[type=date]{padding:9px 12px;border:1.5px solid #d8e2e6;border-radius:10px;font-size:14px;background:#fff;transition:border-color .15s,box-shadow .15s;font-family:inherit}
+.field select:focus,.field input:focus{border-color:#0a6b72;outline:none;box-shadow:0 0 0 3px rgba(42,154,160,.16)}
+.back-link{display:inline-block;margin:16px 0 14px;padding:9px 20px;background:#fff;color:#00565c;border:1px solid rgba(0,86,92,.3);text-decoration:none;border-radius:999px;font-size:13px;font-weight:600;transition:all .2s;box-shadow:0 2px 6px rgba(13,40,58,.06)}
+.back-link:hover{background:#00565c;color:#fff;border-color:#00565c;box-shadow:0 6px 16px rgba(0,86,92,.24)}
+.tbl-wrap{overflow-x:auto;margin-top:10px;border:1px solid #e3ebef;border-radius:12px}
 table{width:100%;border-collapse:collapse;font-size:13px}
-th{background:#005151;color:#fff;padding:10px 8px;text-align:left;position:sticky;top:0;font-weight:600;cursor:pointer;user-select:none}
-th:hover{background:#003838}
-td{padding:8px;border-bottom:1px solid #e0e0e0;vertical-align:middle}
-tr:hover{background:#f5f5f5}
-.sl{text-align:center;font-weight:700;color:#005151;width:40px}
-.no-data{text-align:center;padding:40px;color:#888;font-size:15px}
-.loading{text-align:center;padding:40px;color:#005151;font-size:15px}
-.stat{padding:10px 18px;border-radius:10px;font-size:14px;font-weight:600;color:#fff;min-width:120px;text-align:center;box-shadow:0 6px 16px rgba(0,40,44,.24),inset 0 1px 0 rgba(255,255,255,.3),inset 0 -5px 10px rgba(0,0,0,.12)}
-.stats{display:flex;gap:16px;margin:14px 0;flex-wrap:wrap}
-.stat.total{background:linear-gradient(180deg,#0a7d86,#00565c)}
-.stat.done{background:linear-gradient(180deg,#43a047,#2e7d32)}
-.stat.pending{background:linear-gradient(180deg,#ffb300,#f57c00)}
+th{background:#eaf3f3;color:#00565c;padding:11px 10px;text-align:left;position:sticky;top:0;font-weight:700;cursor:pointer;user-select:none;border-bottom:2px solid #d7e6e6}
+th:hover{background:#dceeee}
+td{padding:10px;border-bottom:1px solid #eef2f4;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#f6fafb}
+.sl{text-align:center;font-weight:700;color:#00565c;width:40px}
+.no-data{text-align:center;padding:44px;color:#8aa0ae;font-size:15px}
+.loading{text-align:center;padding:44px;color:#00565c;font-size:15px}
+.stat{padding:14px 20px;border-radius:14px;font-size:14px;font-weight:600;color:#fff;min-width:130px;text-align:center;position:relative;overflow:hidden;box-shadow:0 10px 22px rgba(13,40,58,.14)}
+.stat:after{content:"";position:absolute;top:-26px;right:-26px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.14)}
+.stat .num{font-size:28px;font-weight:800;display:block;margin-bottom:2px;position:relative}
+.stats{display:flex;gap:14px;margin:14px 0;flex-wrap:wrap}
+.stat.total{background:linear-gradient(135deg,#0b7f89,#00565c)}
+.stat.done{background:linear-gradient(135deg,#4caf50,#2e7d32)}
+.stat.pending{background:linear-gradient(135deg,#ffb74d,#ef6c00)}
 .chart{display:flex;flex-direction:column;gap:7px}
 .chart-row{display:flex;align-items:center;gap:10px;font-size:13px}
-.chart-label{width:210px;text-align:right;color:#333;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.chart-bar-wrap{flex:1;background:#efece8;border-radius:6px;height:24px;overflow:hidden}
-.chart-bar{height:100%;background:linear-gradient(90deg,#003838,#005151,#0a7d7d);border-radius:6px;color:#fff;font-weight:700;white-space:nowrap;text-align:right;line-height:24px;padding-right:6px;box-sizing:border-box}
-.chart-empty{text-align:center;color:#888;padding:18px;font-size:14px}
+.chart-label{width:210px;text-align:right;color:#33475c;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chart-bar-wrap{flex:1;background:#eef2f4;border-radius:8px;height:22px;overflow:hidden}
+.chart-bar{height:100%;background:linear-gradient(90deg,#006666,#00979c);border-radius:8px;color:#fff;font-weight:700;white-space:nowrap;text-align:right;line-height:22px;padding-right:8px;box-sizing:border-box;transition:width .5s ease}
+.chart-empty{text-align:center;color:#8aa0ae;padding:18px;font-size:14px}
 </style>
 </head>
 <body>
