@@ -3,31 +3,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Data Entry - Daily Maintenance</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Roboto,Arial,sans-serif}
-body{background:#f5f3ef;min-height:100vh;color:#222}
-.hdr{background:linear-gradient(180deg,#0a7d86 0%,#00565c 48%,#004448 100%);padding:14px 16px 12px;text-align:center;border-bottom:4px solid #004448;box-shadow:0 5px 18px rgba(0,40,44,.42)}
-
-
-.hdr-text{color:#fff;font-size:16px;font-weight:800;letter-spacing:.5px}
-.hdr-sub{color:rgba(255,255,255,.7);font-size:12px;margin-top:2px}
-.wrap{max-width:700px;margin:18px auto;padding:0 12px 40px}
-.back-link{display:inline-block;margin-bottom:14px;padding:8px 18px;background:linear-gradient(180deg,#0a7d86,#00565c);color:#fff;text-decoration:none;border-radius:8px;font-size:13px;font-weight:600;transition:all .2s;box-shadow:0 4px 10px rgba(0,40,44,.24),inset 0 1px 0 rgba(255,255,255,.25)}
-.back-link:hover{background:linear-gradient(180deg,#0f96a1,#004448);box-shadow:0 6px 14px rgba(0,40,44,.3)}
-.card{background:linear-gradient(160deg,#ffffff 0%,#fbfcfc 60%,#eef4f4 100%);border-radius:14px;padding:24px;box-shadow:0 12px 30px rgba(0,40,44,.16),0 3px 8px rgba(0,40,44,.10),inset 0 1px 0 #fff}
-.card h2{color:#005151;font-size:20px;font-weight:700;margin-bottom:20px}
-.field{margin-bottom:16px}
-.field label{display:block;font-size:13px;font-weight:600;color:#555;margin-bottom:5px}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter','Segoe UI',-apple-system,Roboto,Arial,sans-serif}
+body{background:
+ radial-gradient(1200px 480px at 12% -10%, rgba(42,154,160,.13), transparent 60%),
+ radial-gradient(1000px 440px at 108% -18%, rgba(0,86,92,.11), transparent 55%),
+ #f4f7f9;min-height:100vh;color:#12263a;-webkit-font-smoothing:antialiased}
+.hdr{background:linear-gradient(135deg,#0b7f89 0%,#006066 45%,#003c44 100%);padding:15px 18px 13px;text-align:center;position:relative;overflow:hidden}
+.hdr:after{content:"";position:absolute;inset:0;background:radial-gradient(700px 180px at 50% -80%,rgba(255,255,255,.2),transparent 70%);pointer-events:none}
+.hdr-text{position:relative;color:#fff;font-size:16px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.hdr-sub{position:relative;color:rgba(255,255,255,.72);font-size:12px;margin-top:2px}
+.wrap{max-width:720px;margin:22px auto;padding:0 16px 48px}
+.back-link{display:inline-block;margin-bottom:16px;padding:9px 20px;background:#fff;color:#00565c;border:1px solid rgba(0,86,92,.3);text-decoration:none;border-radius:999px;font-size:13px;font-weight:600;transition:all .2s;box-shadow:0 2px 6px rgba(13,40,58,.06)}
+.back-link:hover{background:#00565c;color:#fff;border-color:#00565c;box-shadow:0 6px 16px rgba(0,86,92,.24)}
+.card{background:#fff;border:1px solid #e3ebef;border-radius:20px;padding:26px;box-shadow:0 10px 30px rgba(13,40,58,.09)}
+.card h2{color:#00565c;font-size:21px;font-weight:800;margin-bottom:20px}
+.field{margin-bottom:18px}
+.field label{display:block;font-size:13px;font-weight:600;color:#33475c;margin-bottom:7px}
 .field label .req{color:#e53935;margin-left:2px}
-.field select,.field input,.field textarea{width:100%;padding:10px 12px;border:1.5px solid #ccc;border-radius:6px;font-size:14px;background:#fff;transition:border-color .2s}
-.field select:focus,.field input:focus,.field textarea:focus{border-color:#005151;outline:none}
+.field select,.field input,.field textarea{width:100%;padding:11px 14px;border:1.5px solid #d8e2e6;border-radius:12px;font-size:14px;background:#fff;transition:border-color .15s,box-shadow .15s;font-family:inherit}
+.field select:focus,.field input:focus,.field textarea:focus{border-color:#0a6b72;outline:none;box-shadow:0 0 0 3px rgba(42,154,160,.16)}
 .field textarea{resize:vertical;min-height:60px}
 .row{display:flex;gap:14px}
 .row .field{flex:1}
-.btn{display:inline-block;padding:12px 32px;background:linear-gradient(180deg,#0a7d86,#00565c);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:8px;box-shadow:0 6px 14px rgba(0,40,44,.28),inset 0 1px 0 rgba(255,255,255,.3)}
-.btn:hover{background:#003838}
-.btn:active{transform:scale(.97)}
-.success-msg{display:none;background:#2e7d32;color:#fff;padding:16px;border-radius:8px;text-align:center;font-size:16px;font-weight:600;margin-top:16px}
-.error-msg{display:none;background:#e53935;color:#fff;padding:12px;border-radius:8px;text-align:center;font-size:14px;font-weight:600;margin-top:12px}
+.btn{display:inline-block;padding:13px 34px;background:linear-gradient(135deg,#0b7f89,#00565c);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:8px;box-shadow:0 8px 18px rgba(0,86,92,.24)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(0,86,92,.3);background:linear-gradient(135deg,#0f96a1,#00565c)}
+.btn:active{transform:translateY(0) scale(.98)}
+.success-msg{display:none;background:linear-gradient(135deg,#43a047,#2e7d32);color:#fff;padding:16px;border-radius:14px;text-align:center;font-size:16px;font-weight:700;margin-top:18px;box-shadow:0 8px 18px rgba(46,125,50,.25)}
+.error-msg{display:none;background:#fff0ee;border:1px solid #ffcdc7;color:#c62828;padding:13px;border-radius:12px;text-align:center;font-size:14px;font-weight:600;margin-top:14px}
 #machineWrapper{display:none}
 </style>
 </head>
