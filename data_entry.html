@@ -159,10 +159,15 @@ form.addEventListener('submit',function(e){
   form.reset();machWrap.style.display='none';
   mach.innerHTML='<option value="">-- Select Machine --</option>';
   var ow=document.getElementById('otherMachineWrap');if(ow)ow.style.display='none';
-  document.getElementById('fDate').value=new Date().toISOString().split('T')[0];
+  document.getElementById('fDate').value=yesterdayStr();
   setTimeout(function(){succMsg.style.display='none'},5000);
 });
-document.getElementById('fDate').value=new Date().toISOString().split('T')[0];
+function yesterdayStr(){
+  var d=new Date();d.setDate(d.getDate()-1);
+  var m=('0'+(d.getMonth()+1)).slice(-2),dd=('0'+d.getDate()).slice(-2);
+  return d.getFullYear()+'-'+m+'-'+dd;
+}
+document.getElementById('fDate').value=yesterdayStr();
 </script>
 
 
