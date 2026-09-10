@@ -576,6 +576,10 @@ body{font-family:'Inter','Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,Aria
 <div class="sicon">&#9881;</div>
 <div class="slabel">Temperature Testing Machine (Electric Iron)</div>
 </div>
+<div class="sub-btn" onclick="showPM('sub-pm-hap-tempcook')">
+<div class="sicon">&#9881;</div>
+<div class="slabel">Temperature Testing Machine (Electric Cooker)</div>
+</div>
 <div class="sub-btn" onclick="showPM('sub-pm-hap-glucook')">
 <div class="sicon">&#9881;</div>
 <div class="slabel">Gluing Machine (Electric Cooker)</div>
@@ -701,6 +705,22 @@ body{font-family:'Inter','Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,Aria
 <div class="slabel">Data Entry</div>
 </a>
 <a href="pm_dashboard.html?section=HAP%20-%20Temp%20Testing" class="sub-btn">
+<div class="sicon">&#128200;</div>
+<div class="slabel">Completed Dashboard</div>
+</a>
+</div>
+<button class="sub-back" onclick="goBackFromHAP()">&#8592; Back to HAP</button>
+</div>
+
+<div id="sub-pm-hap-tempcook" class="sub-panel">
+<div class="sub-title">Temperature Testing Machine (Electric Cooker)</div>
+<div class="sub-desc">Select an option</div>
+<div class="sub-cards">
+<a href="pm_data_entry.html?section=HAP%20-%20Temp%20Testing%20Cooker" class="sub-btn">
+<div class="sicon">&#128203;</div>
+<div class="slabel">Data Entry</div>
+</a>
+<a href="pm_dashboard.html?section=HAP%20-%20Temp%20Testing%20Cooker" class="sub-btn">
 <div class="sicon">&#128200;</div>
 <div class="slabel">Completed Dashboard</div>
 </a>
@@ -909,7 +929,7 @@ body{font-family:'Inter','Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,Aria
 </div>
 
 <script>
-function hideAll(){document.getElementById('landing').style.display='none';['sub-daily','sub-daily-check','sub-dc-ss','sub-dc-ch','sub-dc-cp','sub-dc-gen','sub-preventive','sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-led-aasm','sub-pm-led-sasm','sub-pm-led-apm','sub-pm-led-conveyor','sub-pm-led-crimp','sub-pm-led-aging','sub-pm-led-laser','sub-pm-led-stamp','sub-pm-led-chip','sub-pm-hap','sub-pm-hap-cb','sub-pm-hap-qc','sub-pm-hap-flame','sub-pm-hap-swgs','sub-pm-hap-gasleak','sub-pm-hap-tempiron','sub-pm-hap-glucook','sub-pm-hap-swkettle','sub-pm-hap-cwkettle','sub-pm-hap-edge','sub-pm-hap-gluplate','sub-pm-hap-leak4','sub-pm-hap-apk','sub-pm-hap-bstamp','sub-pm-ip','sub-pm-crusher','sub-pm-mixture','sub-pm-feeding','sub-pm-conveyor','sub-pm-apm','sub-pm-pvc','sub-pm-pvc-cut','sub-pm-pvc-wrap','sub-pm-cb'].forEach(function(id){document.getElementById(id).classList.remove('show')})}
+function hideAll(){document.getElementById('landing').style.display='none';['sub-daily','sub-daily-check','sub-dc-ss','sub-dc-ch','sub-dc-cp','sub-dc-gen','sub-preventive','sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-led-aasm','sub-pm-led-sasm','sub-pm-led-apm','sub-pm-led-conveyor','sub-pm-led-crimp','sub-pm-led-aging','sub-pm-led-laser','sub-pm-led-stamp','sub-pm-led-chip','sub-pm-hap','sub-pm-hap-cb','sub-pm-hap-qc','sub-pm-hap-flame','sub-pm-hap-swgs','sub-pm-hap-gasleak','sub-pm-hap-tempiron','sub-pm-hap-tempcook','sub-pm-hap-glucook','sub-pm-hap-swkettle','sub-pm-hap-cwkettle','sub-pm-hap-edge','sub-pm-hap-gluplate','sub-pm-hap-leak4','sub-pm-hap-apk','sub-pm-hap-bstamp','sub-pm-ip','sub-pm-crusher','sub-pm-mixture','sub-pm-feeding','sub-pm-conveyor','sub-pm-apm','sub-pm-pvc','sub-pm-pvc-cut','sub-pm-pvc-wrap','sub-pm-cb'].forEach(function(id){document.getElementById(id).classList.remove('show')})}
 function showLanding(){hideAll();document.getElementById('landing').style.display='flex';location.hash='';window.scrollTo(0,0)}
 function showDaily(){hideAll();document.getElementById('sub-daily').classList.add('show');location.hash='sub-daily';window.scrollTo(0,0)}
 function showDailyCheck(){hideAll();document.getElementById('sub-daily-check').classList.add('show');location.hash='sub-daily-check';window.scrollTo(0,0)}
@@ -925,8 +945,8 @@ function goBackFromPMChild(){var p=document.getElementById('sub-pm-ip');['sub-pm
 function goBackFromGSS(){var p=document.getElementById('sub-pm-gss');['sub-pm-conveyor','sub-pm-apm','sub-pm-pvc','sub-pm-pvc-cut','sub-pm-pvc-wrap','sub-pm-cb'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');location.hash='sub-pm-gss';window.scrollTo(0,0)}
 function goBackFromPVC(){var p=document.getElementById('sub-pm-pvc');['sub-pm-pvc-cut','sub-pm-pvc-wrap'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');location.hash='sub-pm-pvc';window.scrollTo(0,0)}
 function goBackFromLED(){var p=document.getElementById('sub-pm-led');['sub-pm-led-aasm','sub-pm-led-sasm','sub-pm-led-apm','sub-pm-led-conveyor','sub-pm-led-crimp','sub-pm-led-aging','sub-pm-led-laser','sub-pm-led-stamp','sub-pm-led-chip'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');location.hash='sub-pm-led';window.scrollTo(0,0)}
-function goBackFromHAP(){var p=document.getElementById('sub-pm-hap');['sub-pm-hap-cb','sub-pm-hap-qc','sub-pm-hap-flame','sub-pm-hap-swgs','sub-pm-hap-gasleak','sub-pm-hap-tempiron','sub-pm-hap-glucook','sub-pm-hap-swkettle','sub-pm-hap-cwkettle','sub-pm-hap-edge','sub-pm-hap-gluplate','sub-pm-hap-leak4','sub-pm-hap-apk','sub-pm-hap-bstamp'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');location.hash='sub-pm-hap';window.scrollTo(0,0)}
-function goBackFromPM(){var p=document.getElementById('sub-preventive');['sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-led-aasm','sub-pm-led-sasm','sub-pm-led-apm','sub-pm-led-conveyor','sub-pm-led-crimp','sub-pm-led-aging','sub-pm-led-laser','sub-pm-led-stamp','sub-pm-led-chip','sub-pm-hap','sub-pm-hap-cb','sub-pm-hap-qc','sub-pm-hap-flame','sub-pm-hap-swgs','sub-pm-hap-gasleak','sub-pm-hap-tempiron','sub-pm-hap-glucook','sub-pm-hap-swkettle','sub-pm-hap-cwkettle','sub-pm-hap-edge','sub-pm-hap-gluplate','sub-pm-hap-leak4','sub-pm-hap-apk','sub-pm-hap-bstamp','sub-pm-ip','sub-pm-crusher','sub-pm-mixture','sub-pm-feeding','sub-pm-conveyor','sub-pm-apm','sub-pm-pvc','sub-pm-pvc-cut','sub-pm-pvc-wrap','sub-pm-cb'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');location.hash='sub-preventive';window.scrollTo(0,0)}
+function goBackFromHAP(){var p=document.getElementById('sub-pm-hap');['sub-pm-hap-cb','sub-pm-hap-qc','sub-pm-hap-flame','sub-pm-hap-swgs','sub-pm-hap-gasleak','sub-pm-hap-tempiron','sub-pm-hap-tempcook','sub-pm-hap-glucook','sub-pm-hap-swkettle','sub-pm-hap-cwkettle','sub-pm-hap-edge','sub-pm-hap-gluplate','sub-pm-hap-leak4','sub-pm-hap-apk','sub-pm-hap-bstamp'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');location.hash='sub-pm-hap';window.scrollTo(0,0)}
+function goBackFromPM(){var p=document.getElementById('sub-preventive');['sub-pm-imm','sub-pm-gss','sub-pm-led','sub-pm-led-aasm','sub-pm-led-sasm','sub-pm-led-apm','sub-pm-led-conveyor','sub-pm-led-crimp','sub-pm-led-aging','sub-pm-led-laser','sub-pm-led-stamp','sub-pm-led-chip','sub-pm-hap','sub-pm-hap-cb','sub-pm-hap-qc','sub-pm-hap-flame','sub-pm-hap-swgs','sub-pm-hap-gasleak','sub-pm-hap-tempiron','sub-pm-hap-tempcook','sub-pm-hap-glucook','sub-pm-hap-swkettle','sub-pm-hap-cwkettle','sub-pm-hap-edge','sub-pm-hap-gluplate','sub-pm-hap-leak4','sub-pm-hap-apk','sub-pm-hap-bstamp','sub-pm-ip','sub-pm-crusher','sub-pm-mixture','sub-pm-feeding','sub-pm-conveyor','sub-pm-apm','sub-pm-pvc','sub-pm-pvc-cut','sub-pm-pvc-wrap','sub-pm-cb'].forEach(function(id){document.getElementById(id).classList.remove('show')});p.classList.add('show');location.hash='sub-preventive';window.scrollTo(0,0)}
 function showFromHash(){var h=(location.hash||'').replace(/^#/,'');if(h&&document.getElementById(h)){hideAll();document.getElementById(h).classList.add('show')}else{hideAll();document.getElementById('landing').style.display='flex'}}
 window.addEventListener('DOMContentLoaded',showFromHash);
 window.addEventListener('hashchange',showFromHash);
