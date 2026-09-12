@@ -3,6 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#005151">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Maintenance Portal">
 <title>Maintenance Portal - Akij Light Engineering Ltd.</title>
 <style>
 :root{
@@ -969,6 +976,9 @@ function goBackFromPM(){var p=document.getElementById('sub-preventive');['sub-pm
 function showFromHash(){var h=(location.hash||'').replace(/^#/,'');if(h&&document.getElementById(h)){hideAll();document.getElementById(h).classList.add('show')}else{hideAll();document.getElementById('landing').style.display='flex'}}
 window.addEventListener('DOMContentLoaded',showFromHash);
 window.addEventListener('hashchange',showFromHash);
+</script>
+<script>
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
 </script>
 </body>
 </html>
