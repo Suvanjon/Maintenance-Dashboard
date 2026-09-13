@@ -294,13 +294,23 @@ Promise.all(MODULES.map(function(m){
   }).catch(function(){return{category:m.category,name:m.name,records:[]}});
 })).then(function(results){
   MOD_RESULTS=results;
-  var last='';
-  MOD_RESULTS.forEach(function(m){m.records.forEach(function(r){if(r.date&&r.date>last)last=r.date})});
-  if(last){document.getElementById('dateFrom').value=last;document.getElementById('dateTo').value=last;}
-  document.getElementById('dateFrom').onchange=render;
-  document.getElementById('dateTo').onchange=render;
+  var t=new Date();
+  var tm=('0'+(t.getMonth()+1)).slice(-2),td=('0'+t.getDate()).slice(-2);
+  var tStr=t.getFullYear()+'-'+tm+'-'+td;
+  document.getElementById('dateFrom').value=tStr;
+  document.getElementById('dateTo').value=tStr;
+  document.getElementById('dateFrom').onchange=onDateChange;
+  document.getElementById('dateTo').onchange=onDateChange;
   render();
 });
+
+function onDateChange(){
+  var df=document.getElementById('dateFrom'),dt=document.getElementById('dateTo');
+  if(df.value&&dt.value&&df.value>dt.value){
+    if(this===df)dt.value=df.value;else df.value=dt.value;
+  }
+  render();
+}
 </script>
 </body>
 </html>

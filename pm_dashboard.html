@@ -430,9 +430,11 @@ function loadData(){
     }
     document.getElementById('loadingMsg').style.display='none';
     initFilters();
-    var last='';
-    DATA.forEach(function(r){var n=normDate(r.date);if(n>last)last=n});
-    if(last){document.getElementById('dateFrom').value=last;document.getElementById('dateTo').value=last;}
+    var t=new Date();
+    var tm=('0'+(t.getMonth()+1)).slice(-2),td=('0'+t.getDate()).slice(-2);
+    var tStr=t.getFullYear()+'-'+tm+'-'+td;
+    document.getElementById('dateFrom').value=tStr;
+    document.getElementById('dateTo').value=tStr;
     render();
   }).catch(function(e){
     document.getElementById('loadingMsg').textContent='Failed to load data: '+e.message;
@@ -446,8 +448,16 @@ function initFilters(){
   Object.keys(machs).sort().forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;mach.appendChild(o)});
   mach.onchange=render;
   document.getElementById('statusFilter').onchange=render;
-  document.getElementById('dateFrom').onchange=render;
-  document.getElementById('dateTo').onchange=render;
+  document.getElementById('dateFrom').onchange=onDateChange;
+  document.getElementById('dateTo').onchange=onDateChange;
+}
+
+function onDateChange(){
+  var df=document.getElementById('dateFrom'),dt=document.getElementById('dateTo');
+  if(df.value&&dt.value&&df.value>dt.value){
+    if(this===df)dt.value=df.value;else df.value=dt.value;
+  }
+  render();
 }
 
 var sortCol='date',sortAsc=false;
