@@ -186,8 +186,16 @@ function initFilters(){
   ordered.forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;sec.appendChild(o)});
   Object.keys(machs).sort().forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;mach.appendChild(o)});
   sec.onchange=render;mach.onchange=render;
-  document.getElementById('dateFrom').onchange=render;
-  document.getElementById('dateTo').onchange=render;
+  document.getElementById('dateFrom').onchange=onDateChange;
+  document.getElementById('dateTo').onchange=onDateChange;
+}
+
+function onDateChange(){
+  var df=document.getElementById('dateFrom'),dt=document.getElementById('dateTo');
+  if(df.value&&dt.value&&df.value>dt.value){
+    if(this===df)dt.value=df.value;else df.value=dt.value;
+  }
+  render();
 }
 
 var sortCol='date',sortAsc=false;
