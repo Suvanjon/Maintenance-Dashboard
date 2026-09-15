@@ -63,11 +63,21 @@ tr:hover td{background:#f6fafb}
 <div class="field"><label>Date To</label><input type="date" id="dateTo"></div>
 <div class="field"><label>Section</label><select id="sectionFilter"><option value="">All Sections</option></select></div>
 <div class="field"><label>Machine Name</label><select id="machineFilter"><option value="">All Machines</option></select></div>
-<div class="field"><label>Type</label><select id="typeFilter"><option value="">All Types</option><option value="Breakdown">Breakdown</option><option value="Changeover">Changeover</option></select></div>
+
 </div>
 </div>
 <div class="card">
-<div style="font-size:16px;font-weight:700;color:#005151;margin-bottom:12px">Work by Section</div>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap">
+<div style="font-size:16px;font-weight:700;color:#005151">Work by Section</div>
+<div class="field" style="flex:0 0 auto;min-width:190px;margin:0">
+<label>Type</label>
+<select id="typeFilter">
+<option value="">All Types</option>
+<option value="Breakdown">Breakdown</option>
+<option value="Changeover">Changeover</option>
+</select>
+</div>
+</div>
 <div id="chart" class="chart"><div class="chart-empty">Loading...</div></div>
 </div>
 <div class="stats" id="stats">
