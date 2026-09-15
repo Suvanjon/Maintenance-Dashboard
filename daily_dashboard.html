@@ -63,6 +63,7 @@ tr:hover td{background:#f6fafb}
 <div class="field"><label>Date To</label><input type="date" id="dateTo"></div>
 <div class="field"><label>Section</label><select id="sectionFilter"><option value="">All Sections</option></select></div>
 <div class="field"><label>Machine Name</label><select id="machineFilter"><option value="">All Machines</option></select></div>
+<div class="field"><label>Type</label><select id="typeFilter"><option value="">All Types</option><option value="Breakdown">Breakdown</option><option value="Changeover">Changeover</option></select></div>
 </div>
 </div>
 <div class="card">
@@ -81,6 +82,7 @@ tr:hover td{background:#f6fafb}
 <thead><tr>
 <th data-col="sl">S/L</th>
 <th data-col="date">Date &#x25B4</th>
+<th data-col="type">Type</th>
 <th data-col="section">Section</th>
 <th data-col="machine">Machine</th>
 <th data-col="problem">Problem</th>
@@ -158,9 +160,10 @@ function loadData(){
       var start=(r[8]||'').trim();
       var end=(r[9]||'').trim();
       var person=(r[10]||'').trim();
-      var duration=(r[11]||'').trim();
+      var type=(r[11]||'').trim();
+      var duration=(r[12]||'').trim();
       if(!date&&!section&&!machine)continue;
-      DATA.push({date:date,section:section,machine:machine,problem:problem,action:action,spare:spare,person:person,start:start,end:end,duration:duration});
+      DATA.push({date:date,section:section,machine:machine,problem:problem,action:action,spare:spare,person:person,type:type,start:start,end:end,duration:duration});
     }
     document.getElementById('loadingMsg').style.display='none';
     initFilters();
@@ -186,6 +189,7 @@ function initFilters(){
   ordered.forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;sec.appendChild(o)});
   Object.keys(machs).sort().forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;mach.appendChild(o)});
   sec.onchange=render;mach.onchange=render;
+  document.getElementById('typeFilter').onchange=render;
   document.getElementById('dateFrom').onchange=onDateChange;
   document.getElementById('dateTo').onchange=onDateChange;
 }
@@ -236,11 +240,13 @@ function fmtDuration(min){
 function render(){
   var sv=document.getElementById('sectionFilter').value;
   var mv=document.getElementById('machineFilter').value;
+  var tv=document.getElementById('typeFilter').value;
   var df=document.getElementById('dateFrom').value;
   var dt=document.getElementById('dateTo').value;
   var filtered=DATA.filter(function(r){
     if(sv&&r.section!==sv)return false;
     if(mv&&r.machine!==mv)return false;
+    if(tv&&r.type!==tv)return false;
     if(df&&normDate(r.date)<df)return false;
     if(dt&&normDate(r.date)>dt)return false;
     return true;
@@ -258,7 +264,7 @@ function render(){
   document.getElementById('dataTable').style.display=filtered.length?'table':'none';
   filtered.forEach(function(r,i){
     var tr=document.createElement('tr');
-    tr.innerHTML='<td class="sl">'+(i+1)+'</td><td>'+esc(r.date)+'</td><td>'+esc(r.section)+'</td><td>'+esc(r.machine)+'</td><td>'+esc(r.problem)+'</td><td>'+esc(r.action)+'</td><td>'+esc(r.spare)+'</td><td>'+esc(r.person)+'</td><td>'+esc(r.start)+'</td><td>'+esc(r.end)+'</td><td>'+esc(fmtDuration(durationMinutes(r)))+'</td>';
+    tr.innerHTML='<td class="sl">'+(i+1)+'</td><td>'+esc(r.date)+'</td><td>'+esc(r.type)+'</td><td>'+esc(r.section)+'</td><td>'+esc(r.machine)+'</td><td>'+esc(r.problem)+'</td><td>'+esc(r.action)+'</td><td>'+esc(r.spare)+'</td><td>'+esc(r.person)+'</td><td>'+esc(r.start)+'</td><td>'+esc(r.end)+'</td><td>'+esc(fmtDuration(durationMinutes(r)))+'</td>';
     tb.appendChild(tr);
   });
   document.getElementById('stTotal').textContent='Records: '+filtered.length;
