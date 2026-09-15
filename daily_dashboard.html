@@ -83,8 +83,7 @@ tr:hover td{background:#f6fafb}
 <select id="durationFilter">
 <option value="">All Durations</option>
 <option value="0-30">Up to 30 min</option>
-<option value="31-60">31 to 60 min</option>
-<option value="60+">Above 60 min</option>
+<option value="30+">30 min &amp; above</option>
 </select>
 </div>
 </div>
@@ -274,8 +273,7 @@ function render(){
       var dm=durationMinutes(r);
       if(dm==null)return false;
       if(durv==='0-30'&&dm>30)return false;
-      if(durv==='31-60'&&(dm<31||dm>60))return false;
-      if(durv==='60+'&&dm<=60)return false;
+      if(durv==='30+'&&dm<=30)return false;
     }
     if(df&&normDate(r.date)<df)return false;
     if(dt&&normDate(r.date)>dt)return false;
