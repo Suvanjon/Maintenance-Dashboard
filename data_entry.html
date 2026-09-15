@@ -48,6 +48,14 @@ body{background:
 <input type="date" name="entry.713877233" id="fDate" required="">
 </div>
 <div class="field">
+<label>Type <span class="req">*</span></label>
+<select name="entry.1793557163" id="fType" required="">
+<option value="">-- Select Type --</option>
+<option value="Breakdown">Breakdown</option>
+<option value="Changeover">Changeover</option>
+</select>
+</div>
+<div class="field">
 <label>Section</label>
 <select name="entry.938132357" id="fSection">
 <option value="">-- Select Section --</option>
@@ -91,10 +99,10 @@ body{background:
 </div>
 
 <input type="hidden" name="fvv" value="1">
-<input type="hidden" name="partialResponse" value='[null,null,"8203609132818112779"]'>
+<input type="hidden" name="partialResponse" value='[null,null,"6144070160382646432"]'>
 <input type="hidden" name="pageHistory" value="0">
 <input type="hidden" name="draftResponse" value="[,,]">
-<input type="hidden" name="fbzx" value="-3317017233260532449">
+<input type="hidden" name="fbzx" value="6144070160382646432">
 <button type="submit" class="btn">Submit Entry</button>
 <div class="error-msg" id="errMsg"></div>
 <div class="success-msg" id="succMsg">✓ Entry submitted successfully!</div>
@@ -117,6 +125,7 @@ mach.addEventListener('change',function(){
 var form=document.getElementById('mainForm'),errMsg=document.getElementById('errMsg'),succMsg=document.getElementById('succMsg');
 form.addEventListener('submit',function(e){
   errMsg.style.display='none';succMsg.style.display='none';
+  if(!document.getElementById('fType').value){e.preventDefault();errMsg.textContent='Please select a Type';errMsg.style.display='block';return}
   if(!sec.value){e.preventDefault();errMsg.textContent='Please select a Section';errMsg.style.display='block';return}
   if(!mach.value){e.preventDefault();errMsg.textContent='Please select a Machine';errMsg.style.display='block';return}
   var otherVal='';
@@ -134,10 +143,10 @@ form.addEventListener('submit',function(e){
     fd.append('entry.1679877274.other_option_response',otherVal);
   }
   fd.append('fvv','1');
-  fd.append('partialResponse','[null,null,"8203609132818112779"]');
+  fd.append('partialResponse','[null,null,"6144070160382646432"]');
   fd.append('pageHistory','0');
   fd.append('draftResponse','[,,]');
-  fd.append('fbzx','-3317017233260532449');
+  fd.append('fbzx','6144070160382646432');
   
   var payload={};
   fd.forEach(function(val,key){payload[key]=val});
