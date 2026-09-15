@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Root Cause Entry (30 min &amp; above) - Akij Light Engineering Ltd.</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter','Segoe UI',-apple-system,Roboto,Arial,sans-serif}
+body{background:
+ radial-gradient(1200px 480px at 12% -10%, rgba(42,154,160,.13), transparent 60%),
+ radial-gradient(1000px 440px at 108% -18%, rgba(0,86,92,.11), transparent 55%),
+ #f4f7f9;min-height:100vh;color:#12263a;-webkit-font-smoothing:antialiased}
+.hdr{background:linear-gradient(135deg,#0b7f89 0%,#006066 45%,#003c44 100%);padding:15px 18px 13px;text-align:center;position:relative;overflow:hidden}
+.hdr:after{content:"";position:absolute;inset:0;background:radial-gradient(700px 180px at 50% -80%,rgba(255,255,255,.2),transparent 70%);pointer-events:none}
+.hdr-text{position:relative;color:#fff;font-size:16px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.hdr-sub{position:relative;color:rgba(255,255,255,.72);font-size:12px;margin-top:2px}
+.wrap{max-width:1150px;margin:18px auto;padding:0 14px 44px}
+.card{background:#fff;border:5px solid #00565c;border-radius:18px;padding:22px;box-shadow:0 6px 18px rgba(13,40,58,.07);margin-bottom:16px}
+.back-link{display:inline-block;margin:16px 0 14px;padding:9px 20px;background:#fff;color:#00565c;border:1px solid rgba(0,86,92,.3);text-decoration:none;border-radius:999px;font-size:13px;font-weight:600;transition:all .2s;box-shadow:0 2px 6px rgba(13,40,58,.06)}
+.back-link:hover{background:#00565c;color:#fff;border-color:#00565c;box-shadow:0 6px 16px rgba(0,86,92,.24)}
+.top-bar{display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap}
+.field{display:flex;flex-direction:column;gap:3px;flex:1;min-width:150px}
+.field label{font-size:12px;font-weight:600;color:#5d7283;text-transform:uppercase;letter-spacing:.04em}
+.field select,.field input[type=date]{padding:9px 12px;border:1.5px solid #d8e2e6;border-radius:10px;font-size:14px;background:#fff;transition:border-color .15s,box-shadow .15s;font-family:inherit}
+.field select:focus,.field input:focus{border-color:#0a6b72;outline:none;box-shadow:0 0 0 3px rgba(42,154,160,.16)}
+.tbl-wrap{overflow-x:auto;margin-top:10px;border:1px solid rgba(0,86,92,.4);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:#eaf3f3;color:#00565c;padding:11px 10px;text-align:left;position:sticky;top:0;font-weight:700;border-bottom:2px solid #d7e6e6}
+td{padding:10px;border-bottom:1px solid #eef2f4;vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#f6fafb}
+.sl{text-align:center;font-weight:700;color:#00565c;width:40px}
+.no-data{text-align:center;padding:44px;color:#8aa0ae;font-size:15px}
+.loading{text-align:center;padding:44px;color:#00565c;font-size:15px}
+.rc-input{width:100%;min-width:220px;padding:8px 10px;border:1.5px solid #d8e2e6;border-radius:9px;font-size:13px;font-family:inherit;resize:vertical;min-height:38px}
+.rc-input:focus{border-color:#0a6b72;outline:none;box-shadow:0 0 0 3px rgba(42,154,160,.16)}
+.save-btn{padding:8px 16px;background:linear-gradient(135deg,#0b7f89,#00565c);color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s}
+.save-btn:hover{background:linear-gradient(135deg,#0f96a1,#00565c)}
+.save-btn:disabled{background:#9fb4bd;cursor:default}
+.badge{display:inline-block;padding:3px 9px;border-radius:999px;background:#e6f4ea;color:#2e7d32;font-size:11px;font-weight:700;white-space:nowrap}
+.msg{padding:12px 16px;border-radius:12px;font-size:14px;font-weight:600;margin-bottom:14px}
+.msg.warn{background:#fff8e1;border:1px solid #ffe0a3;color:#8a5a00}
+.msg.info{background:#e8f5f6;border:1px solid #bfe3e5;color:#00565c}
+.stat{display:inline-block;padding:12px 22px;border-radius:14px;font-size:14px;font-weight:700;color:#fff;background:linear-gradient(135deg,#7e57c2,#4527a0);box-shadow:0 8px 18px rgba(13,40,58,.14);margin-bottom:14px}
+</style>
+</head>
+<body>
+<div class="hdr">
+<div class="hdr-text">AKIJ LIGHT ENGINEERING LTD.</div>
+<div class="hdr-sub">Maintenance Management System</div>
+</div>
+<div class="wrap">
+<a href="daily_dashboard.html" class="back-link">&#8592; Back to Daily Dashboard</a>
+<div class="card" style="margin-top:14px">
+<div style="font-size:20px;font-weight:700;color:#005151;margin-bottom:6px">Root Cause Entry</div>
+<div style="font-size:13px;color:#5d7283;margin-bottom:14px">Listed below are all tasks with duration <b>30 minutes &amp; above</b>. Enter the root cause for each task and click Save.</div>
+<div class="top-bar">
+<div class="field"><label>Date From</label><input type="date" id="dateFrom"></div>
+<div class="field"><label>Date To</label><input type="date" id="dateTo"></div>
+<div class="field"><label>Section</label><select id="sectionFilter"><option value="">All Sections</option></select></div>
+</div>
+</div>
+<div class="card">
+<div id="configMsg"></div>
+<div class="stat" id="countStat">Loading...</div>
+<div class="tbl-wrap">
+<table id="dataTable">
+<thead><tr>
+<th class="sl">S/L</th>
+<th>Date</th>
+<th>Section</th>
+<th>Machine</th>
+<th>Problem</th>
+<th>Duration</th>
+<th>Root Cause</th>
+<th></th>
+</tr></thead>
+<tbody id="tbody"></tbody>
+</table>
+<div class="no-data" id="noData" style="display:none">No tasks of 30 min &amp; above found.</div>
+<div class="loading" id="loadingMsg">Loading data from Google Sheets...</div>
+</div>
+</div>
+</div>
+<script>
+/* ============================================================================
+   CONFIG  -- paste the values from your Root Cause Google Form.
+   The form must have these questions (in this order):
+     1. Task Timestamp   (short answer, required)
+     2. Date             (short answer)
+     3. Section          (short answer)
+     4. Machine Name     (short answer)
+     5. Problem          (short answer)
+     6. Root Cause       (paragraph, required)
+   ========================================================================== */
+var FORM_ACTION='';   /* e.g. https://docs.google.com/forms/d/e/1FAIpQLSc.../formResponse */
+var ENTRY={
+  task:'entry.XXXXXXXXX',   /* Task Timestamp question */
+  date:'entry.XXXXXXXXX',   /* Date question */
+  section:'entry.XXXXXXXXX',/* Section question */
+  machine:'entry.XXXXXXXXX',/* Machine Name question */
+  problem:'entry.XXXXXXXXX',/* Problem question */
+  root:'entry.XXXXXXXXX'    /* Root Cause question */
+};
+var FBZX='';              /* value of the fbzx hidden field (optional) */
+/* Root Cause responses CSV (gviz CSV URL of the form's response sheet).
+   Used to show which tasks already have a root cause recorded. */
+var RC_CSV_URL='';
+var RC_COL_TS=1;          /* column index of Task Timestamp in the responses CSV */
+var RC_COL_ROOT=6;        /* column index of Root Cause text in the responses CSV */
+
+/* ========================================================================== */
+var CSV_URL='https://docs.google.com/spreadsheets/d/1y1ArRCAvY5SBDtuqfFpLQduwJ2_OzvwrhgWbw1ciwF8/gviz/tq?tqx=out:csv&gid=1523854953';
+var MIN_MINUTES=30;
+var DATA=[],SAVED={};
+
+function parseCSV(text){
+  var lines=[],row=[],field='',inQ=false;
+  for(var i=0;i<text.length;i++){
+    var c=text[i];
+    if(inQ){if(c==='"'){if(i+1<text.length&&text[i+1]==='"'){field+='"';i++}else{inQ=false}}else{field+=c}}
+    else{if(c==='"'){inQ=true}else if(c===','){row.push(field);field=''}else if(c==='\n'||c==='\r'){if(c==='\r'&&i+1<text.length&&text[i+1]==='\n')i++;row.push(field);field='';if(row.length>1)lines.push(row);row=[]}else{field+=c}}}
+  if(field||row.length>0){row.push(field);if(row.length>1)lines.push(row)}
+  return lines;
+}
+function normDate(d){
+  if(!d)return '';
+  var p=d.split('/');
+  if(p.length===3){
+    var mm=(p[0].length<2?'0':'')+p[0];
+    var dd=(p[1].length<2?'0':'')+p[1];
+    return p[2]+'-'+mm+'-'+dd;
+  }
+  return d;
+}
+var SECTION_ORDER=["Plastic Unit","LED Unit","Switch & Socket","Circuit Breaker","Home Appliance","PVC Tape","Exhaust Fan","RnD Lab","Tool Room","Utility"];
+function normSection(s){
+  var t=(s||'').trim();
+  if(!t)return '';
+  for(var i=0;i<SECTION_ORDER.length;i++){if(t===SECTION_ORDER[i])return t;}
+  if(t==='LED')return 'LED Unit';
+  var low=t.toLowerCase();
+  if(low.indexOf('chiller')!==-1||low.indexOf('compressor')!==-1||low.indexOf('cfc')!==-1||low.indexOf('schedule clean')!==-1||low.indexOf('water filter')!==-1||low.indexOf('ac power')!==-1||low.indexOf('clock')!==-1||low.indexOf('store')!==-1||low.indexOf('house keeping')!==-1||low.indexOf('complian')!==-1||low.indexOf('running work')!==-1||low.indexOf('all section')!==-1||low.indexOf('fan setup')!==-1||low.indexOf('sub station')!==-1||low.indexOf('generator')!==-1)return 'Utility';
+  if(low.indexOf('qc')!==-1||low.indexOf('check board')!==-1)return 'Switch & Socket';
+  if(low.indexOf('cfs')!==-1||low.indexOf('central feeding')!==-1||low.indexOf('silo')!==-1||low.indexOf('crusher')!==-1||low.indexOf('imm')!==-1)return 'Plastic Unit';
+  if(low.indexOf('4th floor')!==-1||low.indexOf('hvl')!==-1||low.indexOf('exhaust')!==-1)return 'Exhaust Fan';
+  return 'Utility';
+}
+function parseTimeHM(s){
+  if(!s)return null;
+  s=s.trim().toUpperCase();
+  var ampm='';
+  if(/PM$/.test(s)){ampm='PM';s=s.replace(/PM$/,'').trim()}
+  else if(/AM$/.test(s)){ampm='AM';s=s.replace(/AM$/,'').trim()}
+  var p=s.split(':');
+  if(p.length<2)return null;
+  var hh=parseInt(p[0],10),mm=parseInt(p[1],10);
+  if(isNaN(hh)||isNaN(mm))return null;
+  if(ampm==='PM'&&hh<12)hh+=12;
+  if(ampm==='AM'&&hh===12)hh=0;
+  return hh*60+mm;
+}
+function durationMinutes(r){
+  var dm=(r.duration||'').trim().toLowerCase();
+  if(dm){
+    var mm=dm.match(/^(\d+):(\d{2})/);if(mm)return parseInt(mm[1])*60+parseInt(mm[2]);
+    var hh=dm.match(/^(\d+(?:\.\d+)?)\s*h/);if(hh)return Math.round(parseFloat(hh[1])*60);
+    var mi=dm.match(/^(\d+)\s*m/);if(mi)return parseInt(mi[1]);
+    var n=parseFloat(dm);if(!isNaN(n)&&/^\d+$/.test(dm.trim()))return Math.round(n);
+  }
+  var a=parseTimeHM(r.start),b=parseTimeHM(r.end);
+  if(a==null||b==null)return null;
+  var diff=b-a;if(diff<0)diff+=24*60;
+  return diff;
+}
+function fmtDuration(min){
+  if(min==null)return '';
+  if(min<60)return min+' min';
+  var h=Math.floor(min/60),m=min%60;
+  return h+'h '+(m<10?'0':'')+m+'m';
+}
+function rcKey(s){return (s||'').trim().replace(/\s+/g,' ').toLowerCase();}
+function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):'';}
+
+function showConfigMsg(){
+  var el=document.getElementById('configMsg');
+  if(FORM_ACTION){
+    el.innerHTML='<div class="msg info">Connected. Fill the Root Cause for each task and click Save.</div>';
+  }else{
+    el.innerHTML='<div class="msg warn">Not connected yet. Paste the Root Cause Google Form action URL and entry IDs into the CONFIG block in this file to enable saving.</div>';
+  }
+}
+
+function loadData(){
+  fetch(CSV_URL).then(function(r){return r.text()}).then(function(csv){
+    var rows=parseCSV(csv);
+    for(var i=1;i<rows.length;i++){
+      var r=rows[i];if(!r||r.length<11)continue;
+      var ts=(r[0]||'').trim();
+      var date=(r[2]||'').trim();
+      var section=normSection(r[3]);
+      var machine=(r[4]||'').trim();
+      var problem=(r[5]||'').trim();
+      var start=(r[8]||'').trim();
+      var end=(r[9]||'').trim();
+      var duration=(r[12]||'').trim();
+      if(!date&&!section&&!machine)continue;
+      var rec={ts:ts,date:date,section:section,machine:machine,problem:problem,start:start,end:end,duration:duration};
+      if(durationMinutes(rec)<MIN_MINUTES)continue;
+      DATA.push(rec);
+    }
+    return loadSaved();
+  }).then(function(){
+    document.getElementById('loadingMsg').style.display='none';
+    initFilters();
+    var t=new Date();
+    var tm=('0'+(t.getMonth()+1)).slice(-2),td=('0'+t.getDate()).slice(-2);
+    var tStr=t.getFullYear()+'-'+tm+'-'+td;
+    document.getElementById('dateFrom').value=tStr;
+    document.getElementById('dateTo').value=tStr;
+    render();
+  }).catch(function(e){
+    document.getElementById('loadingMsg').textContent='Failed to load data: '+e.message;
+  });
+}
+
+function loadSaved(){
+  if(!RC_CSV_URL)return Promise.resolve();
+  return fetch(RC_CSV_URL).then(function(r){return r.text()}).then(function(csv){
+    var rows=parseCSV(csv);
+    for(var i=1;i<rows.length;i++){
+      var r=rows[i];if(!r)continue;
+      var k=rcKey(r[RC_COL_TS]),v=(r[RC_COL_ROOT]||'').trim();
+      if(k&&v)SAVED[k]=v;
+    }
+  }).catch(function(){});
+}
+
+function initFilters(){
+  var sec=document.getElementById('sectionFilter');
+  var secs={};
+  DATA.forEach(function(r){if(r.section)secs[r.section]=1});
+  var ordered=[];
+  SECTION_ORDER.forEach(function(s){if(secs[s])ordered.push(s)});
+  Object.keys(secs).sort().forEach(function(s){if(ordered.indexOf(s)===-1)ordered.push(s)});
+  ordered.forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;sec.appendChild(o)});
+  sec.onchange=render;
+  document.getElementById('dateFrom').onchange=onDateChange;
+  document.getElementById('dateTo').onchange=onDateChange;
+}
+function onDateChange(){
+  var df=document.getElementById('dateFrom'),dt=document.getElementById('dateTo');
+  if(df.value&&dt.value&&df.value>dt.value){
+    if(this===df)dt.value=df.value;else df.value=dt.value;
+  }
+  render();
+}
+
+function currentList(){
+  var sv=document.getElementById('sectionFilter').value;
+  var df=document.getElementById('dateFrom').value;
+  var dt=document.getElementById('dateTo').value;
+  return DATA.filter(function(r){
+    if(sv&&r.section!==sv)return false;
+    if(df&&normDate(r.date)<df)return false;
+    if(dt&&normDate(r.date)>dt)return false;
+    return true;
+  });
+}
+
+function render(){
+  var list=currentList();
+  list.sort(function(a,b){var da=parseDateMMDDYYYY(a.date),db=parseDateMMDDYYYY(b.date);return db-da});
+  var tb=document.getElementById('tbody');tb.innerHTML='';
+  document.getElementById('noData').style.display=list.length?'none':'block';
+  document.getElementById('dataTable').style.display=list.length?'table':'none';
+  document.getElementById('countStat').textContent='Tasks 30 min & above: '+list.length;
+  list.forEach(function(r,i){
+    var key=rcKey(r.ts);
+    var saved=SAVED[key]||'';
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td class="sl">'+(i+1)+'</td>'+
+      '<td>'+esc(r.date)+'</td>'+
+      '<td>'+esc(r.section)+'</td>'+
+      '<td>'+esc(r.machine)+'</td>'+
+      '<td>'+esc(r.problem)+'</td>'+
+      '<td>'+esc(fmtDuration(durationMinutes(r)))+'</td>'+
+      '<td><textarea class="rc-input" data-key="'+esc(key)+'" placeholder="Enter root cause...">'+esc(saved)+'</textarea></td>'+
+      '<td>'+(saved?'<span class="badge">Saved</span> ':'')+'<button type="button" class="save-btn" data-key="'+esc(key)+'">Save</button></td>';
+    tb.appendChild(tr);
+  });
+  tb.querySelectorAll('.save-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){saveRow(this)});
+  });
+}
+function parseDateMMDDYYYY(s){
+  var p=s.split('/');
+  if(p.length===3){return new Date(parseInt(p[2]),parseInt(p[0])-1,parseInt(p[1]))}
+  return new Date(s);
+}
+
+function saveRow(btn){
+  var key=btn.getAttribute('data-key');
+  var ta=document.querySelector('.rc-input[data-key="'+key+'"]');
+  var val=ta?ta.value.trim():'';
+  if(!val){alert('Please enter the root cause before saving.');return}
+  if(!FORM_ACTION){alert('Root Cause form is not configured yet. Paste the form URL and entry IDs into the CONFIG block in this file.');return}
+  var rec=null;
+  for(var i=0;i<DATA.length;i++){if(rcKey(DATA[i].ts)===key){rec=DATA[i];break}}
+  if(!rec){alert('Task not found.');return}
+  btn.disabled=true;btn.textContent='Saving...';
+  var fd=new FormData();
+  fd.append(ENTRY.task,rec.ts);
+  fd.append(ENTRY.date,rec.date);
+  fd.append(ENTRY.section,rec.section);
+  fd.append(ENTRY.machine,rec.machine);
+  fd.append(ENTRY.problem,rec.problem);
+  fd.append(ENTRY.root,val);
+  fd.append('fvv','1');
+  fd.append('pageHistory','0');
+  fd.append('draftResponse','[,,]');
+  if(FBZX)fd.append('fbzx',FBZX);
+  var body='';
+  fd.forEach(function(v,k){body+=(body?'&':'')+encodeURIComponent(k)+'='+encodeURIComponent(v)});
+  fetch(FORM_ACTION,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body})
+    .then(function(){
+      SAVED[key]=val;
+      var badge=document.createElement('span');
+      badge.className='badge';badge.textContent='Saved';
+      btn.parentNode.insertBefore(badge,btn);
+      btn.disabled=false;btn.textContent='Update';
+    })
+    .catch(function(){
+      btn.disabled=false;btn.textContent='Save';
+      alert('Network error. Please try again.');
+    });
+}
+
+showConfigMsg();
+loadData();
+</script>
+</body>
+</html>

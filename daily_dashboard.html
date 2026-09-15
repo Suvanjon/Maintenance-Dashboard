@@ -97,6 +97,9 @@ tr:hover td{background:#f6fafb}
 <div class="stat duration" id="stDuration">&nbsp;</div>
 </div>
 <div class="card">
+<div style="display:flex;justify-content:flex-end;margin-bottom:10px">
+<a href="root_cause_entry.html" class="back-link" style="margin:0">+ Root Cause Entry (30 min &amp; above)</a>
+</div>
 <div class="tbl-wrap">
 <table id="dataTable">
 <thead><tr>
@@ -112,6 +115,7 @@ tr:hover td{background:#f6fafb}
 <th data-col="start">Start</th>
 <th data-col="end">End</th>
 <th data-col="duration">Duration</th>
+<th data-col="rootcause">Root Cause</th>
 </tr></thead>
 <tbody id="tbody"></tbody>
 </table>
@@ -123,6 +127,25 @@ tr:hover td{background:#f6fafb}
 <script>
 var DATA=[];
 var CSV_URL='https://docs.google.com/spreadsheets/d/1y1ArRCAvY5SBDtuqfFpLQduwJ2_OzvwrhgWbw1ciwF8/gviz/tq?tqx=out:csv&gid=1523854953';
+/* Root Cause responses CSV - paste the same gviz CSV URL for the Root Cause form's response sheet.
+   Leave empty to hide Root Cause data. */
+var RC_CSV_URL='';
+var RC_COL_TS=1;      /* column index holding the Task Timestamp in the Root Cause CSV */
+var RC_COL_ROOT=6;    /* column index holding the Root Cause text in the Root Cause CSV */
+var ROOTCAUSE={};
+
+function rcKey(s){return (s||'').trim().replace(/\s+/g,' ').toLowerCase();}
+function loadRootCauses(){
+  if(!RC_CSV_URL)return Promise.resolve();
+  return fetch(RC_CSV_URL).then(function(r){return r.text()}).then(function(csv){
+    var rows=parseCSV(csv);
+    for(var i=1;i<rows.length;i++){
+      var r=rows[i];if(!r)continue;
+      var k=rcKey(r[RC_COL_TS]),v=(r[RC_COL_ROOT]||'').trim();
+      if(k&&v)ROOTCAUSE[k]=v;
+    }
+  }).catch(function(){});
+}
 
 function parseCSV(text){
   var lines=[],row=[],field='',inQ=false;
@@ -171,6 +194,7 @@ function loadData(){
     var rows=parseCSV(csv);
     for(var i=1;i<rows.length;i++){
       var r=rows[i];if(!r||r.length<11)continue;
+      var ts=(r[0]||'').trim();
       var date=(r[2]||'').trim();
       var section=normSection(r[3]);
       var machine=(r[4]||'').trim();
@@ -183,16 +207,19 @@ function loadData(){
       var type=(r[11]||'').trim();
       var duration=(r[12]||'').trim();
       if(!date&&!section&&!machine)continue;
-      DATA.push({date:date,section:section,machine:machine,problem:problem,action:action,spare:spare,person:person,type:type,start:start,end:end,duration:duration});
+      DATA.push({ts:ts,date:date,section:section,machine:machine,problem:problem,action:action,spare:spare,person:person,type:type,start:start,end:end,duration:duration,rootcause:''});
     }
-    document.getElementById('loadingMsg').style.display='none';
-    initFilters();
-    var t=new Date();
-    var tm=('0'+(t.getMonth()+1)).slice(-2),td=('0'+t.getDate()).slice(-2);
-    var tStr=t.getFullYear()+'-'+tm+'-'+td;
-    document.getElementById('dateFrom').value=tStr;
-    document.getElementById('dateTo').value=tStr;
-    render();
+    return loadRootCauses().then(function(){
+      DATA.forEach(function(r){r.rootcause=ROOTCAUSE[rcKey(r.ts)]||''});
+      document.getElementById('loadingMsg').style.display='none';
+      initFilters();
+      var t=new Date();
+      var tm=('0'+(t.getMonth()+1)).slice(-2),td=('0'+t.getDate()).slice(-2);
+      var tStr=t.getFullYear()+'-'+tm+'-'+td;
+      document.getElementById('dateFrom').value=tStr;
+      document.getElementById('dateTo').value=tStr;
+      render();
+    });
   }).catch(function(e){
     document.getElementById('loadingMsg').textContent='Failed to load data: '+e.message;
   });
@@ -292,7 +319,7 @@ function render(){
   document.getElementById('dataTable').style.display=filtered.length?'table':'none';
   filtered.forEach(function(r,i){
     var tr=document.createElement('tr');
-    tr.innerHTML='<td class="sl">'+(i+1)+'</td><td>'+esc(r.date)+'</td><td>'+esc(r.type)+'</td><td>'+esc(r.section)+'</td><td>'+esc(r.machine)+'</td><td>'+esc(r.problem)+'</td><td>'+esc(r.action)+'</td><td>'+esc(r.spare)+'</td><td>'+esc(r.person)+'</td><td>'+esc(r.start)+'</td><td>'+esc(r.end)+'</td><td>'+esc(fmtDuration(durationMinutes(r)))+'</td>';
+    tr.innerHTML='<td class="sl">'+(i+1)+'</td><td>'+esc(r.date)+'</td><td>'+esc(r.type)+'</td><td>'+esc(r.section)+'</td><td>'+esc(r.machine)+'</td><td>'+esc(r.problem)+'</td><td>'+esc(r.action)+'</td><td>'+esc(r.spare)+'</td><td>'+esc(r.person)+'</td><td>'+esc(r.start)+'</td><td>'+esc(r.end)+'</td><td>'+esc(fmtDuration(durationMinutes(r)))+'</td><td>'+esc(r.rootcause)+'</td>';
     tb.appendChild(tr);
   });
   document.getElementById('stTotal').textContent='Records: '+filtered.length;
