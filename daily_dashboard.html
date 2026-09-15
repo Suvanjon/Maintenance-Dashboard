@@ -69,13 +69,24 @@ tr:hover td{background:#f6fafb}
 <div class="card">
 <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap">
 <div style="font-size:16px;font-weight:700;color:#005151">Work by Section</div>
-<div class="field" style="flex:0 0 auto;min-width:190px;margin:0">
+<div style="display:flex;gap:12px;flex-wrap:wrap">
+<div class="field" style="flex:0 0 auto;min-width:170px;margin:0">
 <label>Type</label>
 <select id="typeFilter">
 <option value="">All Types</option>
 <option value="Breakdown">Breakdown</option>
 <option value="Changeover">Changeover</option>
 </select>
+</div>
+<div class="field" style="flex:0 0 auto;min-width:170px;margin:0">
+<label>Duration</label>
+<select id="durationFilter">
+<option value="">All Durations</option>
+<option value="0-30">Up to 30 min</option>
+<option value="31-60">31 to 60 min</option>
+<option value="60+">Above 60 min</option>
+</select>
+</div>
 </div>
 </div>
 <div id="chart" class="chart"><div class="chart-empty">Loading...</div></div>
@@ -200,6 +211,7 @@ function initFilters(){
   Object.keys(machs).sort().forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;mach.appendChild(o)});
   sec.onchange=render;mach.onchange=render;
   document.getElementById('typeFilter').onchange=render;
+  document.getElementById('durationFilter').onchange=render;
   document.getElementById('dateFrom').onchange=onDateChange;
   document.getElementById('dateTo').onchange=onDateChange;
 }
@@ -251,12 +263,20 @@ function render(){
   var sv=document.getElementById('sectionFilter').value;
   var mv=document.getElementById('machineFilter').value;
   var tv=document.getElementById('typeFilter').value;
+  var durv=document.getElementById('durationFilter').value;
   var df=document.getElementById('dateFrom').value;
   var dt=document.getElementById('dateTo').value;
   var filtered=DATA.filter(function(r){
     if(sv&&r.section!==sv)return false;
     if(mv&&r.machine!==mv)return false;
     if(tv&&r.type!==tv)return false;
+    if(durv){
+      var dm=durationMinutes(r);
+      if(dm==null)return false;
+      if(durv==='0-30'&&dm>30)return false;
+      if(durv==='31-60'&&(dm<31||dm>60))return false;
+      if(durv==='60+'&&dm<=60)return false;
+    }
     if(df&&normDate(r.date)<df)return false;
     if(dt&&normDate(r.date)>dt)return false;
     return true;
