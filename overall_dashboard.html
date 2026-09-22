@@ -41,16 +41,6 @@ body{background:
 .cat-stat.task{background:linear-gradient(135deg,#006666,#00565c)}
 .cat-stat.prev{background:linear-gradient(135deg,#1565c0,#0d47a1)}
 .cat-stat.check{background:linear-gradient(135deg,#6a1b9a,#4a148c)}
-.cat-stat.power{background:linear-gradient(135deg,#f57c00,#e65100)}
-.floor-cards{display:flex;gap:14px;margin:14px 0 4px;flex-wrap:wrap}
-.floor-card{flex:1;min-width:180px;padding:18px 22px;border-radius:16px;color:#fff;position:relative;overflow:hidden;box-shadow:0 12px 26px rgba(13,40,58,.16)}
-.floor-card:after{content:"";position:absolute;top:-30px;right:-24px;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.13)}
-.floor-card .fname{font-size:15px;font-weight:700;opacity:.95;position:relative;margin-bottom:6px}
-.floor-card .fnum{font-size:30px;font-weight:800;display:block;position:relative}
-.floor-card .fsmall{font-size:12px;opacity:.9;position:relative;margin-top:2px}
-.floor-card.gf{background:linear-gradient(135deg,#006666,#00565c)}
-.floor-card.f2{background:linear-gradient(135deg,#1565c0,#0d47a1)}
-.floor-card.f3{background:linear-gradient(135deg,#6a1b9a,#4a148c)}
 .tbl-wrap{overflow-x:auto;margin-top:10px;border:1px solid rgba(0,86,92,.4);border-radius:12px}
 table{width:100%;border-collapse:collapse;font-size:13px}
 th{background:#eaf3f3;color:#00565c;padding:11px 10px;text-align:left;font-weight:700;border-bottom:2px solid #d7e6e6}
@@ -122,7 +112,6 @@ tbody tr{animation:ml-row-in .28s ease backwards}
 <div class="cat-stat task"><span class="num" id="qTask">-</span><span class="lbl">Daily Task</span></div>
 <div class="cat-stat prev"><span class="num" id="qPrev">-</span><span class="lbl">Preventive Maintenance</span></div>
 <div class="cat-stat check"><span class="num" id="qCheck">-</span><span class="lbl">Daily Checking</span></div>
-<div class="cat-stat power"><span class="num" id="qPower">-</span><span class="lbl">Power &amp; Utility (kW)</span></div>
 </div>
 <div class="stats" id="stats">
 <div class="stat total"><span class="num" id="stTotal">-</span><span class="lbl">Total Records</span></div>
@@ -143,10 +132,6 @@ tbody tr{animation:ml-row-in .28s ease backwards}
 </table>
 <div class="loading" id="loadingMsg">Loading data from Google Sheets...</div>
 </div>
-</div>
-<div class="card">
-<div class="card-title">Power &amp; Utility - Consumption by Floor</div>
-<div class="floor-cards" id="floorCards"><div class="loading">Loading...</div></div>
 </div>
 </div>
 <script>
@@ -351,62 +336,6 @@ Promise.all(MODULES.map(function(m){
   document.getElementById('dateTo').onchange=onDateChange;
   render();
 });
-
-function fmtPower(v){
-  v=Math.round(v*100)/100;
-  return v===Math.floor(v)?String(v):String(v);
-}
-
-function loadPower(){
-  var MAIN='https://docs.google.com/spreadsheets/d/1BeciLxtwDh-PkkoxpYHwBc87ATa3nYQPKdAXB9maXvY/gviz/tq?tqx=out:csv&gid=547289225';
-  var RESP='https://docs.google.com/spreadsheets/d/1BeciLxtwDh-PkkoxpYHwBc87ATa3nYQPKdAXB9maXvY/gviz/tq?tqx=out:csv&gid=166474895';
-  function nf(v){var n=parseFloat((v||'').replace(/,/g,''));return isNaN(n)?0:n}
-  Promise.all([
-    fetch(MAIN).then(function(r){return r.text()}).catch(function(){return ''}),
-    fetch(RESP).then(function(r){return r.text()}).catch(function(){return ''})
-  ]).then(function(res){
-    var floors={},lastFloor='';
-    function add(floor,machine,qty,total){
-      var f=floor||lastFloor||'-';
-      if(!floors[f])floors[f]={power:0,qty:0,machines:0};
-      floors[f].power+=total;
-      floors[f].qty+=qty;
-      floors[f].machines++;
-    }
-    var mainRows=parseCSV(res[0]);
-    for(var i=1;i<mainRows.length;i++){
-      var r=mainRows[i];if(!r||!r.length)continue;
-      var floor=(r[0]||'').trim();
-      var machine=(r[1]||'').trim();
-      var qty=(r[2]||'').trim();
-      var total=(r[4]||'').trim();
-      if(!machine){if(/total/i.test(floor))continue;if(floor)lastFloor=floor;continue}
-      add(floor,machine,nf(qty),nf(total));
-    }
-    var respRows=parseCSV(res[1]);
-    for(var j=1;j<respRows.length;j++){
-      var rr=respRows[j];if(!rr||!rr.length)continue;
-      var m2=(rr[2]||'').trim();
-      if(!m2)continue;
-      var q2=nf(rr[3]);
-      var a2=nf(rr[4]);
-      add((rr[1]||'').trim(),m2,q2,q2*a2);
-    }
-    var totalPower=0;
-    Object.keys(floors).forEach(function(f){totalPower+=floors[f].power});
-    document.getElementById('qPower').textContent=fmtPower(totalPower);
-    var fc=document.getElementById('floorCards');
-    var names=Object.keys(floors).sort();
-    var classes=['gf','f2','f3'];
-    var html='';
-    names.forEach(function(f,i){
-      html+='<div class="floor-card '+classes[i%classes.length]+'"><div class="fname">'+esc(f)+'</div><span class="fnum">'+fmtPower(floors[f].power)+' kW</span><div class="fsmall">'+floors[f].machines+' machines &#8226; '+fmtPower(floors[f].qty)+' qty</div></div>';
-    });
-    fc.innerHTML=html;
-  }).catch(function(){});
-}
-
-loadPower();
 
 function onDateChange(){
   var df=document.getElementById('dateFrom'),dt=document.getElementById('dateTo');
