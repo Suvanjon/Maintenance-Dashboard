@@ -48,6 +48,38 @@ tr:hover{background:#f7f7f5}
 .error-msg{display:none;background:#e53935;color:#fff;padding:12px;border-radius:8px;text-align:center;font-size:14px;font-weight:600;margin-top:12px}
 .no-items{color:#6b7073;font-size:13px;text-align:center;padding:14px;border:1px dashed #ccc;border-radius:8px}
 </style>
+<style>
+/* Entrance + micro-animations */
+@keyframes ml-fade-up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes ml-fade-up-soft{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes ml-drop-in{from{opacity:0;transform:translateY(-26px)}to{opacity:1;transform:none}}
+@keyframes ml-tilt-in{0%{opacity:0;transform:translateY(26px) rotate(-2.4deg)}60%{opacity:1;transform:translateY(-4px) rotate(1.1deg)}100%{opacity:1;transform:none}}
+@keyframes ml-pop-in{0%{opacity:0;transform:scale(.3)}55%{opacity:1;transform:scale(1.16)}75%{transform:scale(.92)}100%{opacity:1;transform:scale(1)}}
+@keyframes ml-row-in{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:none}}
+@keyframes ml-msg-in{0%{opacity:0;transform:scale(.85) translateY(8px)}60%{opacity:1;transform:scale(1.04)}100%{opacity:1;transform:none}}
+@keyframes ml-shimmer{0%{background-position:0% 50%}100%{background-position:-200% 50%}}
+@keyframes ml-overlay-in{from{opacity:0}to{opacity:1}}
+@keyframes ml-box-in{from{opacity:0;transform:translateY(46px) scale(.92)}to{opacity:1;transform:none}}
+.wrap,#landing{animation:ml-fade-up .5s ease backwards}
+.card{animation:ml-tilt-in .55s cubic-bezier(.25,.9,.3,1.08) backwards}
+.card-btn,.sub-btn{animation:ml-tilt-in .55s cubic-bezier(.25,.9,.3,1.08) backwards}
+.card-btn .icon,.sub-btn .sicon{animation:ml-pop-in .5s cubic-bezier(.34,1.56,.64,1) backwards}
+.stat,.cat-stat,.read-card,.floor-card{animation:ml-fade-up-soft .45s ease backwards}
+.chart-bar{animation:ml-fade-up-soft .4s ease backwards}
+.sub-title,.sub-desc,.landing-sub,.big-logo{animation:ml-fade-up-soft .5s ease backwards}
+.back-link{animation:ml-fade-up-soft .45s ease .18s backwards}
+.sub-back{animation:ml-fade-up-soft .4s ease .85s backwards}
+tbody tr{animation:ml-row-in .28s ease backwards}
+.success-msg,.error-msg{animation:ml-msg-in .32s cubic-bezier(.34,1.56,.64,1) backwards}
+.modal-overlay{animation:ml-overlay-in .28s ease backwards}
+.modal-box{animation:ml-box-in .38s cubic-bezier(.22,1,.36,1) backwards}
+.hdr-text{animation:ml-drop-in .55s cubic-bezier(.22,1,.36,1) backwards}
+.hdr-sub{animation:ml-drop-in .5s cubic-bezier(.22,1,.36,1) .12s backwards}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+.hdr-text{background:linear-gradient(100deg,#ffffff 38%,#bfedf0 50%,#ffffff 62%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-shadow:none;animation:ml-drop-in .55s cubic-bezier(.22,1,.36,1) backwards,ml-shimmer 8s ease-in-out .8s infinite}
+.landing-title{background:linear-gradient(100deg,#00565c 35%,#0b7f89 50%,#00565c 65%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:ml-shimmer 9s ease-in-out infinite}
+}
+</style>
 </head>
 <body>
 <div class="hdr">
@@ -206,6 +238,21 @@ function resetForm(){
   document.getElementById('fReqNo').value=genReqNo();
 }
 renderTbl();
+</script>
+<script>
+(function(){
+function onReady(fn){if(document.readyState!=='loading'){fn()}else{document.addEventListener('DOMContentLoaded',fn)}}
+function main(){
+function setD(el,d){if(el){var v=d+'ms';if(el.style.animationDelay!==v){el.style.animationDelay=v}}}
+function rows(){var rs=document.querySelectorAll('tbody tr');for(var i=0;i<rs.length;i++){setD(rs[i],Math.min(i*15,350))}}
+function boxes(){var bs=document.querySelectorAll('.card,.card-btn,.cat-stat,.stat,.read-card,.floor-card');for(var i=0;i<bs.length;i++){var d=Math.min(i*70,650);setD(bs[i],i===0?0:d);var ic=bs[i].querySelector(':scope > .sicon,:scope > .icon');if(ic){setD(ic,d+90)}}}
+function landing(){setD(document.querySelector('.landing-title'),320);setD(document.querySelector('.landing-sub'),570);setD(document.querySelector('.big-logo'),800)}
+function showPanel(){var ps=document.querySelectorAll('.sub-panel.show');for(var p=0;p<ps.length;p++){var el=ps[p];setD(el.querySelector('.sub-title'),90);setD(el.querySelector('.sub-desc'),320);var bts=el.querySelectorAll('.sub-btn');for(var i=0;i<bts.length;i++){var d=Math.min(i*60,900);setD(bts[i],d);var ic=bts[i].querySelector(':scope > .sicon,:scope > .icon');if(ic){setD(ic,d+90)}}setD(el.querySelector('.sub-back'),bts.length*60+380)}}
+rows();boxes();landing();showPanel();
+if(typeof MutationObserver!=='undefined'){new MutationObserver(function(){requestAnimationFrame(function(){rows();showPanel()})}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']})}
+}
+onReady(main);
+})();
 </script>
 </body>
 </html>

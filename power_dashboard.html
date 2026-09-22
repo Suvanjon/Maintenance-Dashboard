@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Power &amp; Utility Dashboard - Akij Light Engineering Ltd.</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter','Segoe UI',-apple-system,Roboto,Arial,sans-serif}
+body{background:
+  radial-gradient(1200px 480px at 12% -10%, rgba(42,154,160,.13), transparent 60%),
+  radial-gradient(1000px 440px at 108% -18%, rgba(0,86,92,.11), transparent 55%),
+  #f4f7f9;min-height:100vh;color:#12263a;-webkit-font-smoothing:antialiased}
+.hdr{background:linear-gradient(135deg,#0b7f89 0%,#006066 45%,#003c44 100%);padding:15px 18px 13px;text-align:center;position:relative;overflow:hidden}
+.hdr:after{content:"";position:absolute;inset:0;background:radial-gradient(700px 180px at 50% -80%,rgba(255,255,255,.2),transparent 70%);pointer-events:none}
+.hdr-text{position:relative;color:#fff;font-size:16px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.hdr-sub{position:relative;color:rgba(255,255,255,.72);font-size:12px;margin-top:2px}
+.wrap{max-width:1200px;margin:18px auto;padding:0 14px 44px}
+.back-link{display:inline-block;margin:16px 0 14px;padding:9px 20px;background:#fff;color:#00565c;border:1px solid rgba(0,86,92,.3);text-decoration:none;border-radius:999px;font-size:13px;font-weight:600;transition:all .2s;box-shadow:0 2px 6px rgba(13,40,58,.06)}
+.back-link:hover{background:#00565c;color:#fff;border-color:#00565c;box-shadow:0 6px 16px rgba(0,86,92,.24)}
+.card{background:#fff;border:5px solid #00565c;border-radius:18px;padding:22px;box-shadow:0 6px 18px rgba(13,40,58,.07);margin-bottom:16px}
+.card-title{font-size:16px;font-weight:700;color:#00565c;margin-bottom:12px}
+.stats{display:flex;gap:14px;margin:14px 0;flex-wrap:wrap}
+.stat{padding:16px 22px;border-radius:16px;font-size:14px;font-weight:600;color:#fff;min-width:150px;flex:1;text-align:center;position:relative;overflow:hidden;box-shadow:0 10px 22px rgba(13,40,58,.14)}
+.stat:after{content:"";position:absolute;top:-30px;right:-30px;width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,.14)}
+.stat .num{font-size:30px;font-weight:800;display:block;margin-bottom:2px;position:relative}
+.stat .lbl{font-size:12px;opacity:.92;position:relative}
+.stat.total{background:linear-gradient(135deg,#0b7f89,#00565c)}
+.stat.machines{background:linear-gradient(135deg,#64b5f6,#1565c0)}
+.stat.qty{background:linear-gradient(135deg,#4caf50,#2e7d32)}
+.stat.floors{background:linear-gradient(135deg,#ffb74d,#ef6c00)}
+.floor-cards{display:flex;gap:14px;margin:14px 0 4px;flex-wrap:wrap}
+.floor-card{flex:1;min-width:180px;padding:18px 22px;border-radius:16px;color:#fff;position:relative;overflow:hidden;box-shadow:0 12px 26px rgba(13,40,58,.16)}
+.floor-card:after{content:"";position:absolute;top:-30px;right:-24px;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.13)}
+.floor-card .fname{font-size:15px;font-weight:700;opacity:.95;position:relative;margin-bottom:6px}
+.floor-card .fnum{font-size:30px;font-weight:800;display:block;position:relative}
+.floor-card .fsmall{font-size:12px;opacity:.9;position:relative;margin-top:2px}
+.floor-card.gf{background:linear-gradient(135deg,#006666,#00565c)}
+.floor-card.f2{background:linear-gradient(135deg,#1565c0,#0d47a1)}
+.floor-card.f3{background:linear-gradient(135deg,#6a1b9a,#4a148c)}
+.chart{display:flex;flex-direction:column;gap:7px;margin-top:6px}
+.chart-row{display:flex;align-items:center;gap:10px;font-size:13px}
+.chart-label{width:220px;text-align:right;color:#33475c;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chart-bar-wrap{flex:1;background:#eef2f4;border-radius:8px;height:22px;overflow:hidden}
+.chart-bar{height:100%;background:linear-gradient(90deg,#f57c00,#ffb74d);border-radius:8px;color:#fff;font-weight:700;white-space:nowrap;text-align:right;line-height:22px;padding-right:8px;box-sizing:border-box;transition:width .5s ease}
+.chart-empty{text-align:center;color:#8aa0ae;padding:18px;font-size:14px}
+.tbl-wrap{overflow-x:auto;margin-top:10px;border:1px solid rgba(0,86,92,.4);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:#eaf3f3;color:#00565c;padding:11px 10px;text-align:left;position:sticky;top:0;font-weight:700;cursor:pointer;user-select:none;border-bottom:2px solid #d7e6e6}
+th:hover{background:#dceeee}
+td{padding:10px;border-bottom:1px solid #eef2f4;vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#f6fafb}
+.sl{text-align:center;font-weight:700;color:#00565c;width:40px}
+.floor-row td{background:#e9f3f3;color:#00565c;font-weight:800;font-size:13px;padding:9px 10px}
+.num-cell{font-weight:700;text-align:center}
+.loading{text-align:center;padding:44px;color:#00565c;font-size:15px}
+.no-data{text-align:center;padding:44px;color:#8aa0ae;font-size:15px}
+.badge-floor{display:inline-block;padding:3px 12px;border-radius:999px;font-size:12px;font-weight:700;color:#fff;background:#00565c}
+.form-row{display:flex;gap:14px;flex-wrap:wrap}
+.form-row .field{flex:1;min-width:160px;margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:600;color:#33475c;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+.field label .req{color:#e53935}
+.field select,.field input{width:100%;padding:10px 13px;border:1.5px solid #d8e2e6;border-radius:10px;font-size:14px;background:#fff;transition:border-color .15s,box-shadow .15s;font-family:inherit}
+.field select:focus,.field input:focus{border-color:#0a6b72;outline:none;box-shadow:0 0 0 3px rgba(42,154,160,.16)}
+.field input[readonly]{background:#f2f6f7;color:#00565c;font-weight:700}
+.form-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:4px}
+.btn{display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#0b7f89,#00565c);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 8px 18px rgba(0,86,92,.24)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(0,86,92,.3)}
+.edit-btn{display:inline-block;padding:11px 22px;background:#fff;color:#e65100;border:1.5px solid #f57c00;border-radius:12px;font-size:14px;font-weight:700;text-decoration:none;transition:all .2s}
+.edit-btn:hover{background:#f57c00;color:#fff}
+.notice{background:#fff8e1;border:1px solid #ffe082;color:#8a6d00;padding:12px 15px;border-radius:12px;font-size:13px;margin-bottom:16px;line-height:1.5}
+.success-msg{display:none;background:linear-gradient(135deg,#43a047,#2e7d32);color:#fff;padding:14px;border-radius:12px;text-align:center;font-size:15px;font-weight:700;margin-top:14px}
+.error-msg{display:none;background:#fff0ee;border:1px solid #ffcdc7;color:#c62828;padding:12px;border-radius:12px;text-align:center;font-size:14px;font-weight:600;margin-top:12px}
+</style>
+<style>
+/* Entrance + micro-animations */
+@keyframes ml-fade-up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes ml-fade-up-soft{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes ml-drop-in{from{opacity:0;transform:translateY(-26px)}to{opacity:1;transform:none}}
+@keyframes ml-tilt-in{0%{opacity:0;transform:translateY(26px) rotate(-2.4deg)}60%{opacity:1;transform:translateY(-4px) rotate(1.1deg)}100%{opacity:1;transform:none}}
+@keyframes ml-pop-in{0%{opacity:0;transform:scale(.3)}55%{opacity:1;transform:scale(1.16)}75%{transform:scale(.92)}100%{opacity:1;transform:scale(1)}}
+@keyframes ml-row-in{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:none}}
+@keyframes ml-msg-in{0%{opacity:0;transform:scale(.85) translateY(8px)}60%{opacity:1;transform:scale(1.04)}100%{opacity:1;transform:none}}
+@keyframes ml-shimmer{0%{background-position:0% 50%}100%{background-position:-200% 50%}}
+@keyframes ml-overlay-in{from{opacity:0}to{opacity:1}}
+@keyframes ml-box-in{from{opacity:0;transform:translateY(46px) scale(.92)}to{opacity:1;transform:none}}
+.wrap,#landing{animation:ml-fade-up .5s ease backwards}
+.card{animation:ml-tilt-in .55s cubic-bezier(.25,.9,.3,1.08) backwards}
+.card-btn,.sub-btn{animation:ml-tilt-in .55s cubic-bezier(.25,.9,.3,1.08) backwards}
+.card-btn .icon,.sub-btn .sicon{animation:ml-pop-in .5s cubic-bezier(.34,1.56,.64,1) backwards}
+.stat,.cat-stat,.read-card,.floor-card{animation:ml-fade-up-soft .45s ease backwards}
+.chart-bar{animation:ml-fade-up-soft .4s ease backwards}
+.sub-title,.sub-desc,.landing-sub,.big-logo{animation:ml-fade-up-soft .5s ease backwards}
+.back-link{animation:ml-fade-up-soft .45s ease .18s backwards}
+.sub-back{animation:ml-fade-up-soft .4s ease .85s backwards}
+tbody tr{animation:ml-row-in .28s ease backwards}
+.success-msg,.error-msg{animation:ml-msg-in .32s cubic-bezier(.34,1.56,.64,1) backwards}
+.modal-overlay{animation:ml-overlay-in .28s ease backwards}
+.modal-box{animation:ml-box-in .38s cubic-bezier(.22,1,.36,1) backwards}
+.hdr-text{animation:ml-drop-in .55s cubic-bezier(.22,1,.36,1) backwards}
+.hdr-sub{animation:ml-drop-in .5s cubic-bezier(.22,1,.36,1) .12s backwards}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+.hdr-text{background:linear-gradient(100deg,#ffffff 38%,#bfedf0 50%,#ffffff 62%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-shadow:none;animation:ml-drop-in .55s cubic-bezier(.22,1,.36,1) backwards,ml-shimmer 8s ease-in-out .8s infinite}
+.landing-title{background:linear-gradient(100deg,#00565c 35%,#0b7f89 50%,#00565c 65%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:ml-shimmer 9s ease-in-out infinite}
+}
+</style>
+</head>
+<body>
+<div class="hdr">
+<div class="hdr-text">AKIJ LIGHT ENGINEERING LTD.</div>
+<div class="hdr-sub">Maintenance Management System</div>
+</div>
+<div class="wrap">
+<a href="index.html" class="back-link">&#8592; Back to Dashboard</a>
+<div class="card" style="margin-top:12px">
+<div style="font-size:20px;font-weight:700;color:#005151">Power &amp; Utility Dashboard</div>
+<div style="font-size:12px;color:#888;margin-top:4px">Machine power consumption summary collected from Google Sheets</div>
+<div class="stats" id="stats">
+<div class="stat total"><span class="num" id="stTotalPower">-</span><span class="lbl">Total Power (kW)</span></div>
+<div class="stat machines"><span class="num" id="stMachines">-</span><span class="lbl">Machines</span></div>
+<div class="stat qty"><span class="num" id="stQty">-</span><span class="lbl">Total Qty</span></div>
+<div class="stat floors"><span class="num" id="stFloors">-</span><span class="lbl">Floors</span></div>
+</div>
+<div class="floor-cards" id="floorCards"><div class="loading">Loading...</div></div>
+</div>
+<div class="card">
+<div class="card-title">Add / Modify Machine</div>
+<div class="notice" id="formNotice">&#9888; <b>Setup needed:</b> this form is not connected to a Google Form yet. Set <code>FORM_ACTION</code> and the <code>ENTRY</code> field IDs at the top of the script.</div>
+<div class="form-row">
+<div class="field"><label>Floor <span class="req">*</span></label><select id="fFloor" required><option value="">-- Select Floor --</option><option value="GF">GF</option><option value="2nd F">2nd F</option><option value="3rd F">3rd F</option></select></div>
+<div class="field"><label>Machine Name <span class="req">*</span></label><input type="text" id="fMachine" required placeholder="e.g. Chiller-140TR"></div>
+</div>
+<div class="form-row">
+<div class="field"><label>Qty <span class="req">*</span></label><input type="number" id="fQty" required min="0" step="any" placeholder="0"></div>
+<div class="field"><label>Actual Power (kW) <span class="req">*</span></label><input type="number" id="fPower" required min="0" step="any" placeholder="0"></div>
+<div class="field"><label>Total Power (kW)</label><input type="text" id="fTotal" readonly placeholder="Auto"></div>
+</div>
+<div class="form-actions">
+<button type="button" class="btn" id="addBtn">Add Machine</button>
+<a class="edit-btn" href="https://docs.google.com/spreadsheets/d/1BeciLxtwDh-PkkoxpYHwBc87ATa3nYQPKdAXB9maXvY/edit#gid=547289225" target="_blank" rel="noopener">&#9998; Edit / Modify in Google Sheets</a>
+</div>
+<div class="error-msg" id="errMsg"></div>
+<div class="success-msg" id="succMsg">&#10003; Entry submitted successfully!</div>
+</div>
+<div class="card">
+<div class="card-title">Power Consumption by Floor</div>
+<div id="chart" class="chart"><div class="chart-empty">Loading...</div></div>
+</div>
+<div class="card">
+<div class="card-title">Machine Power Consumption</div>
+<div class="tbl-wrap">
+<table id="dataTable">
+<thead><tr>
+<th>Floor</th>
+<th>Machine Name</th>
+<th style="text-align:center">Qty</th>
+<th style="text-align:center">Actual Power (kW)</th>
+<th style="text-align:center">Total Power (kW)</th>
+</tr></thead>
+<tbody id="tbody"></tbody>
+</table>
+<div class="no-data" id="noData" style="display:none">No records found.</div>
+<div class="loading" id="loadingMsg">Loading data from Google Sheets...</div>
+</div>
+</div>
+</div>
+<script>
+var CSV_URL='https://docs.google.com/spreadsheets/d/1BeciLxtwDh-PkkoxpYHwBc87ATa3nYQPKdAXB9maXvY/gviz/tq?tqx=out:csv&gid=547289225';
+var RESPONSES_CSV='https://docs.google.com/spreadsheets/d/1BeciLxtwDh-PkkoxpYHwBc87ATa3nYQPKdAXB9maXvY/gviz/tq?tqx=out:csv&gid=166474895';
+
+function parseCSV(text){
+  var lines=[],row=[],field='',inQ=false;
+  for(var i=0;i<text.length;i++){
+    var c=text[i];
+    if(inQ){if(c==='"'){if(i+1<text.length&&text[i+1]==='"'){field+='"';i++}else{inQ=false}}else{field+=c}}
+    else{if(c==='"'){inQ=true}else if(c===','){row.push(field);field=''}else if(c==='\n'||c==='\r'){if(c==='\r'&&i+1<text.length&&text[i+1]==='\n')i++;row.push(field);field='';if(row.length>1)lines.push(row);row=[]}else{field+=c}}}
+  if(field||row.length>0){row.push(field);if(row.length>1)lines.push(row)}
+  return lines;
+}
+
+function num(v){
+  v=(v||'').trim().replace(/,/g,'');
+  var n=parseFloat(v);
+  return isNaN(n)?0:n;
+}
+
+function fmt(v){
+  if(v===Math.floor(v))return String(v);
+  return String(Math.round(v*100)/100);
+}
+
+function esc(s){return s?s.replace(/&/g,'&amp;').replace(/</g,'&lt;'):''}
+
+var DATA=[];
+
+function parseMain(rows){
+  var out=[];
+  if(!rows.length)return out;
+  var header=rows[0].map(function(h){return (h||'').trim()});
+  var cFloor=0,cMachine=1,cQty=2,cActual=3,cTotal=4;
+  for(var i=0;i<header.length;i++){
+    var h=header[i].toLowerCase();
+    if(/floor/.test(h))cFloor=i;
+    else if(/machine/.test(h))cMachine=i;
+    else if(/qty|quantity/.test(h))cQty=i;
+    else if(/actual/.test(h))cActual=i;
+    else if(/total/.test(h))cTotal=i;
+  }
+  var lastFloor='';
+  for(var k=1;k<rows.length;k++){
+    var r=rows[k];if(!r||!r.length)continue;
+    var floor=(r[cFloor]||'').trim();
+    var machine=(r[cMachine]||'').trim();
+    var qty=(r[cQty]||'').trim();
+    var actual=(r[cActual]||'').trim();
+    var total=(r[cTotal]||'').trim();
+    if(!machine&&!qty&&!actual&&!total&&/total/i.test(floor))continue;
+    if(!machine&&!qty&&!actual&&!total&&!floor)continue;
+    if(floor)lastFloor=floor;
+    if(!machine)continue;
+    out.push({floor:lastFloor||'-',machine:machine,qty:num(qty),actual:num(actual),total:num(total)});
+  }
+  return out;
+}
+
+function parseResponses(rows){
+  var out=[];
+  if(!rows.length)return out;
+  var header=rows[0].map(function(h){return (h||'').trim()});
+  var cFloor=1,cMachine=2,cQty=3,cActual=4;
+  for(var i=0;i<header.length;i++){
+    var h=header[i].toLowerCase();
+    if(/floor/.test(h))cFloor=i;
+    else if(/machine/.test(h))cMachine=i;
+    else if(/qty|quantity/.test(h))cQty=i;
+    else if(/actual/.test(h))cActual=i;
+  }
+  for(var k=1;k<rows.length;k++){
+    var r=rows[k];if(!r||!r.length)continue;
+    var machine=(r[cMachine]||'').trim();
+    if(!machine)continue;
+    var floor=(r[cFloor]||'').trim()||'-';
+    var qty=num(r[cQty]);
+    var actual=num(r[cActual]);
+    out.push({floor:floor,machine:machine,qty:qty,actual:actual,total:qty*actual});
+  }
+  return out;
+}
+
+function loadData(){
+  Promise.all([
+    fetch(CSV_URL).then(function(r){return r.text()}).catch(function(){return ''}),
+    fetch(RESPONSES_CSV).then(function(r){return r.text()}).catch(function(){return ''})
+  ]).then(function(results){
+    DATA=parseMain(parseCSV(results[0])).concat(parseResponses(parseCSV(results[1])));
+    document.getElementById('loadingMsg').style.display='none';
+    render();
+  }).catch(function(e){
+    document.getElementById('loadingMsg').textContent='Failed to load data: '+e.message;
+  });
+}
+
+function render(){
+  if(!DATA.length){
+    document.getElementById('noData').style.display='block';
+    document.getElementById('dataTable').style.display='none';
+    document.getElementById('chart').innerHTML='<div class="chart-empty">No data found.</div>';
+    document.getElementById('floorCards').innerHTML='';
+    return;
+  }
+  var totalPower=0,totalQty=0;
+  var floors={};
+  DATA.forEach(function(d){
+    totalPower+=d.total;
+    totalQty+=d.qty;
+    if(!floors[d.floor])floors[d.floor]={power:0,qty:0,machines:0};
+    floors[d.floor].power+=d.total;
+    floors[d.floor].qty+=d.qty;
+    floors[d.floor].machines++;
+  });
+  document.getElementById('stTotalPower').textContent=fmt(totalPower);
+  document.getElementById('stMachines').textContent=DATA.length;
+  document.getElementById('stQty').textContent=fmt(totalQty);
+  document.getElementById('stFloors').textContent=Object.keys(floors).length;
+
+  var floorNames=Object.keys(floors);
+  var fc=document.getElementById('floorCards');
+  var classes=['gf','f2','f3'];
+  var floorHtml='';
+  floorNames.forEach(function(f,i){
+    var cls=classes[i%classes.length];
+    floorHtml+='<div class="floor-card '+cls+'"><div class="fname">'+esc(f)+'</div><span class="fnum">'+fmt(floors[f].power)+' kW</span><div class="fsmall">'+floors[f].machines+' machines &#8226; '+fmt(floors[f].qty)+' qty</div></div>';
+  });
+  fc.innerHTML=floorHtml;
+
+  var chart=document.getElementById('chart');
+  floorNames.sort(function(a,b){return floors[b].power-floors[a].power});
+  var max=1;
+  floorNames.forEach(function(f){if(floors[f].power>max)max=floors[f].power});
+  var html='';
+  floorNames.forEach(function(f){
+    var pct=Math.round(floors[f].power/max*100);
+    if(pct<6)pct=6;
+    html+='<div class="chart-row"><div class="chart-label" title="'+esc(f)+'">'+esc(f)+'</div><div class="chart-bar-wrap"><div class="chart-bar" style="width:'+pct+'%">'+fmt(floors[f].power)+' kW</div></div></div>';
+  });
+  chart.innerHTML=html;
+
+  var tb=document.getElementById('tbody');tb.innerHTML='';
+  document.getElementById('noData').style.display='none';
+  document.getElementById('dataTable').style.display='table';
+  var curFloor='';
+  DATA.forEach(function(d,i){
+    if(d.floor!==curFloor){
+      curFloor=d.floor;
+      var tr=document.createElement('tr');tr.className='floor-row';
+      tr.innerHTML='<td colspan="5">'+esc(curFloor)+'</td>';
+      tb.appendChild(tr);
+    }
+    var tr2=document.createElement('tr');
+    tr2.innerHTML='<td><span class="badge-floor">'+esc(d.floor)+'</span></td><td>'+esc(d.machine)+'</td><td class="num-cell">'+fmt(d.qty)+'</td><td class="num-cell">'+fmt(d.actual)+'</td><td class="num-cell">'+fmt(d.total)+'</td>';
+    tb.appendChild(tr2);
+  });
+}
+
+// ---- Add / Modify Machine form ----
+var FORM_ACTION='https://docs.google.com/forms/d/e/1FAIpQLSeu9fYJueIVJNajvi7vrDcTCa4-EvNNHiXcdDGQ8DJiahxc_Q/formResponse';
+var ENTRY={floor:'entry.954292219',machine:'entry.1324788967',qty:'entry.1466133698',power:'entry.906294014'};
+var FORM_READY=FORM_ACTION.indexOf('REPLACE')===-1;
+if(FORM_READY){document.getElementById('formNotice').style.display='none';}
+
+function recalcTotal(){
+  var q=num(document.getElementById('fQty').value);
+  var p=num(document.getElementById('fPower').value);
+  document.getElementById('fTotal').value=(q&&p)?String(Math.round(q*p*100)/100):'';
+}
+document.getElementById('fQty').addEventListener('input',recalcTotal);
+document.getElementById('fPower').addEventListener('input',recalcTotal);
+
+document.getElementById('addBtn').addEventListener('click',function(){
+  var errMsg=document.getElementById('errMsg'),succMsg=document.getElementById('succMsg');
+  errMsg.style.display='none';succMsg.style.display='none';
+  if(!FORM_READY){errMsg.textContent='Form not connected to a Google Form yet. Configure FORM_ACTION and ENTRY in power_dashboard.html.';errMsg.style.display='block';return}
+  var floor=document.getElementById('fFloor').value;
+  var machine=document.getElementById('fMachine').value.trim();
+  var qty=document.getElementById('fQty').value;
+  var power=document.getElementById('fPower').value;
+  if(!floor){errMsg.textContent='Please select a Floor';errMsg.style.display='block';return}
+  if(!machine){errMsg.textContent='Please enter the Machine Name';errMsg.style.display='block';return}
+  if(qty===''||power===''){errMsg.textContent='Please enter Qty and Actual Power';errMsg.style.display='block';return}
+  var payload={};
+  payload[ENTRY.floor]=floor;
+  payload[ENTRY.machine]=machine;
+  payload[ENTRY.qty]=qty;
+  payload[ENTRY.power]=power;
+  payload['fvv']='1';
+  payload['partialResponse']='[null,null,"0"]';
+  payload['pageHistory']='0';
+  payload['draftResponse']='[,,]';
+  payload['fbzx']='0';
+  var body=Object.keys(payload).map(function(k){return encodeURIComponent(k)+'='+encodeURIComponent(payload[k])}).join('&');
+  fetch(FORM_ACTION,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body}).then(function(){
+    succMsg.style.display='block';
+    document.getElementById('fMachine').value='';
+    document.getElementById('fQty').value='';
+    document.getElementById('fPower').value='';
+    document.getElementById('fTotal').value='';
+    document.getElementById('fFloor').value='';
+    setTimeout(function(){succMsg.style.display='none'},5000);
+  }).catch(function(){errMsg.textContent='Network error. Please try again.';errMsg.style.display='block';});
+});
+
+loadData();
+</script>
+<script>
+(function(){
+function onReady(fn){if(document.readyState!=='loading'){fn()}else{document.addEventListener('DOMContentLoaded',fn)}}
+function main(){
+function setD(el,d){if(el){var v=d+'ms';if(el.style.animationDelay!==v){el.style.animationDelay=v}}}
+function rows(){var rs=document.querySelectorAll('tbody tr');for(var i=0;i<rs.length;i++){setD(rs[i],Math.min(i*15,350))}}
+function boxes(){var bs=document.querySelectorAll('.card,.card-btn,.cat-stat,.stat,.read-card,.floor-card');for(var i=0;i<bs.length;i++){var d=Math.min(i*70,650);setD(bs[i],i===0?0:d);var ic=bs[i].querySelector(':scope > .sicon,:scope > .icon');if(ic){setD(ic,d+90)}}}
+function landing(){setD(document.querySelector('.landing-title'),320);setD(document.querySelector('.landing-sub'),570);setD(document.querySelector('.big-logo'),800)}
+function showPanel(){var ps=document.querySelectorAll('.sub-panel.show');for(var p=0;p<ps.length;p++){var el=ps[p];setD(el.querySelector('.sub-title'),90);setD(el.querySelector('.sub-desc'),320);var bts=el.querySelectorAll('.sub-btn');for(var i=0;i<bts.length;i++){var d=Math.min(i*60,900);setD(bts[i],d);var ic=bts[i].querySelector(':scope > .sicon,:scope > .icon');if(ic){setD(ic,d+90)}}setD(el.querySelector('.sub-back'),bts.length*60+380)}}
+rows();boxes();landing();showPanel();
+if(typeof MutationObserver!=='undefined'){new MutationObserver(function(){requestAnimationFrame(function(){rows();showPanel()})}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']})}
+}
+onReady(main);
+})();
+</script>
+</body>
+</html>
