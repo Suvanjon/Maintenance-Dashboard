@@ -295,7 +295,7 @@ function render(){
     else if(a===0)badge='<span class="badge ok">All OK</span>';
     else badge='<span class="badge attention">Attention</span>';
     var tr2=document.createElement('tr');
-    tr2.innerHTML='<td>'+esc(m.name)+'</td><td class="num-cell">'+t+'</td><td class="num-cell">'+o+'</td><td class="num-cell">'+(a>0?('<span style="color:#e65100;font-weight:700">'+a+'</span>'):'0')+'</td><td style="text-align:center">'+badge+'</td>';
+    tr2.innerHTML='<td>'+esc(m.name)+'</td><td class="num-cell">'+t+'</td><td class="num-cell">'+(o>0?o:'')+'</td><td class="num-cell">'+(a>0?('<span style="color:#e65100;font-weight:700">'+a+'</span>'):'')+'</td><td style="text-align:center">'+badge+'</td>';
     body.appendChild(tr2);
   });
   document.getElementById('qTask').textContent=catTotals['Daily Maintenance']||0;
