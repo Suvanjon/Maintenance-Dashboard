@@ -283,6 +283,7 @@ function render(){
     total+=t;ok+=o;attn+=a;
     catTotals[m.category]=(catTotals[m.category]||0)+t;
     if(a>0)attnByModule.push({name:m.name,attn:a});
+    if(t===0)return;
     if(m.category!==curCat){
       curCat=m.category;
       var tr=document.createElement('tr');tr.className='cat-row';
