@@ -100,9 +100,10 @@ tbody tr{animation:ml-row-in .28s ease backwards}
 <div class="card" style="margin-top:12px">
 <div style="font-size:20px;font-weight:700;color:#005151">Preventive Completed Dashboard</div>
 <div id="secBadge" style="display:inline-block;background:#005151;color:#fff;font-size:12px;font-weight:700;padding:4px 14px;border-radius:16px;margin-top:6px"></div>
-<div class="top-bar">
+<div class="top-bar" id="filterBar" style="display:none">
 <div class="field"><label>Date From</label><input type="date" id="dateFrom"></div>
 <div class="field"><label>Date To</label><input type="date" id="dateTo"></div>
+<div class="field" id="sectionField" style="display:none"><label>Section</label><select id="sectionFilter"><option value="">All Sections</option></select></div>
 <div class="field"><label>Machine Name</label><select id="machineFilter"><option value="">All Machines</option></select></div>
 <div class="field"><label>Status</label><select id="statusFilter"><option value="">All Status</option><option value="ok">All OK</option><option value="attn">Needs Attention</option></select></div>
 </div>
@@ -125,6 +126,7 @@ tbody tr{animation:ml-row-in .28s ease backwards}
 <th data-col="sl">S/L</th>
 <th data-col="date">Date &#x25B4;</th>
 <th data-col="machine">Machine Name</th>
+<th data-col="section">Section</th>
 <th data-col="status">Status</th>
 <th>Attention Details</th>
 </tr></thead>
@@ -306,8 +308,9 @@ startCol:3,machCol:2,dateCol:1,itemCount:17
 }
 };
 var sec=new URLSearchParams(location.search).get('section')||'All Departments';
+var MASTER={csv:'https://docs.google.com/spreadsheets/d/1W76G3n90DZh5pqcowYbCqByezaFSIiFokO7Ic2Uvmzs/gviz/tq?tqx=out:csv&gid=0',title:'Preventive Completed Dashboard'};
 var ALL=(sec==='All Departments'||sec==='All'||sec==='All Sections'||sec==='All Machines');
-var CFG=CONFIGS[sec]||CONFIGS['IMM'];
+var CFG=ALL?MASTER:(CONFIGS[sec]||CONFIGS['IMM']);
 var hashMap={'IMM':'sub-pm-imm','Crusher Machine':'sub-pm-crusher','Mixture Machine':'sub-pm-mixture','Central Feeding':'sub-pm-feeding','Conveyor Line':'sub-pm-conveyor','Automatic Packing Machine':'sub-pm-apm','PVC Tape Cutting':'sub-pm-pvc-cut','PVC Tape Wrapping':'sub-pm-pvc-wrap','Circuit Breaker':'sub-pm-cb','LED - Automatic Packing':'sub-pm-led-apm','LED - Automatic Assembly':'sub-pm-led-aasm','LED - Semi Automatic Assembly':'sub-pm-led-sasm','LED - Assembly Conveyor':'sub-pm-led-conveyor','LED - Crimping':'sub-pm-led-crimp','LED - Manual Aging':'sub-pm-led-aging','LED - Laser Printer':'sub-pm-led-laser','LED - Belt Stamping':'sub-pm-led-stamp','LED - Chip Cutting':'sub-pm-led-chip','HAP - Conveyor Belt S App':'sub-pm-hap-cb','HAP - 5 in 1 QC':'sub-pm-hap-qc','HAP - Flame Testing':'sub-pm-hap-flame','HAP - Spot Weld GS':'sub-pm-hap-swgs','HAP - Gas Leakage':'sub-pm-hap-gasleak','HAP - Temp Testing':'sub-pm-hap-tempiron','HAP - Gluing Machine (Electric Cooker)':'sub-pm-hap-glucook','HAP - Spot Weld Kettle':'sub-pm-hap-swkettle','HAP - Cont Weld Kettle':'sub-pm-hap-cwkettle','HAP - Edge Beading':'sub-pm-hap-edge','HAP - Gluing Heating Plate':'sub-pm-hap-gluplate','HAP - Leak Test 4':'sub-pm-hap-leak4','HAP - Auto Packaging':'sub-pm-hap-apk','HAP - Belt Stamping':'sub-pm-hap-bstamp','HAP - Temp Testing Cooker':'sub-pm-hap-tempcook'};
 document.getElementById('backLink').href='index.html#'+(hashMap[sec]||'sub-preventive');
 var CSV_URL=CFG.csv;
@@ -435,60 +438,110 @@ function shortName(full){
 }
 
 function loadData(){
-  var jobs=[];
-  if(ALL){ Object.keys(CONFIGS).forEach(function(s){ jobs.push(s); }); }
-  else{ jobs.push(sec); }
-  var promises=[];
-  jobs.forEach(function(s){
-    promises.push(fetch(CONFIGS[s].csv).then(function(r){return r.text()}).then(function(csv){return {s:s,csv:csv};}).catch(function(e){return {s:s,err:e};}));
-  });
-  Promise.all(promises).then(function(results){
-    results.forEach(function(x){
-      if(x.err){ return; }
-      var cfg=CONFIGS[x.s];
-      var lines=x.csv?parseCSV(x.csv):[];
-      if(!lines.length){ return; }
-      var header=lines[0];
-      var endCol=cfg.itemCount?(cfg.startCol+cfg.itemCount):header.length;
-      var keys=[];
-      for(var i=cfg.startCol;i<endCol;i++){
-        var h=(header[i]||'').trim();
-        if(h&&h!=='Column '+i)keys.push(h);
-      }
-      for(var j=1;j<lines.length;j++){
-        var r=lines[j];if(!r||r.length<=cfg.startCol)continue;
-        var machine=(r[cfg.machCol]||'').trim();
-        if(machine==='Column '+cfg.machCol||/^Column \d+$/.test(machine))continue;
-        var date=(r[cfg.dateCol]||'').trim();
-        if(!date&&!machine)continue;
-        var items=[];
-        keys.forEach(function(k,idx){
-          var raw=(r[cfg.startCol+idx]||'').trim();
-          var ok=(raw===''||raw.toUpperCase()==='OK');
-          var detail='';
-          if(!ok){
-            detail=raw;
-            var m=raw.match(/Corrective action:\s*(.*)/i);
-            var issue=raw.split('|')[0].replace(/^Not\s*OK\s*-\s*/i,'').trim();
-            if(!issue)issue=raw;
-            detail=issue+(m&&m[1]?(' | '+m[1].trim()):'');
-          }
-          items.push({key:k,ok:ok,detail:detail});
-        });
-        DATA.push({timestamp:r[0]||'',date:date,machine:machine,items:items,section:x.s});
-      }
+  if(ALL){
+    /* Completed Dashboard: aggregate every preventive source sheet client-side and
+       render the full completed status with details. No Apps Script needed. */
+    var sections=Object.keys(CONFIGS);
+    var promises=sections.map(function(s){
+      return fetch(CONFIGS[s].csv).then(function(r){return r.text()})
+        .then(function(csv){return {s:s,csv:csv};})
+        .catch(function(e){return {s:s,err:e};});
     });
-    document.getElementById('loadingMsg').style.display='none';
-    initFilters();
-    var t=new Date();
-    var tm=('0'+(t.getMonth()+1)).slice(-2),td=('0'+t.getDate()).slice(-2);
-    var tStr=t.getFullYear()+'-'+tm+'-'+td;
-    document.getElementById('dateFrom').value=tStr;
-    document.getElementById('dateTo').value=tStr;
-    render();
-  }).catch(function(e){
-    document.getElementById('loadingMsg').textContent='Failed to load data: '+e.message;
-  });
+    Promise.all(promises).then(function(results){
+      results.forEach(function(x){
+        if(x.err)return;
+        var cfg=CONFIGS[x.s];
+        var lines=x.csv?parseCSV(x.csv):[];
+        if(lines.length<=1)return;
+        var header=lines[0];
+        var endCol=cfg.itemCount?(cfg.startCol+cfg.itemCount):header.length;
+        var keys=[];
+        for(var i=cfg.startCol;i<endCol;i++){
+          var h=(header[i]||'').trim();
+          if(h&&h!=='Column '+i)keys.push(h);
+        }
+        for(var j=1;j<lines.length;j++){
+          var r=lines[j];if(!r||r.length<=cfg.startCol)continue;
+          var machine=(r[cfg.machCol]||'').trim();
+          if(machine==='Column '+cfg.machCol||/^Column \d+$/.test(machine))continue;
+          var date=(r[cfg.dateCol]||'').trim();
+          if(!date&&!machine)continue;
+          var items=[];
+          keys.forEach(function(k,idx){
+            var raw=(r[cfg.startCol+idx]||'').trim();
+            var ok=(raw===''||raw.toUpperCase()==='OK');
+            var detail='';
+            if(!ok){
+              detail=raw;
+              var m=raw.match(/Corrective action:\s*(.*)/i);
+              var issue=raw.split('|')[0].replace(/^Not\s*OK\s*-\s*/i,'').trim();
+              if(!issue)issue=raw;
+              detail=issue+(m&&m[1]?(' | '+m[1].trim()):'');
+            }
+            items.push({key:k,ok:ok,detail:detail});
+          });
+          DATA.push({timestamp:r[0]||'',date:date,machine:machine,items:items,section:x.s});
+        }
+      });
+      DATA.sort(function(a,b){return normDate(b.date).localeCompare(normDate(a.date));});
+      document.getElementById('loadingMsg').style.display='none';
+      initFilters();
+      var t=new Date();
+      var tm=('0'+(t.getMonth()+1)).slice(-2),td=('0'+t.getDate()).slice(-2);
+      var tStr=t.getFullYear()+'-'+tm+'-'+td;
+      document.getElementById('dateFrom').value=tStr;
+      document.getElementById('dateTo').value=tStr;
+      render();
+    }).catch(function(e){
+      document.getElementById('loadingMsg').textContent='Failed to load data: '+e.message;
+    });
+  }else{
+    var cfg=CFG;
+    fetch(cfg.csv).then(function(r){return r.text()}).then(function(csv){
+      var lines=csv?parseCSV(csv):[];
+      if(lines.length>1){
+        var header=lines[0];
+        var endCol=cfg.itemCount?(cfg.startCol+cfg.itemCount):header.length;
+        var keys=[];
+        for(var i=cfg.startCol;i<endCol;i++){
+          var h=(header[i]||'').trim();
+          if(h&&h!=='Column '+i)keys.push(h);
+        }
+        for(var j=1;j<lines.length;j++){
+          var r=lines[j];if(!r||r.length<=cfg.startCol)continue;
+          var machine=(r[cfg.machCol]||'').trim();
+          if(machine==='Column '+cfg.machCol||/^Column \d+$/.test(machine))continue;
+          var date=(r[cfg.dateCol]||'').trim();
+          if(!date&&!machine)continue;
+          var items=[];
+          keys.forEach(function(k,idx){
+            var raw=(r[cfg.startCol+idx]||'').trim();
+            var ok=(raw===''||raw.toUpperCase()==='OK');
+            var detail='';
+            if(!ok){
+              detail=raw;
+              var m=raw.match(/Corrective action:\s*(.*)/i);
+              var issue=raw.split('|')[0].replace(/^Not\s*OK\s*-\s*/i,'').trim();
+              if(!issue)issue=raw;
+              detail=issue+(m&&m[1]?(' | '+m[1].trim()):'');
+            }
+            items.push({key:k,ok:ok,detail:detail});
+          });
+          DATA.push({timestamp:r[0]||'',date:date,machine:machine,items:items,section:sec});
+        }
+      }
+      document.getElementById('loadingMsg').style.display='none';
+      initFilters();
+      var t=new Date();
+      var tm=('0'+(t.getMonth()+1)).slice(-2),td=('0'+t.getDate()).slice(-2);
+      var tStr=t.getFullYear()+'-'+tm+'-'+td;
+      document.getElementById('dateFrom').value=tStr;
+      document.getElementById('dateTo').value=tStr;
+      render();
+    }).catch(function(e){
+      document.getElementById('loadingMsg').textContent='Failed to load data: '+e.message;
+    });
+  }
 }
 
 function initFilters(){
@@ -496,10 +549,19 @@ function initFilters(){
   var machs={};
   DATA.forEach(function(r){if(r.machine)machs[r.machine]=1});
   Object.keys(machs).sort().forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;mach.appendChild(o)});
+  var secSel=document.getElementById('sectionFilter');
+  var secField=document.getElementById('sectionField');
+  var secs={};
+  DATA.forEach(function(r){if(r.section)secs[r.section]=1});
+  Object.keys(secs).sort().forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;secSel.appendChild(o)});
+  if(Object.keys(secs).length>1&&secField)secField.style.display='flex';
   mach.onchange=render;
+  secSel.onchange=render;
   document.getElementById('statusFilter').onchange=render;
   document.getElementById('dateFrom').onchange=onDateChange;
   document.getElementById('dateTo').onchange=onDateChange;
+  var fb=document.getElementById('filterBar');
+  if(fb)fb.style.display='flex';
 }
 
 function onDateChange(){
@@ -519,10 +581,12 @@ function statusOf(r){
 
 function render(){
   var mv=document.getElementById('machineFilter').value;
+  var svd=document.getElementById('sectionFilter')?document.getElementById('sectionFilter').value:'';
   var sv=document.getElementById('statusFilter').value;
   var df=document.getElementById('dateFrom').value;
   var dt=document.getElementById('dateTo').value;
   var filtered=DATA.filter(function(r){
+    if(svd&&r.section!==svd)return false;
     if(mv&&r.machine!==mv)return false;
     if(sv==='ok'&&statusOf(r).length)return false;
     if(sv==='attn'&&!statusOf(r).length)return false;
@@ -557,7 +621,7 @@ function render(){
     var attnHtml=attn.length
       ?('<div class="attn">'+attn.length+' item(s) &#9888;</div>'+attn.slice(0,4).map(function(it){return '<div class="attn-item">&#8226; '+esc(shortName(it.key))+': '+esc(it.detail)+'</div>'}).join(''))
       :'<span style="color:#2e7d32;font-size:12px">&#10003; All '+r.items.length+' items passed</span>';
-    tr.innerHTML='<td class="sl">'+(i+1)+'</td><td>'+esc(r.date)+'</td><td><b>'+esc(r.machine)+'</b></td><td>'+statusHtml+'</td><td>'+attnHtml+'</td>';
+    tr.innerHTML='<td class="sl">'+(i+1)+'</td><td>'+esc(r.date)+'</td><td><b>'+esc(r.machine)+'</b></td><td>'+esc(r.section||'')+'</td><td>'+statusHtml+'</td><td>'+attnHtml+'</td>';
     tb.appendChild(tr);
   });
   updateSortIndicators();
