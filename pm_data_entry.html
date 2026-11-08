@@ -260,26 +260,21 @@ submitBtn.addEventListener('click', function () {
   var body = Object.keys(res.payload).map(function (k) {
     return encodeURIComponent(k) + '=' + encodeURIComponent(res.payload[k]);
   }).join('&');
-  fetch(WEB_APP_URL, {
+  fetch(FORM_ACTION_URL, {
     method: 'POST',
-    mode: 'cors',
+    mode: 'no-cors',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: body
-  }).then(function (r) { return r.json(); })
-    .then(function (j) {
+  }).then(function () {
       submitBtn.classList.remove('saving'); submitBtn.disabled = false;
-      if (j && j.status === 'ok') {
-        succMsg.style.display = 'block';
-        resetForm();
-        setTimeout(function () { succMsg.style.display = 'none' }, 5000);
-      } else {
-        errMsg.textContent = 'Submit failed: ' + (j && j.message ? j.message : 'unknown');
-        errMsg.style.display = 'block';
-      }
+      succMsg.style.display = 'block';
+      resetForm();
+      setTimeout(function () { succMsg.style.display = 'none' }, 5000);
     })
     .catch(function (err) {
       submitBtn.classList.remove('saving'); submitBtn.disabled = false;
       errMsg.textContent = 'Network error. Please try again.'; errMsg.style.display = 'block';
+      console.error('Submit error:', err);
     });
   window.scrollTo(0, 0);
 });
