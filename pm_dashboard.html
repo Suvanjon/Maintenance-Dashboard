@@ -63,7 +63,7 @@ if (window.google && window.google.visualization) {
   try { window.google.visualization.Query.setResponse = setResp; } catch (e) {}
 }
 var s2 = document.createElement('script');
-s2.src = 'https://docs.google.com/spreadsheets/d/' + SID + '/gviz/tq?tqx=out:json;responseHandler:setResp&headers=1&sheet=Sheet1';
+s2.src = 'https://docs.google.com/spreadsheets/d/' + SID + '/gviz/tq?tqx=out:json;responseHandler:setResp&headers=1&sheet=' + encodeURIComponent('Form Responses 1');
 document.head.appendChild(s2);
 var tries = 0, pollInt = null;
 function startPoll() {
