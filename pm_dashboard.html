@@ -92,7 +92,8 @@ function render() {
   var records = [];
   rows.forEach(function (rr) {
     var o = {};
-    headers.forEach(function (h, i) { o[h] = cellVal(rr[i]); });
+    var cells = (rr && rr.c) ? rr.c : rr;
+    headers.forEach(function (h, i) { o[h] = cellVal(cells[i]); });
     records.push(o);
   });
 
