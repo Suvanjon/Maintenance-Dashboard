@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -79,11 +79,13 @@ body{background:#f5f3ef;min-height:100vh}
 </div>
 <script>
 // ============================================================================
-// CONFIG — replace WEB_APP_URL with your deployed Apps Script Web App URL
+// CONFIG ΓÇö replace WEB_APP_URL with your deployed Apps Script Web App URL
 // ============================================================================
-// IMPORTANT: replace this with your deployed Apps Script Web App URL.
-// See apps-script.gs in the repo and the deployment steps below.
-var WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzidh3a6WXsGel5kfUhtRcUee1tkmFsnMS4T42lMh1n05L1M3kU43kj6CTBV0blP-ur/exec';
+var FORM_ACTION_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdl2BZDBIS7NfG9GGtbw1ODZPNybCYkxXlSRmO3DgP66cM2qw/formResponse';
+var FORM_FIELDS = {"entry.218005557":235201860,"entry.1458090673":2103463752,"entry.940823359":362301228,"entry.1485189514":269953470,"entry.542758492":643566355,"entry.569862239":1964215886,"entry.1277314249":248821548,"entry.30582981":2104673417,"entry.1317825503":1728310840,"entry.1517800487":498330468,"entry.1412437944":912710345,"entry.1062724479":1606107778,"entry.1700644856":750615008,"entry.867299511":562510629,"entry.490902443":1785944111,"entry.1572939011":146413628,"entry.1648505022":359046404,"entry.1912192025":1368149957,"entry.1073228339":509369833,"entry.1501232017":1689136659,"entry.1169424761":1896244309,"entry.1025988752":1251016145,"entry.86892409":902278205,"entry.982157472":1772989047,"entry.528482425":1118599188,"entry.1351057645":1691351890,"entry.253109376":897898909,"entry.113299393":1928157235,"entry.683870736":1328485457,"entry.1896518256":1087172267,"entry.1135300109":2001108764,"entry.184567311":83210663,"entry.1353870519":1744537545,"entry.1601294214":985894510,"entry.187914540":2062842808,"entry.1432689321":385410127,"entry.198674593":300325874,"entry.1777680829":868441015,"entry.1380680411":1643995872,"entry.1445981052":961602936,"entry.1400622472":140443769,"entry.1891287459":1327086581,"entry.1306347633":1731315029,"entry.106112945":1341406231,"entry.1476703198":1851155843,"entry.1827870979":2116115783,"entry.1513026803":22186608,"entry.619704381":473409168,"entry.1545389773":1699611029,"entry.1629650568":1756246576,"entry.226897682":66829492,"entry.1898390452":2087056690,"entry.1402362945":1433459698};
+var FORM_SECTION_ID = 937636064;
+var FORM_DATE_ID = 977524180;
+var FORM_MACHINE_ID = 1893875945;
 
 // IMM preventive checklist questions (entry.* IDs match the dashboard reader)
 var ITEMS=[
@@ -207,7 +209,7 @@ function buildPayload() {
       if (it[2] && !firstMissing) firstMissing = it[1].replace(/<[^>]*>/g, '');
       return;
     }
-    if (input.value === 'ok') { payload[it[0]] = 'OK' }
+    if (input.value === 'ok') { payload['entry.' + FORM_FIELDS[it[0]]] = 'OK' }
     else {
       var names = document.querySelectorAll('input[name="' + it[0] + '"]');
       var box = names[0].closest('.item').querySelector('.problem-box');
@@ -216,23 +218,23 @@ function buildPayload() {
       var action = tas[1].value.trim();
       var text = prob;
       if (action) text += text ? (' | Corrective action: ' + action) : ('Corrective action: ' + action);
-      payload[it[0]] = text ? ('Not OK - ' + text) : 'Not OK';
+      payload['entry.' + FORM_FIELDS[it[0]]] = text ? ('Not OK - ' + text) : 'Not OK';
     }
   });
   var dv = document.getElementById('fDate').value;
   if (dv) {
     var dp = dv.split('-');
-    payload['date'] = dv;
-    payload['date_year'] = dp[0];
-    payload['date_month'] = dp[1];
-    payload['date_day'] = dp[2];
+    payload['entry.' + FORM_DATE_ID] = dv;
+    // (date parts not needed for form)
+    
+    
   }
   if (mach.value === '__other__') {
-    payload['machine'] = document.getElementById('fOtherMachine').value.trim();
+    payload['entry.' + FORM_MACHINE_ID] = document.getElementById('fOtherMachine').value.trim();
   } else {
-    payload['machine'] = mach.value;
+    payload['entry.' + FORM_MACHINE_ID] = mach.value;
   }
-  payload['section'] = sec;
+  payload['entry.' + FORM_SECTION_ID] = sec;
   return { payload: payload, firstMissing: firstMissing };
 }
 
@@ -253,11 +255,6 @@ submitBtn.addEventListener('click', function () {
   if (res.firstMissing) {
     errMsg.textContent = 'Please select OK or Not OK for: ' + res.firstMissing;
     errMsg.style.display = 'block'; return;
-  }
-  if (WEB_APP_URL.indexOf('YOUR_DEPLOYED_ID_HERE') !== -1) {
-    errMsg.textContent = 'Backend not configured: deploy apps-script.gs as a Web App, then set WEB_APP_URL in this file.';
-    errMsg.style.display = 'block';
-    return;
   }
   submitBtn.classList.add('saving'); submitBtn.disabled = true;
   var body = Object.keys(res.payload).map(function (k) {
@@ -282,9 +279,7 @@ submitBtn.addEventListener('click', function () {
     })
     .catch(function (err) {
       submitBtn.classList.remove('saving'); submitBtn.disabled = false;
-      errMsg.textContent = 'Network/CORS error: ' + (err && err.message ? err.message : 'request failed') + '. Check WEB_APP_URL and Apps Script deployment (Execute as: Me, Anyone).';
-      errMsg.style.display = 'block';
-      console.error('Submit error:', err);
+      errMsg.textContent = 'Network error. Please try again.'; errMsg.style.display = 'block';
     });
   window.scrollTo(0, 0);
 });
