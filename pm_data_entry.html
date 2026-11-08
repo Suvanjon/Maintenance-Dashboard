@@ -1,47 +1,85 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Preventive Data Entry - Akij Light Engineering Ltd.</title>
+<title>Preventive Checklist - Data Entry</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Roboto,Arial,sans-serif}
-body{background:#f5f3ef;min-height:100vh}
-.hdr{background:#005151;padding:14px 16px 10px;text-align:center;border-bottom:3px solid #003838}
-.hdr-text{color:#fff;font-size:17px;font-weight:700;letter-spacing:.5px}
-.hdr-sub{color:rgba(255,255,255,.7);font-size:12px;margin-top:2px}
-.wrap{max-width:760px;margin:28px auto;padding:0 20px}
-.back-link{display:inline-block;color:#005151;font-size:14px;font-weight:600;text-decoration:none;margin-bottom:16px}
-.back-link:hover{text-decoration:underline}
-.card{background:#fff;border:1px solid #ddd;border-radius:12px;padding:24px;box-shadow:0 4px 16px rgba(0,81,81,.08)}
-.card h2{color:#005151;font-size:20px;font-weight:700;margin-bottom:4px}
-.sec-badge{display:inline-block;background:#005151;color:#fff;font-size:13px;font-weight:700;padding:4px 16px;border-radius:16px;margin-bottom:18px}
-.field{margin-bottom:16px}
-.field label{display:block;color:#333;font-size:14px;font-weight:600;margin-bottom:6px}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter','Segoe UI',-apple-system,Roboto,Arial,sans-serif}
+body{background:
+ radial-gradient(1200px 480px at 12% -10%, rgba(42,154,160,.13), transparent 60%),
+ radial-gradient(1000px 440px at 108% -18%, rgba(0,86,92,.11), transparent 55%),
+ #f4f7f9;min-height:100vh;-webkit-font-smoothing:antialiased}
+.hdr{background:linear-gradient(135deg,#0b7f89 0%,#006066 45%,#003c44 100%);padding:15px 18px 13px;text-align:center;position:relative;overflow:hidden}
+.hdr:after{content:"";position:absolute;inset:0;background:radial-gradient(700px 180px at 50% -80%,rgba(255,255,255,.2),transparent 70%);pointer-events:none}
+.hdr-text{position:relative;color:#fff;font-size:16px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.hdr-sub{position:relative;color:rgba(255,255,255,.72);font-size:12px;margin-top:2px}
+.wrap{max-width:780px;margin:24px auto;padding:0 18px 48px}
+.back-link{display:inline-block;color:#00565c;font-size:14px;font-weight:600;text-decoration:none;margin-bottom:18px;padding:8px 18px;background:#fff;border:1px solid rgba(0,86,92,.28);border-radius:999px;transition:all .2s;box-shadow:0 2px 6px rgba(13,40,58,.05)}
+.back-link:hover{background:#00565c;color:#fff;text-decoration:none}
+.card{background:#fff;border:5px solid #00565c;border-radius:20px;padding:26px;box-shadow:0 10px 30px rgba(13,40,58,.09)}
+.card h2{color:#00565c;font-size:21px;font-weight:800;margin-bottom:6px}
+.sec-badge{display:inline-block;background:linear-gradient(135deg,#0b7f89,#00565c);color:#fff;font-size:13px;font-weight:700;padding:5px 18px;border-radius:999px;margin-bottom:20px;box-shadow:0 4px 10px rgba(0,86,92,.2)}
+.field{margin-bottom:18px}
+.field label{display:block;color:#33475c;font-size:13px;font-weight:600;margin-bottom:7px}
 .field .req{color:#e53935}
-.field input[type=date],.field select{width:100%;padding:10px 12px;border:1px solid #bbb;border-radius:8px;font-size:14px;font-family:inherit;background:#fff}
+.field input[type=date],.field select{width:100%;padding:11px 14px;border:1.5px solid #d8e2e6;border-radius:12px;font-size:14px;font-family:inherit;background:#fff;transition:border-color .15s,box-shadow .15s}
+.field input[type=date]:focus,.field select:focus{border-color:#0a6b72;outline:none;box-shadow:0 0 0 3px rgba(42,154,160,.16)}
 #ifmWrap{display:none}
-.item{background:#fafaf8;border:1px solid #eee;border-radius:8px;padding:12px 14px;margin-bottom:10px}
-.item .q{color:#333;font-size:14px;font-weight:600;line-height:1.4}
+.item{background:#f7fafb;border:1px solid rgba(0,86,92,.4);border-radius:14px;padding:13px 16px;margin-bottom:12px;transition:border-color .15s,box-shadow .15s}
+.item:hover{border-color:#cfdfe2;box-shadow:0 2px 8px rgba(13,40,58,.05)}
+.item .q{color:#26394a;font-size:14px;font-weight:600;line-height:1.45}
 .item .q .req{color:#e53935}
-.opts{display:flex;gap:18px;margin-top:9px}
-.opt{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:600;cursor:pointer}
-.opt input{width:16px;height:16px;cursor:pointer}
+.opts{display:flex;gap:20px;margin-top:10px}
+.opt{display:flex;align-items:center;gap:7px;font-size:14px;font-weight:600;cursor:pointer}
+.opt input{width:17px;height:17px;cursor:pointer;accent-color:#00565c}
 .opt .ok{color:#2e7d32}
 .opt .nok{color:#e53935}
-.problem-box{display:none;margin-top:9px}
-.pb-field{margin-top:8px}
-.pb-field label{display:block;color:#b23c17;font-size:13px;font-weight:600;margin-bottom:4px}
-.problem-box textarea{width:100%;padding:10px 12px;border:1px solid #bbb;border-radius:8px;font-size:14px;font-family:inherit;resize:vertical;min-height:44px;box-sizing:border-box}
-.actions{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
-.submit-btn{background:#005151;color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s}
-.submit-btn:hover{background:#006868;transform:scale(1.02)}
-.submit-btn:active{transform:scale(.97)}
-.submit-btn.saving{opacity:.7;cursor:not-allowed}
-.clear-btn{background:#eee;color:#555;border:none;padding:12px 22px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
-.clear-btn:hover{background:#ddd}
-.success-msg{display:none;background:#2e7d32;color:#fff;padding:16px;border-radius:8px;text-align:center;font-size:16px;font-weight:600;margin-top:16px}
-.error-msg{display:none;background:#e53935;color:#fff;padding:12px;border-radius:8px;text-align:center;font-size:14px;font-weight:600;margin-top:12px}
+.problem-box{display:none;margin-top:10px}
+.pb-field{margin-top:9px}
+.pb-field label{display:block;color:#b23c17;font-size:13px;font-weight:600;margin-bottom:5px}
+.problem-box textarea{width:100%;padding:11px 14px;border:1.5px solid #e0c9c0;border-radius:12px;font-size:14px;font-family:inherit;resize:vertical;min-height:46px;box-sizing:border-box;background:#fffdfc;transition:border-color .15s}
+.problem-box textarea:focus{outline:none;border-color:#e65100;box-shadow:0 0 0 3px rgba(230,81,0,.1)}
+.actions{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+.submit-btn{background:linear-gradient(135deg,#0b7f89,#00565c);color:#fff;border:none;padding:13px 32px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 8px 18px rgba(0,86,92,.24)}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(0,86,92,.3)}
+.submit-btn:active{transform:translateY(0) scale(.98)}
+.clear-btn{background:#eef2f4;color:#5d7283;border:none;padding:13px 24px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
+.clear-btn:hover{background:#dfe8eb;color:#33475c}
+.success-msg{display:none;background:linear-gradient(135deg,#43a047,#2e7d32);color:#fff;padding:16px;border-radius:14px;text-align:center;font-size:16px;font-weight:700;margin-top:18px;box-shadow:0 8px 18px rgba(46,125,50,.25)}
+.error-msg{display:none;background:#fff0ee;border:1px solid #ffcdc7;color:#c62828;padding:13px;border-radius:12px;text-align:center;font-size:14px;font-weight:600;margin-top:14px}
+</style>
+<style>
+/* Entrance + micro-animations */
+@keyframes ml-fade-up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes ml-fade-up-soft{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes ml-drop-in{from{opacity:0;transform:translateY(-26px)}to{opacity:1;transform:none}}
+@keyframes ml-tilt-in{0%{opacity:0;transform:translateY(26px) rotate(-2.4deg)}60%{opacity:1;transform:translateY(-4px) rotate(1.1deg)}100%{opacity:1;transform:none}}
+@keyframes ml-pop-in{0%{opacity:0;transform:scale(.3)}55%{opacity:1;transform:scale(1.16)}75%{transform:scale(.92)}100%{opacity:1;transform:scale(1)}}
+@keyframes ml-row-in{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:none}}
+@keyframes ml-msg-in{0%{opacity:0;transform:scale(.85) translateY(8px)}60%{opacity:1;transform:scale(1.04)}100%{opacity:1;transform:none}}
+@keyframes ml-shimmer{0%{background-position:0% 50%}100%{background-position:-200% 50%}}
+@keyframes ml-overlay-in{from{opacity:0}to{opacity:1}}
+@keyframes ml-box-in{from{opacity:0;transform:translateY(46px) scale(.92)}to{opacity:1;transform:none}}
+.wrap,#landing{animation:ml-fade-up .5s ease backwards}
+.card{animation:ml-tilt-in .55s cubic-bezier(.25,.9,.3,1.08) backwards}
+.card-btn,.sub-btn{animation:ml-tilt-in .55s cubic-bezier(.25,.9,.3,1.08) backwards}
+.card-btn .icon,.sub-btn .sicon{animation:ml-pop-in .5s cubic-bezier(.34,1.56,.64,1) backwards}
+.stat,.cat-stat,.read-card,.floor-card{animation:ml-fade-up-soft .45s ease backwards}
+.chart-bar{animation:ml-fade-up-soft .4s ease backwards}
+.sub-title,.sub-desc,.landing-sub,.big-logo{animation:ml-fade-up-soft .5s ease backwards}
+.back-link{animation:ml-fade-up-soft .45s ease .18s backwards}
+.sub-back{animation:ml-fade-up-soft .4s ease .85s backwards}
+tbody tr{animation:ml-row-in .28s ease backwards}
+.success-msg,.error-msg{animation:ml-msg-in .32s cubic-bezier(.34,1.56,.64,1) backwards}
+.modal-overlay{animation:ml-overlay-in .28s ease backwards}
+.modal-box{animation:ml-box-in .38s cubic-bezier(.22,1,.36,1) backwards}
+.hdr-text{animation:ml-drop-in .55s cubic-bezier(.22,1,.36,1) backwards}
+.hdr-sub{animation:ml-drop-in .5s cubic-bezier(.22,1,.36,1) .12s backwards}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+.hdr-text{background:linear-gradient(100deg,#ffffff 38%,#bfedf0 50%,#ffffff 62%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-shadow:none;animation:ml-drop-in .55s cubic-bezier(.22,1,.36,1) backwards,ml-shimmer 8s ease-in-out .8s infinite}
+.landing-title{background:linear-gradient(100deg,#00565c 35%,#0b7f89 50%,#00565c 65%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:ml-shimmer 9s ease-in-out infinite}
+}
 </style>
 </head>
 <body>
@@ -50,10 +88,10 @@ body{background:#f5f3ef;min-height:100vh}
 <div class="hdr-sub">Maintenance Management System</div>
 </div>
 <div class="wrap">
-<a href="index.html" class="back-link">&larr; Back to Dashboard</a>
+<a href="index.html" class="back-link" id="backLink">&larr; Back to Previous Page</a>
 <div class="card">
 <h2>Preventive Data Entry</h2>
-<div class="sec-badge" id="secBadge">IMM Inhouse</div>
+<div class="sec-badge" id="secBadge">IMM</div>
 <div class="field">
 <label>Date <span class="req">*</span></label>
 <input type="date" id="fDate" required="">
@@ -78,211 +116,415 @@ body{background:#f5f3ef;min-height:100vh}
 </div>
 </div>
 <script>
-// ============================================================================
-// CONFIG ΓÇö replace WEB_APP_URL with your deployed Apps Script Web App URL
-// ============================================================================
-var FORM_ACTION_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdl2BZDBIS7NfG9GGtbw1ODZPNybCYkxXlSRmO3DgP66cM2qw/formResponse';
-var FORM_FIELDS = {"entry.218005557":235201860,"entry.1458090673":2103463752,"entry.940823359":362301228,"entry.1485189514":269953470,"entry.542758492":643566355,"entry.569862239":1964215886,"entry.1277314249":248821548,"entry.30582981":2104673417,"entry.1317825503":1728310840,"entry.1517800487":498330468,"entry.1412437944":912710345,"entry.1062724479":1606107778,"entry.1700644856":750615008,"entry.867299511":562510629,"entry.490902443":1785944111,"entry.1572939011":146413628,"entry.1648505022":359046404,"entry.1912192025":1368149957,"entry.1073228339":509369833,"entry.1501232017":1689136659,"entry.1169424761":1896244309,"entry.1025988752":1251016145,"entry.86892409":902278205,"entry.982157472":1772989047,"entry.528482425":1118599188,"entry.1351057645":1691351890,"entry.253109376":897898909,"entry.113299393":1928157235,"entry.683870736":1328485457,"entry.1896518256":1087172267,"entry.1135300109":2001108764,"entry.184567311":83210663,"entry.1353870519":1744537545,"entry.1601294214":985894510,"entry.187914540":2062842808,"entry.1432689321":385410127,"entry.198674593":300325874,"entry.1777680829":868441015,"entry.1380680411":1643995872,"entry.1445981052":961602936,"entry.1400622472":140443769,"entry.1891287459":1327086581,"entry.1306347633":1731315029,"entry.106112945":1341406231,"entry.1476703198":1851155843,"entry.1827870979":2116115783,"entry.1513026803":22186608,"entry.619704381":473409168,"entry.1545389773":1699611029,"entry.1629650568":1756246576,"entry.226897682":66829492,"entry.1898390452":2087056690,"entry.1402362945":1433459698};
-var FORM_SECTION_ID = 937636064;
-var FORM_DATE_ID = 977524180;
-var FORM_MACHINE_ID = 1893875945;
-
-// IMM preventive checklist questions (entry.* IDs match the dashboard reader)
-var ITEMS=[
-["entry.218005557","Electrical panel board net &amp; clean and ensure inside wiring as per compliance",1],
-["entry.1458090673","Panel exhaust fan, SSR, relay, fuse, MCB check and corrective action",1],
-["entry.940823359","Heater, blower and thermocouple check and corrective action",1],
-["entry.1485189514","Gate safety, limit switch, sensor check and corrective action",1],
-["entry.542758492","Must ensure machine breaker knob active and working properly",1],
-["entry.569862239","Machine Transducer check properly",1],
-["entry.1277314249","Machine front and back side emergency switch check and corrective action",1],
-["entry.30582981","MMI board key pad check",1],
-["entry.1317825503","Cables, terminals &amp; connections check for heat, damage or looseness",1],
-["entry.1517800487","Panel cooling fan / ventilation &amp; compartment cleanliness check",1],
-["entry.1412437944","Ensure machine system pressure and flow are OK",1],
-["entry.1062724479","Suction filter clean",1],
-["entry.1700644856","Inverter cooling system check and corrective action",1],
-["entry.867299511","Lubrication distributors check",1],
-["entry.490902443","Lubrication check in toggle pin &amp; bush",1],
-["entry.1572939011","Tie bar scratch check and measure the gap",1],
-["entry.1648505022","Machine level check by spirit level",1],
-["entry.1912192025","Nut &amp; Bolt check",1],
-["entry.1073228339","Machine gate spring, stopper, etc. check and corrective action",0],
-["entry.1501232017","Lubrication pump filter clean",1],
-["entry.1169424761","Purge guard limit, rod, cover, glass check and corrective action",1],
-["entry.1025988752","Oil cooler clean properly with nylon brush",1],
-["entry.86892409","If hydraulic oil needs to be poured (top-up)",1],
-["entry.982157472","Water header IN/OUT line check",1],
-["entry.528482425","Hopper, nut bolt, clamp check &amp; corrective action",1],
-["entry.1351057645","Hopper drier blower, heater, controlling check and corrective action",1],
-["entry.253109376","Machine all jam nut check with co",1],
-["entry.113299393","Gear box oil level check",1],
-["entry.683870736","Pump coupling alignment check",1],
-["entry.1896518256","Cooling water flow check",1],
-["entry.1135300109","Barrel zone temperature check",1],
-["entry.184567311","Nozzle heater band check",1],
-["entry.1353870519","Screw &amp; barrel wear check",1],
-["entry.1601294214","Hydraulic pressure check",1],
-["entry.187914540","Oil leakage check",1],
-["entry.1432689321","Cooling channel chock check",1],
-["entry.198674593","Ejector pin check",1],
-["entry.1777680829","Mating surface check",1],
-["entry.1380680411","Heater band check",1],
-["entry.1445981052","Thermocouple check",1],
-["entry.1400622472","SSR / relay check",1],
-["entry.1891287459","MCB / fuse check",1],
-["entry.1306347633","Motor terminal check",1],
-["entry.106112945","Belt tension check",1],
-["entry.1476703198","Bearing greasing check",1],
-["entry.1827870979","Coupling check",1],
-["entry.1513026803","Vibration check",1],
-["entry.619704381","Abnormal noise check",1],
-["entry.1545389773","Emergency stop check",1],
-["entry.1629650568","Safety gate interlock check",1],
-["entry.226897682","Lighting &amp; signal check",1],
-["entry.1898390452","Earth leakage check",1],
-["entry.1402362945","Insulation resistance check",1]
-];
-
-var sec = new URLSearchParams(location.search).get('section') || 'IMM Inhouse';
-document.getElementById('secBadge').textContent = sec;
-document.title = 'Preventive Data Entry - ' + sec;
-
-var itemsHost = document.getElementById('items');
-ITEMS.forEach(function (it) {
-  var box = document.createElement('div'); box.className = 'item';
-  var q = document.createElement('div'); q.className = 'q';
-  q.innerHTML = (it[2] ? it[1] + ' <span class="req">*</span>' : it[1]);
-  var opts = document.createElement('div'); opts.className = 'opts';
-  var ok = document.createElement('label'); ok.className = 'opt';
-  ok.innerHTML = '<input type="radio" name="' + it[0] + '" value="ok"><span class="ok">OK</span>';
-  var nok = document.createElement('label'); nok.className = 'opt';
-  nok.innerHTML = '<input type="radio" name="' + it[0] + '" value="nok"><span class="nok">Not OK</span>';
-  var pb = document.createElement('div'); pb.className = 'problem-box';
-  var pb1 = document.createElement('div'); pb1.className = 'pb-field';
-  var l1 = document.createElement('label'); l1.textContent = 'Describe the problem';
-  var ta = document.createElement('textarea'); ta.placeholder = 'Describe the problem';
-  pb1.appendChild(l1); pb1.appendChild(ta);
-  var pb2 = document.createElement('div'); pb2.className = 'pb-field';
-  var l2 = document.createElement('label'); l2.textContent = 'Corrective action';
-  var ta2 = document.createElement('textarea'); ta2.placeholder = 'Corrective action';
-  pb2.appendChild(l2); pb2.appendChild(ta2);
-  pb.appendChild(pb1); pb.appendChild(pb2);
-  var rads = [ok.querySelector('input'), nok.querySelector('input')];
-  rads.forEach(function (r) {
-    r.addEventListener('change', function () {
-      pb.style.display = (nok.querySelector('input').checked) ? 'block' : 'none';
-      if (r.value === 'nok') ta.focus();
-    });
+var CONFIGS={
+'IMM':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSf-7t7TnOfNZiX4ZKFKLN37SmAxdNDBnCBjH1bJTy761prpZA/formResponse',
+dateEntry:'entry.320623283',
+machEntry:'entry.1988329670',
+machines:["IMM-358T-PC-A1","IMM-358T-PC-A2","IMM-360T-PP-A3","IMM-300T-PP-A4","IMM-258T-PP-A5","IMM-128T-PC-B1","IMM-120T-PP-B2","IMM-208T-PP-B3","IMM-200T-PP-B4","IMM-168T-PP-B5","IMM-128T-PP-B6","IMM-160T-PP-B7","IMM-160T-PP-B8","IMM-208T-PC-C1","IMM-208T-PC-C2","IMM-208T-PC-C3","IMM-208T-PC-C4","IMM-208T-PC-C5","IMM-258T-PC-C6","IMM-258T-PC-C7","IMM-258T-PC-C8","IMM-258T-PC-C9","IMM-250T-PP-C10","IMM-250T-PP-C11"],
+items:[["entry.1935773684","Electrical panel board net &amp; clean and ensure inside wiring as per compliance",1],["entry.218005557","Panel exhaust fan, SSR, relay, fuse, MCB check and corrective action",1],["entry.1458090673","Heater, blower and thermocouple check and corrective action",1],["entry.940823359","Gate safety, limit switch, sensor check and corrective action",1],["entry.1485189514","Must ensure machine breaker knob active and working properly",1],["entry.542758492","Machine Transducer check properly",1],["entry.569862239","Machine front and back side emergency switch check and corrective action",1],["entry.1277314249","MMI board key pad check",1],["entry.30582981","Cables, terminals &amp; connections check for heat, damage or looseness",1],["entry.1317825503","Panel cooling fan / ventilation &amp; compartment cleanliness check",1],["entry.1517800487","Ensure machine system pressure and flow are OK",1],["entry.1412437944","Suction filter clean",1],["entry.1062724479","Inverter cooling system check and corrective action",1],["entry.1700644856","Lubrication distributors check",1],["entry.867299511","Lubrication check in toggle pin &amp; bush",1],["entry.490902443","Tie bar scratch check and measure the gap",1],["entry.1572939011","Machine level check by spirit level",1],["entry.1648505022","Nut &amp; Bolt check",1],["entry.1912192025","Machine gate spring, stopper, etc. check and corrective action",0],["entry.1073228339","Lubrication pump filter clean",1],["entry.1501232017","Purge guard limit, rod, cover, glass check and corrective action",1],["entry.1169424761","Oil cooler clean properly with nylon brush",1],["entry.1025988752","If hydraulic oil needs to be poured (top-up)",1],["entry.86892409","Water header IN/OUT line check",1],["entry.982157472","Hopper, nut bolt, clamp check &amp; corrective action",1],["entry.528482425","Hopper drier blower, heater, controlling check and corrective action",1],["entry.1351057645","Machine all jam nut check with cotter bolt",1],["entry.253109376","Unwanted noise find out in hydraulic system, motor and pump to solve",1],["entry.436504984","Wastage oil and water clean",1],["entry.1783376924","Injection unit nozzle centering &amp; alignment check",1],["entry.1561889870","Total machine clean",1],["entry.1157330180","Emergency stop (E-Stop) button functioning test",1],["entry.137137975","Safety guards, interlocks &amp; light curtains functional",1],["entry.1189099842","Lockout / Tagout (LOTO) used",1],["entry.1147334062","Spill, oil leakage &amp; housekeeping around machine checked",1],["entry.33958766","Operator PPE compliance &amp; machine area clear of obstructions",1]]
+},
+'Crusher Machine':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSdoqG64cZouG-LtD3S880kxWFWkYw229-K2tmQDbp3rs_pbiQ/formResponse',
+dateEntry:'entry.1778354468',
+machEntry:'entry.32283903',
+dateIsText:true,
+machines:["CRUSHER-01","CRUSHER-02","CRUSHER-03","CRUSHER-04","CRUSHER-05"],
+items:[["entry.25945622","Inspect and sharpen/replace crusher blades if required",1],["entry.291076681","Check rotor condition and balance",1],["entry.1582392752","Inspect bearings for wear or damage",1],["entry.1143959351","Check motor insulation and electrical connections",1],["entry.993930812","Inspect starter, contactor, overload relay and MCCB",1],["entry.612251010","Check machine vibration level",1],["entry.1173310102","Check gearbox",1],["entry.859116582","Inspect machine foundation and frame structure",1],["entry.639850536","Test all safety interlocks and emergency stops",1],["entry.15945324","Machine Overall Clean",1]]
+},
+'Mixture Machine':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSfbh1sphfVJ7fIntCF78WvDE747-6iDsrs8yJBLlmnlNgZArg/formResponse',
+dateEntry:'entry.572986135',
+machEntry:'entry.1179478552',
+dateIsText:true,
+machines:["MIXER-01","MIXER-02"],
+items:[["entry.1067966832","Clean the complete machine and surrounding area",1],["entry.1306267569","Check blade condition, wear, cracks, and tightness",1],["entry.828176313","Check abnormal noise, vibration, overheating, and mounting bolts",1],["entry.421611375","Inspect bearing condition",1],["entry.234644535","Check and tighten all mounting bolts and fasteners",1],["entry.1806184471","Check for abnormal noise, temperature, and lubrication",1],["entry.1486472584","Clean panel and inspect wiring and terminals",1],["entry.1631916358","Check for loose, burnt, or damaged connections",1],["entry.808687803","Test Start, Stop, Emergency Stop, and selector switches",1],["entry.1425250348","Check all guards and safety covers are properly installed",1],["entry.1365680326","Check for abnormal vibration during operation",1],["entry.317457594","Run the machine and observe overall performance",1]]
+},
+'Central Feeding':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLScBeUGEQnx5sNV_pbrui3BCmDuC_xoakuDd-Lrd4mHeoMePZg/formResponse',
+dateEntry:'entry.2062423625',
+machEntry:'entry.1320877788',
+dateIsText:true,
+machines:["Central Feeding System"],
+items:[["entry.2125603407","Check overall condition, abnormal noise, vibration, and overheating",1],["entry.9823356","Check motor current, terminals, insulation, and cooling fan",1],["entry.1901976774","Clean or replace the filter element if required",1],["entry.1489135542","Check vacuum pressure and system performance",1],["entry.107791415","Check pipe condition, joints, bends, and internal blockage",1],["entry.352826115","Inspect loader operation and material suction performance",1],["entry.393799248","Clean filter and check for damage",1],["entry.262856171","Check operation, air leakage, and material flow",1],["entry.872348639","Clean panel and inspect wiring, terminals, and components",1],["entry.732207880","Check alarms, communication, and operational status",1],["entry.841024253","Test all safety devices and emergency functions",1],["entry.53986293","Clean dust, material particles, and contamination from the system",1],["entry.1318918471","Run trial and confirm smooth material feeding to all machines",1],["entry.1769435750","Clean hopper and check heating/drying performance",1],["entry.411596872","Check heater condition, temperature controller, and wiring",1]]
+},
+'Conveyor Line':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSfNnLmWBqvmQDP3wfR5fprMrXOg9_b2gw0Uz466gcYl0FaOtg/formResponse',
+dateEntry:'entry.342268130',
+machEntry:'entry.1282330897',
+dateIsText:true,
+machines:["Conveyor Line 1","Conveyor Line 2","Conveyor Line 3","Conveyor Line 4","Conveyor Line 5","Conveyor Line 6","Conveyor Line 7","Conveyor Line 8"],
+items:[["entry.989478662","Check conveyor belt condition for wear, damage, cracks, and alignment",1],["entry.1486224922","Check drive roller and idler roller condition",1],["entry.2030824029","Check motor mounting bolts and foundation",1],["entry.877768742","Inspect chain, sprocket, coupling, or pulley condition",1],["entry.338165155","Check electrical cables, sensors, and limit switches",1],["entry.792423720","Clean laser printing head and lens as per manufacturer procedure",1],["entry.2032248478","Check printing position and alignment",1],["entry.1237350168","Clean dust from control panel and electrical components",1],["entry.590896951","Check electrical connections and grounding",1],["entry.743359387","Check sealing jaw condition and alignment",1],["entry.653665852","Inspect heater and temperature controller operation",1],["entry.1483834448","Check sealing temperature and sealing quality",1],["entry.402016689","Inspect cutting knife/blade condition and sharpness",1],["entry.1426172345","Check film feeding roller and guide roller condition",1],["entry.766000335","Inspect chain, sprocket, belt, and gears",1],["entry.1680566980","Check pneumatic system, air pressure",1],["entry.2124387226","Inspect sensors and photoelectric switches",1],["entry.416316149","Check motor, gearbox, and coupling condition",1],["entry.1941560866","Check abnormal vibration and noise during operation",1],["entry.157235507","Check machine guards and safety covers",1],["entry.502578518","Clean complete machine and surrounding area",1]]
+},
+'PVC Tape Cutting':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSeA7y3hu0CW5yESz5Bsi16NkffzsDiLMhKaNX1yHFHtzJboVA/formResponse',
+dateEntry:'entry.2136636133',
+machEntry:'entry.1554985936',
+dateIsText:true,
+machines:["PVC Tape Cutting Machine"],
+items:[["entry.442644240","General machine condition and cleaning",1],["entry.1137212777","Bolts, nuts, and machine structure",1],["entry.88533732","Cutting blade condition and alignment",1],["entry.303536636","Blade holder and cutting mechanism",1],["entry.1657740398","Pneumatic system and air leakage",1],["entry.1523214302","Pneumatic cylinder and solenoid valve",1],["entry.519113900","Motor condition and mounting",1],["entry.1403010208","Gearbox and drive system",1],["entry.1252078363","Belt/chain tension and alignment",1],["entry.1397344670","Rollers and bearings condition",1],["entry.248820124","Sensors and encoder operation",1],["entry.1924233140","Electrical panel and wiring connections",1],["entry.830727284","Contactor, relay, and PLC operation",1],["entry.493390864","HMI, switches, and control buttons",1],["entry.211726446","Emergency stop and safety guards",1],["entry.464029731","Limit switches and safety interlocks",1],["entry.1495027995","Lubrication of moving parts",1],["entry.983389874","Cutting accuracy and trial run",1]]
+},
+'PVC Tape Wrapping':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSdYE5UHmv5edaZWckQ1jSg0YpiHE4V9jkJcLURZd9CEBAtfCw/formResponse',
+dateEntry:'entry.1852284981',
+machEntry:'entry.290438157',
+dateIsText:true,
+machines:["PVC Tape Wrapping Machine"],
+items:[["entry.282565289","Check and tighten all mechanical fasteners",1],["entry.589488729","Inspect motor condition and mounting bolts",1],["entry.1018497415","Check gearbox oil level and leakage",1],["entry.1629878616","Inspect belts, chains, and pulleys for wear and tension",1],["entry.1707445362","Lubricate bearings, chains, and moving parts",1],["entry.194285191","Check wrapping roller alignment and condition",1],["entry.709284185","Inspect tape feeding and tension mechanism",1],["entry.877003680","Check pneumatic system for air leakage and proper pressure",1],["entry.981919453","Inspect cylinders and solenoid valves",1],["entry.1036808881","Check sensors and limit switches",1],["entry.54054657","Inspect electrical wiring and terminal connections",1],["entry.228555224","Check control panel components and clean dust",1],["entry.448221806","Test emergency stop and safety devices",1],["entry.1015400605","Check machine vibration and abnormal noise",1],["entry.93683297","Inspect machine frame and guards for damage",1],["entry.444852460","Clean the complete machine and surrounding area",1]]
+},
+'LED - Semi Automatic Assembly':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSevhFNYXqB774RrFyK97xALHqpg8kU8RBIUetnZPeSkJhP4Gg/formResponse',
+dateEntry:'entry.56069345',
+machEntry:'entry.489744461',
+dateIsText:true,
+machines:["Semi Automatic Assembly Machine 1","Semi Automatic Assembly Machine 2"],
+items:[["entry.1876907956","Clean machine body, working table, and internal dust",1],["entry.364998422","Check all bolts, nuts, and mechanical fasteners",1],["entry.1587789427","Inspect pneumatic system for air leakage and pressure",1],["entry.1916199239","Check cylinders, solenoid valves, and air hoses",1],["entry.905760840","Lubricate moving parts, guide rails, and bearings",1],["entry.1361498057","Inspect motors, gearboxes, belts, and couplings",1],["entry.1563555263","Check sensors, limit switches, and positioning accuracy",1],["entry.1393320976","Inspect electrical wiring, terminals, and connectors",1],["entry.558325366","Check control panel, switches, relays, and indicators",1],["entry.546504397","Inspect emergency stop and safety devices",1],["entry.25976672","Check SMPS, power supply voltage, and grounding",1],["entry.1147783241","Inspect conveyor/feeding mechanism and alignment",1],["entry.885337013","Check LED assembly fixtures and tooling condition",1],["entry.1247390821","Test machine operation and cycle performance",1],["entry.180810362","Record abnormal findings and replace worn parts",1]]
+},
+'LED - Assembly Conveyor':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSc1vFJa7zBsYj5v_mv7C-GT5z4aMXg60qWWPIgh8la8hapaug/formResponse',
+dateEntry:'entry.2039746671',
+machEntry:'entry.571229364',
+dateIsText:true,
+machines:["LED Assembly Conveyor Line 1","LED Assembly Conveyor Line 2","LED Assembly Conveyor Line 3","LED Assembly Conveyor Line 4","LED Assembly Conveyor Line 5"],
+items:[["entry.2120297045","Clean conveyor belt and structure",1],["entry.1499430026","Check belt condition for wear or damage",1],["entry.1304509229","Check belt tension and alignment",1],["entry.1658094255","Inspect rollers and idlers for smooth rotation",1],["entry.1967645616","Check drive motor operation and abnormal noise",1],["entry.923020999","Inspect gearbox and check lubricant level",1],["entry.1447349548","Check chain, sprocket, or coupling condition",1],["entry.780718109","Tighten loose bolts, nuts, and fasteners",1],["entry.968500972","Inspect conveyor frame and supports",1],["entry.1069379283","Check bearings for noise, heat, and lubrication",1],["entry.924473270","Inspect electrical cables and connections",1],["entry.70954548","Test Start/Stop and Emergency Stop switches",1],["entry.1545078126","Check safety guards and covers",1],["entry.1916158501","Clean and lubricate moving parts as required",1],["entry.572765400","Run test and check for abnormal vibration or noise",1]]
+},
+'LED - Crimping':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSdvG6HF0iLndvdjTmTtfxrp6aRuzXqznBdP9DPpKn7h0skcbA/formResponse',
+dateEntry:'entry.465931437',
+machEntry:'entry.629179372',
+dateIsText:true,
+machines:["Crimping Machine 1","Crimping Machine 2","Crimping Machine 3"],
+items:[["entry.801395859","Clean crimping die, punch, and machine surface",1],["entry.106725757","Check die and punch wear or damage",1],["entry.657189353","Inspect crimping quality and terminal tightness",1],["entry.1309219014","Check pneumatic pressure and air leakage",1],["entry.399607716","Check cylinders and solenoid valve operation",1],["entry.1287371285","Inspect electrical wiring and terminal connections",1],["entry.127141692","Check bolts, nuts, and machine alignment",1],["entry.859377041","Inspect safety guards and emergency stop function",1],["entry.2139795425","Run trial operation and verify crimping performance",1]]
+},
+'LED - Manual Aging':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSc7yBlC6UG9lsAU6CA4mvcDqgOPf8UfZo4XCDhccApR0M1MBw/formResponse',
+dateEntry:'entry.827572316',
+machEntry:'entry.1191951879',
+dateIsText:true,
+machines:["Aging Line 1","Aging Line 2"],
+items:[["entry.1127335247","Clean the complete machine and aging area",1],["entry.1250498042","Check all electrical wiring and terminals",1],["entry.1221542848","Inspect heaters and temperature controllers",1],["entry.574658114","Check cooling fans and ventilation system",1],["entry.1921052510","Inspect conveyor belt/chain condition and alignment",1],["entry.1966052376","Lubricate moving parts, bearings, and chains",1],["entry.337359211","Check motor operation and abnormal noise",1],["entry.485296251","Check aging sockets, holders, and connectors",1],["entry.2074762412","Inspect PLC/control panel and communication",1],["entry.1912066672","Check emergency stop and alarm functions",1],["entry.215838330","Tighten loose nuts, bolts, and mounting parts",1],["entry.2027395947","Check power supply voltage and grounding",1],["entry.422874870","Inspect pneumatic system for air leakage, if applicable",1],["entry.1692688326","Record abnormalities and replace worn-out parts",1]]
+},
+'LED - Laser Printer':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSefJErq3wmNxIk8FYwh50JfBvxwjOMeQVCJr6aBniXRnwz1BA/formResponse',
+dateEntry:'entry.1551227301',
+machEntry:'entry.879955139',
+dateIsText:true,
+machines:["Single Station Laser Printer 1","Single Station Laser Printer 2","Single Station Laser Printer 3","Single Station Laser Printer 4","Single Station Laser Printer 5","Single Station Laser Printer 6"],
+items:[["entry.1289964925","Clean laser lens and protective window",1],["entry.1934085947","Check laser marking quality and alignment",1],["entry.171511056","Inspect cooling fan and ventilation system",1],["entry.330245241","Clean dust and debris from machine interior",1],["entry.41469291","Check laser power and marking consistency",1],["entry.80884257","Inspect electrical cables and connections",1],["entry.779096114","Check grounding connection",1],["entry.1734883510","Inspect galvo scanner operation",1],["entry.298733113","Check focusing mechanism and working distance",1],["entry.267840897","Inspect emergency stop and safety interlock",1],["entry.1204574514","Check control PC/software communication",1],["entry.256594058","Inspect conveyor and sensor operation, if applicable",1],["entry.1574461056","Tighten loose screws and mounting parts",1],["entry.1346543811","Check abnormal noise, vibration, or overheating",1]]
+},
+'LED - Belt Stamping':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSeEzfngx0mm8J2XvlSIFHzYzZ1fn4LKnwn1t6MZxR4-auHCGA/formResponse',
+dateEntry:'entry.662303601',
+machEntry:'entry.1714533502',
+dateIsText:true,
+machines:["Belt Stamping Machine"],
+items:[["entry.1698261373","Clean machine and remove dust/oil",1],["entry.1532226339","Check stamping belt condition and alignment",1],["entry.1011023541","Inspect belt tension and adjust if needed",1],["entry.1101502127","Check rollers, pulleys and bearings",1],["entry.1956729616","Lubricate moving parts and bearings",1],["entry.1854585054","Check motor and gearbox condition",1],["entry.928334276","Inspect electrical wiring and connections",1],["entry.1276510913","Check sensors and limit switches",1],["entry.1981203442","Test safety guards and emergency stop",1],["entry.450151353","Tighten loose bolts and fasteners",1],["entry.400297088","Check stamping quality and alignment",1],["entry.319129251","Test machine operation for abnormal noise/vibration",1]]
+},
+'HAP - Belt Stamping':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSfBcJrTRsUO-UAFV81fojtDq6Eu1usNg5qClAGBdlrL_uJhxg/formResponse',
+dateEntry:'entry.1270254252',
+machEntry:'entry.545078466',
+dateIsText:true,
+machines:["Belt Stamping Machine"],
+items:[["entry.583422275","Clean machine and remove dust/oil",1],["entry.499942132","Check stamping belt condition and alignment",1],["entry.488997529","Inspect belt tension and adjust if needed",1],["entry.1033736846","Check rollers, pulleys and bearings",1],["entry.799295681","Lubricate moving parts and bearings",1],["entry.842142143","Check motor and gearbox condition",1],["entry.1957644809","Inspect electrical wiring and connections",1],["entry.1473318561","Check sensors and limit switches",1],["entry.1867917897","Test safety guards and emergency stop",1],["entry.2000611996","Tighten loose bolts and fasteners",1],["entry.124557003","Check stamping quality and alignment",1],["entry.2038587736","Test machine operation for abnormal noise/vibration",1]]
+},
+'HAP - Auto Packaging':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSd7uCDsPFQ_dMNKpURBu2yMuGzEYmcCZEiPXw4pJcpBkOhvBQ/formResponse',
+dateEntry:'entry.175210576',
+machEntry:'entry.1897629753',
+dateIsText:true,
+machines:["Automatic Packing Machine"],
+items:[["entry.1607481971","Clean the complete machine, including dust and packaging material residues",1],["entry.25693267","Check frame, covers, guards, and mounting bolts for looseness or damage",1],["entry.31856572","Check conveyor belt/chain condition",1],["entry.1568366459","Inspect motor noise, vibration, temperature, and mounting bolts",1],["entry.1051145672","Check air pressure, air leakage, hoses, fittings, and connectors",1],["entry.376475064","Check cylinder movement, leakage, rod condition, and mounting",1],["entry.1196724570","Check vacuum pump/generator, suction cups, filters, and leakage",1],["entry.1099799693","Clean and check photo sensors, proximity sensors, and limit switches",1],["entry.1750744971","Clean panel and check for dust, loose terminals, and overheating",1],["entry.717550710","Check motor performance, coupling, cables, and drive alarms",1],["entry.1222821919","Check packet feeding, positioning, guides, and sensors",1],["entry.814522513","Check box closing mechanism and proper sealing operation",1],["entry.1983681266","Check all safety covers, guards, and interlocks",1],["entry.427730522","Test all emergency stop buttons and safety circuits",1],["entry.382433937","Check and tighten all critical nuts, bolts, and screws",1],["entry.132634511","Inspect the overall machine condition and identify required spare parts",1],["entry.9418213","Conduct a trial run and verify packing quality and machine performance",1]]
+},
+'HAP - Leak Test 4':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSfkZQFkCKNsECXaltfxgCVLNdGj2eV1wvVvU0AZW33hTRKM1Q/formResponse',
+dateEntry:'entry.1276778614',
+machEntry:'entry.2723961',
+dateIsText:true,
+machines:["Leak Testing Machine - 4 Station (Electric Kettle)"],
+items:[["entry.1633772865","Check electrical cable, plug & connections",1],["entry.2115771481","Check test fixture & clamps",1],["entry.676517278","Check water pump & hoses",1],["entry.858258521","Check valves & fittings for leakage",1],["entry.732097784","Check pressure/vacuum setting",1],["entry.1186860018","Check leak detection sensor",1],["entry.1927360148","Check timer & test cycle",1],["entry.195856259","Check PLC/HMI & alarm function",1],["entry.1696517870","Test with OK/NG sample",1],["entry.1714135424","Clean machine & remove moisture",1],["entry.1017895234","Tighten loose parts & connections",1],["entry.547944649","Record abnormalities & corrective action",1]]
+},
+'HAP - Gluing Heating Plate':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSf_0wJ0mQI0cifuGlEh5aO6dh4DFXRGT721DdqL35uVEP_a2w/formResponse',
+dateEntry:'entry.994482678',
+machEntry:'entry.1102963375',
+dateIsText:true,
+machines:["Gluing Machine for Electric Kettle Heating Plate"],
+items:[["entry.1669384255","Clean glue tank, nozzle and surrounding area",1],["entry.55799780","Check glue heating temperature and controller",1],["entry.1567624418","Inspect heating element for proper operation",1],["entry.1446609413","Check glue flow and nozzle blockage",1],["entry.1193065575","Inspect glue pump/motor operation",1],["entry.59291727","Check air pressure and pneumatic connections",1],["entry.1158102818","Inspect hoses, pipes and fittings for leakage",1],["entry.1504446572","Check conveyor/fixture alignment and movement",1],["entry.1845610561","Tighten loose electrical terminals and connections",1],["entry.1922228809","Inspect sensor and limit switch operation",1],["entry.568802020","Check emergency stop and safety interlock",1],["entry.1047035653","Lubricate moving/mechanical parts where required",1],["entry.1520435046","Check abnormal noise, vibration or overheating",1],["entry.1336143109","Inspect power cable, plug and control panel",1],["entry.770681531","Clean machine and remove excess glue",1]]
+},
+'HAP - Edge Beading':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLScbn_SyTppOnW8GyGwPKOm0-v3CS-5zgWeSCKJfFjm2pZL63Q/formResponse',
+dateEntry:'entry.1180995791',
+machEntry:'entry.715828942',
+dateIsText:true,
+machines:["Edge Beading Combined Machine (Electric Kettle)"],
+items:[["entry.815220538","Check bending rollers & guides",1],["entry.1460190603","Check roller alignment",1],["entry.40396138","Lubricate bearings & moving parts",1],["entry.1633533875","Check motor, belt/chain & coupling",1],["entry.1125818201","Check heating element & temperature control",1],["entry.1675434376","Check electrical wiring & terminals",1],["entry.1247964432","Check sensors, switches & emergency stop",1],["entry.1313347258","Tighten loose bolts & connections",1],["entry.1875802828","Clean machine & control panel",1],["entry.65376161","Test machine operation",1]]
+},
+'HAP - Cont Weld Kettle':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLScG1LVGEjJ2F3DTFG5B_zd0YxCrs8DfXhIbf-nJidDWJs_h9Q/formResponse',
+dateEntry:'entry.1189449618',
+machEntry:'entry.717898632',
+dateIsText:true,
+machines:["Continuous Welding Machine (Electric Kettle)"],
+items:[["entry.1753226118","Check welding electrode/tip condition and alignment",1],["entry.870492279","Inspect welding transformer and terminals",1],["entry.237818542","Check welding current and welding time setting",1],["entry.82461024","Inspect welding cable and connections",1],["entry.692812677","Check pneumatic cylinder/pressure and leakage",1],["entry.463869116","Lubricate moving/mechanical parts",1],["entry.2070819719","Check temperature controller and sensor",1],["entry.2044905907","Inspect heating/welding fixture condition",1],["entry.2011880568","Tighten electrical terminals and connections",1],["entry.1545559926","Clean machine, panel, and welding area",1],["entry.1690948686","Check emergency stop and safety interlock",1],["entry.241549371","Test machine operation and welding quality",1]]
+},
+'HAP - Spot Weld Kettle':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSeKcoZGC9TnYGhMLvrLXgFFgSo4p0mcjGc1uKS50ZL6Ghkp2A/formResponse',
+dateEntry:'entry.1365532179',
+machEntry:'entry.755915688',
+dateIsText:true,
+machines:["Spot Welding Machine (Electric Kettle)"],
+items:[["entry.1861144291","Check welding electrodes for wear, damage & alignment",1],["entry.2145054206","Clean electrode tips and remove welding residue",1],["entry.1344797714","Check welding pressure and electrode movement",1],["entry.976301276","Inspect welding cable, terminals & connections",1],["entry.328030989","Check transformer for overheating or abnormal noise",1],["entry.806113967","Inspect foot pedal / start switch operation",1],["entry.508029312","Check timer and welding current setting",1],["entry.475060484","Inspect cooling water/air system, if applicable",1],["entry.658419837","Tighten loose bolts, terminals and mechanical parts",1],["entry.474212540","Test weld quality and check for abnormal sparking",1],["entry.1664487492","Clean machine body and surrounding area",1]]
+},
+'HAP - Spot Weld GS':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLScQfBrv52OGsGqv-mM3WP1UtTABTLsskOzv7Ab5DyVORroRlQ/formResponse',
+dateEntry:'entry.680032002',
+machEntry:'entry.19773232',
+dateIsText:true,
+machines:["Spot Welding Machine (Gas Stove) 1","Spot Welding Machine (Gas Stove) 2"],
+items:[["entry.39536986","Check welding electrodes for wear, damage & alignment",1],["entry.872164545","Clean electrode tips and remove welding residue",1],["entry.1753697009","Check welding pressure and electrode movement",1],["entry.628119769","Inspect welding cable, terminals & connections",1],["entry.1281175997","Check transformer for overheating or abnormal noise",1],["entry.1239633309","Inspect foot pedal / start switch operation",1],["entry.1440460291","Check timer and welding current setting",1],["entry.1715259926","Inspect cooling water/air system, if applicable",1],["entry.496184841","Tighten loose bolts, terminals and mechanical parts",1],["entry.1052996143","Test weld quality and check for abnormal sparking",1],["entry.1794960100","Clean machine body and surrounding area",1]]
+},
+'HAP - Gluing Machine (Electric Cooker)':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLScyeijQitsjN0tAePNWXZeihHh11bC07QvjDeGB9fEgBsQWVQ/formResponse',
+dateEntry:'entry.1298615952',
+machEntry:'entry.917166058',
+dateIsText:true,
+machines:["Gluing Machine (Electric Cooker)"],
+items:[["entry.347629728","Clean glue tank, nozzle and surrounding area",1],["entry.1067213795","Check glue heating temperature and controller",1],["entry.2113347660","Inspect heating element for proper operation",1],["entry.2072810581","Check glue flow and nozzle blockage",1],["entry.890035111","Inspect glue pump/motor operation",1],["entry.416665316","Check air pressure and pneumatic connections",1],["entry.944136403","Inspect hoses, pipes and fittings for leakage",1],["entry.834757075","Check conveyor/fixture alignment and movement",1],["entry.1531983279","Tighten loose electrical terminals and connections",1],["entry.1820833802","Inspect sensor and limit switch operation",1],["entry.1377044654","Check emergency stop and safety interlock",1],["entry.217615162","Lubricate moving/mechanical parts where required",1],["entry.896177347","Check abnormal noise, vibration or overheating",1],["entry.1998116375","Inspect power cable, plug and control panel",1],["entry.35295864","Clean machine and remove excess glue",1]]
+},
+'HAP - Temp Testing Cooker':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSfYdIsK9qZfLQoTPJewCvlAej-DW7GqD_WbKIEOvN2U0agAVA/formResponse',
+dateEntry:'entry.935309217',
+machEntry:'entry.1887286617',
+dateIsText:true,
+machines:["Temperature Testing Machine (Electric Cooker)"],
+items:[["entry.1948178471","Check power cable, plug & terminals",1],["entry.916995826","Check heater and temperature sensor",1],["entry.1388460326","Check temperature controller/display accuracy",1],["entry.1167698367","Verify temperature setting vs. actual temperature",1],["entry.59331335","Check heating and cooling operation",1],["entry.1542811188","Inspect test plate/sensor contact condition",1],["entry.1672407203","Check timer and alarm function",1],["entry.1726070796","Tighten electrical connections",1],["entry.1161375697","Clean dust from control panel",1],["entry.1823529694","Check earthing/grounding",1],["entry.1294483599","Check emergency stop/safety function",1],["entry.906247768","Record test result and rectify abnormalities",1]]
+},
+'HAP - Temp Testing':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSengMjnFGD6bTEvXTqD5GL0qo2E2WDj-c04o2010f1lRvEI6Q/formResponse',
+dateEntry:'entry.1560920332',
+machEntry:'entry.564380187',
+dateIsText:true,
+machines:["Temperature Testing Machine (Electric Iron)"],
+items:[["entry.1287545787","Check power cable, plug & terminals",1],["entry.708062920","Check heater and temperature sensor",1],["entry.1319855235","Check temperature controller/display accuracy",1],["entry.1206222759","Verify temperature setting vs. actual temperature",1],["entry.1676943287","Check heating and cooling operation",1],["entry.274501848","Inspect test plate/sensor contact condition",1],["entry.157736090","Check timer and alarm function",1],["entry.122808165","Tighten electrical connections",1],["entry.1361533467","Clean dust from control panel",1],["entry.2143617240","Check earthing/grounding",1],["entry.1083581887","Check emergency stop/safety function",1],["entry.637782503","Record test result and rectify abnormalities",1]]
+},
+'HAP - Gas Leakage':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLScLyU_5ij5RzHI0JWCIn3_BQqCpuOE2kqDOGPsKSLiPVe0WWg/formResponse',
+dateEntry:'entry.1624984900',
+machEntry:'entry.933555368',
+dateIsText:true,
+machines:["Gas Leakage Testing Machine (Gas Stove) 1","Gas Leakage Testing Machine (Gas Stove) 2"],
+items:[["entry.1900334695","Inspect gas inlet/outlet hose and fittings for leakage or damage",1],["entry.1419064592","Check pressure regulator and pressure gauge condition",1],["entry.1129555734","Verify test pressure setting and calibration",1],["entry.1925597056","Check leakage sensor/detector operation",1],["entry.98693044","Inspect test fixture, sealing pad and clamps",1],["entry.1929036954","Check solenoid valve operation",1],["entry.2009247333","Inspect pneumatic tubing and connections",1],["entry.1866751097","Check timer and pressure-holding function",1],["entry.1251794433","Test emergency stop and safety interlock",1],["entry.400497645","Check electrical wiring, terminals and earthing",1],["entry.715305508","Clean machine, sensor and test chamber",1],["entry.885328867","Perform trial leak test and verify result accuracy",1]]
+},
+'HAP - Flame Testing':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSe5AEMfAHmdB218HIDCCc5AILsnH3H9NUi-8gheQPdk7STiQg/formResponse',
+dateEntry:'entry.1345213219',
+machEntry:'entry.1461563256',
+dateIsText:true,
+machines:["Flame Testing Machine (Gas Stove) 1","Flame Testing Machine (Gas Stove) 2"],
+items:[["entry.800784037","Check flame sensor/UV sensor cleanliness and operation",1],["entry.1110777886","Inspect burner nozzle and ignition electrode",1],["entry.1056055878","Check gas pressure and leakage",1],["entry.1053594100","Check flame stability and flame pattern",1],["entry.260183040","Check ignition timing and spark strength",1],["entry.468572907","Inspect gas hose, regulator and connections",1],["entry.396995300","Check temperature/heat sensor function",1],["entry.452889457","Verify flame test result against standard",1],["entry.92031030","Clean test chamber and remove carbon deposits",1],["entry.331546987","Check emergency stop and safety interlock",1],["entry.1705119926","Inspect electrical wiring, terminals and panel",1],["entry.1009940545","Lubricate moving/mechanical parts if applicable",1]]
+},
+'HAP - 5 in 1 QC':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSfjYo0vsbIAW8cw0WfYGy2Dc4qQgvKr1Pynmk8mhMGmnlUdBg/formResponse',
+dateEntry:'entry.1110574685',
+machEntry:'entry.729811293',
+dateIsText:true,
+machines:["5 in 1 QC Machine"],
+items:[["entry.1060081593","Check machine power supply, plug & cable",1],["entry.713659805","Check test fixture and terminal condition",1],["entry.106743977","Check temperature test sensor/probe",1],["entry.1483866329","Check leakage/current test function",1],["entry.2019610192","Check insulation/Hi-Pot test function",1],["entry.244150528","Check power consumption test function",1],["entry.884359402","Check timer and display accuracy",1],["entry.179021855","Check switches, buttons & indicator lamps",1],["entry.2040527745","Check pneumatic/pressure system, if applicable",1],["entry.124036012","Clean dust and test-contact area",1],["entry.1569672521","Tighten loose electrical terminals",1],["entry.251897455","Verify safety interlock/emergency stop",1],["entry.1068379801","Test machine with standard sample",1],["entry.805877518","Record test result and calibration status",1]]
+},
+'LED - Chip Cutting':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSdZMqadYzgkT2DPKyNPLAxYSvyQup6qyZwdVYfVSnd7-u6BgA/formResponse',
+dateEntry:'entry.189905425',
+machEntry:'entry.889104597',
+dateIsText:true,
+machines:["Chip Cutting Machine"],
+items:[["entry.718147204","Clean machine and remove dust/chip waste",1],["entry.2068804169","Check cutting blade condition and alignment",1],["entry.906087218","Inspect blade holder and tighten loose parts",1],["entry.998215400","Check motor, belt, and coupling condition",1],["entry.2093610553","Test safety guards and emergency stop",1],["entry.1709925454","Check machine vibration and abnormal noise",1],["entry.2074214943","Run trial operation and verify cutting quality",1]]
+},
+'LED - Automatic Assembly':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSf85dXoJbwaybHqunovjOpYMynKQQ-ksdRNG1WWNxE5-9HeAw/formResponse',
+dateEntry:'entry.1576932486',
+machEntry:'entry.396888121',
+dateIsText:true,
+machines:["Automatic Assembly Machine"],
+items:[["entry.1997552814","Clean and inspect machine structure and working area",1],["entry.2100429679","Check all electrical wiring, terminals, and connectors",1],["entry.2046378343","Inspect pneumatic system for air leakage and pressure",1],["entry.799847073","Check cylinders, solenoid valves, and air tubes",1],["entry.399989688","Inspect sensors and ensure proper operation",1],["entry.1205105676","Check servo motors, drives, and mechanical movement",1],["entry.1239833571","Inspect conveyor, belts, chains, and guides",1],["entry.394069720","Lubricate moving parts as per manufacturer recommendation",1],["entry.531492103","Check screw, bolts, nuts, and mechanical fasteners",1],["entry.1307548806","Inspect LED assembly fixtures and positioning accuracy",1],["entry.151335141","Check automatic feeding and component handling system",1],["entry.1211846533","Inspect aging station temperature and electrical connections",1],["entry.175445439","Check aging racks, sockets, connectors, and holders",1],["entry.27603172","Verify timer, controller, PLC, and HMI operation",1],["entry.108456028","Check cooling fans and ventilation system",1],["entry.952516387","Clean electrical control panel and remove dust",1],["entry.1495450665","Inspect safety guards, emergency stop, and interlocks",1],["entry.255375394","Check machine grounding and insulation condition",1],["entry.2117706617","Test machine operation and record abnormal findings",1]]
+},
+'HAP - Conveyor Belt S App':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSfVqa7YadMK9-A9UQ3TsvXSrMDK09TpvDWEuMyYaQYPs3NraA/formResponse',
+dateEntry:'entry.1503546815',
+machEntry:'entry.1073281482',
+dateIsText:true,
+machines:["Conveyor Belt for Home Appliance 1","Conveyor Belt for Home Appliance 2"],
+items:[["entry.560364870","Clean conveyor belt and structure",1],["entry.153011876","Check belt condition for wear or damage",1],["entry.55290413","Check belt tension and alignment",1],["entry.939761008","Inspect rollers and idlers for smooth rotation",1],["entry.1724950570","Check drive motor operation and abnormal noise",1],["entry.1610632163","Inspect gearbox and check lubricant level",1],["entry.1555277969","Check chain, sprocket, or coupling condition",1],["entry.324730559","Tighten loose bolts, nuts, and fasteners",1],["entry.1586587325","Inspect conveyor frame and supports",1],["entry.800125081","Check bearings for noise, heat, and lubrication",1],["entry.936470954","Inspect electrical cables and connections",1],["entry.1613562549","Test Start/Stop and Emergency Stop switches",1],["entry.1287883936","Check safety guards and covers",1],["entry.1522254349","Clean and lubricate moving parts as required",1],["entry.99098890","Run test and check for abnormal vibration or noise",1]]
+},
+'LED - Automatic Packing':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSekCS2fXlbF17YGA3UELNoZvitTLnlRSD7Sa0XIrx1D58Lsfg/formResponse',
+dateEntry:'entry.1366250279',
+machEntry:'entry.1432223998',
+dateIsText:true,
+machines:["Automatic Packing Machine"],
+items:[["entry.1996157873","Clean the complete machine, including dust and packaging material residues",1],["entry.1690822348","Check frame, covers, guards, and mounting bolts for looseness or damage",1],["entry.10011490","Check conveyor belt/chain condition",1],["entry.1056652306","Inspect motor noise, vibration, temperature, and mounting bolts",1],["entry.1466166816","Check air pressure, air leakage, hoses, fittings, and connectors",1],["entry.897699870","Check cylinder movement, leakage, rod condition, and mounting",1],["entry.213865557","Check vacuum pump/generator, suction cups, filters, and leakage",1],["entry.1098353579","Clean and check photo sensors, proximity sensors, and limit switches",1],["entry.578055527","Clean panel and check for dust, loose terminals, and overheating",1],["entry.47061222","Check motor performance, coupling, cables, and drive alarms",1],["entry.1841534927","Check packet feeding, positioning, guides, and sensors",1],["entry.1457439261","Check box closing mechanism and proper sealing operation",1],["entry.329978073","Check all safety covers, guards, and interlocks",1],["entry.1156796679","Test all emergency stop buttons and safety circuits",1],["entry.696479223","Check and tighten all critical nuts, bolts, and screws",1],["entry.1156667562","Inspect the overall machine condition and identify required spare parts",1],["entry.568594881","Conduct a trial run and verify packing quality and machine performance",1]]
+},
+'Automatic Packing Machine':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLScfefS42Qyfk3Buj7KXouSlheRV0wake3QgChI8KQoLAlcmSA/formResponse',
+dateEntry:'entry.1306358200',
+machEntry:'entry.1882597097',
+dateIsText:true,
+machines:["Automatic Packing Machine"],
+items:[["entry.1288456144","Clean the complete machine, including dust and packaging material residues",1],["entry.945050129","Check frame, covers, guards, and mounting bolts for looseness or damage",1],["entry.1644162652","Check conveyor belt/chain condition",1],["entry.971331656","Inspect motor noise, vibration, temperature, and mounting bolts",1],["entry.830088469","Check air pressure, air leakage, hoses, fittings, and connectors",1],["entry.894368625","Check cylinder movement, leakage, rod condition, and mounting",1],["entry.2134490457","Check vacuum pump/generator, suction cups, filters, and leakage",1],["entry.24212228","Clean and check photo sensors, proximity sensors, and limit switches",1],["entry.755818738","Clean panel and check for dust, loose terminals, and overheating",1],["entry.349737804","Check motor performance, coupling, cables, and drive alarms",1],["entry.1146181101","Check packet feeding, positioning, guides, and sensors",1],["entry.519950986","Check box closing mechanism and proper sealing operation",1],["entry.989588873","Check all safety covers, guards, and interlocks",1],["entry.1701461561","Test all emergency stop buttons and safety circuits",1],["entry.1524281419","Check and tighten all critical nuts, bolts, and screws",1],["entry.1649623661","Inspect the overall machine condition and identify required spare parts",1],["entry.476870959","Conduct a trial run and verify packing quality and machine performance",1]]
+},
+'Circuit Breaker':{
+action:'https://docs.google.com/forms/u/0/d/e/1FAIpQLSdx1WPecrKhPtg2dp07puLYEH5Y7Xi37iIMgSudoq0Gb6fNqg/formResponse',
+dateEntry:'entry.396597759',
+machEntry:'entry.1410730802',
+dateIsText:true,
+machines:["Circuit Breaker"],
+items:[["entry.244900343","Clean machine and working area",1],["entry.1963922428","Check electrical wiring and terminals",1],["entry.1177228922","Inspect sensors and limit switches",1],["entry.1860221846","Check pneumatic system and air leakage",1],["entry.62707074","Inspect motors, gearboxes, belts and chains",1],["entry.38047930","Check punch, die and other tooling condition",1],["entry.2085991075","Lubricate moving parts and bearings",1],["entry.1744870409","Check alignment and product positioning",1],["entry.598359569","Inspect safety guards and interlock system",1],["entry.1062790219","Test emergency stop function",1],["entry.1754650555","Check PLC/HMI operation and alarms",1],["entry.1829090516","Inspect inkjet nozzle and print quality",1],["entry.329081201","Check screen printing quality and alignment",1],["entry.1954850817","Inspect HV/test cables and grounding",1],["entry.1817551424","Check testing accuracy and calibration status",1],["entry.901289954","Tighten loose bolts and connections",1],["entry.1680035038","Perform trial run and verify machine operation",1]]
+}
+};
+var sec=new URLSearchParams(location.search).get('section')||'';
+var CFG=CONFIGS[sec];
+if(!CFG){document.getElementById('secBadge').textContent=sec||'Unknown';alert('No data entry config for: '+(sec||'(none)'));throw new Error('no config for '+sec);}
+document.getElementById('secBadge').textContent=sec;
+document.title='Preventive Data Entry - '+sec;
+var hashMap={'IMM':'sub-pm-imm','Crusher Machine':'sub-pm-crusher','Mixture Machine':'sub-pm-mixture','Central Feeding':'sub-pm-feeding','Conveyor Line':'sub-pm-conveyor','Automatic Packing Machine':'sub-pm-apm','PVC Tape Cutting':'sub-pm-pvc-cut','PVC Tape Wrapping':'sub-pm-pvc-wrap','Circuit Breaker':'sub-pm-cb','LED - Automatic Packing':'sub-pm-led-apm','LED - Automatic Assembly':'sub-pm-led-aasm','LED - Semi Automatic Assembly':'sub-pm-led-sasm','LED - Assembly Conveyor':'sub-pm-led-conveyor','LED - Crimping':'sub-pm-led-crimp','LED - Manual Aging':'sub-pm-led-aging','LED - Laser Printer':'sub-pm-led-laser','LED - Belt Stamping':'sub-pm-led-stamp','LED - Chip Cutting':'sub-pm-led-chip','HAP - Conveyor Belt S App':'sub-pm-hap-cb','HAP - 5 in 1 QC':'sub-pm-hap-qc','HAP - Flame Testing':'sub-pm-hap-flame','HAP - Spot Weld GS':'sub-pm-hap-swgs','HAP - Gas Leakage':'sub-pm-hap-gasleak','HAP - Temp Testing':'sub-pm-hap-tempiron','HAP - Gluing Machine (Electric Cooker)':'sub-pm-hap-glucook','HAP - Spot Weld Kettle':'sub-pm-hap-swkettle','HAP - Cont Weld Kettle':'sub-pm-hap-cwkettle','HAP - Edge Beading':'sub-pm-hap-edge','HAP - Gluing Heating Plate':'sub-pm-hap-gluplate','HAP - Leak Test 4':'sub-pm-hap-leak4','HAP - Auto Packaging':'sub-pm-hap-apk','HAP - Belt Stamping':'sub-pm-hap-bstamp','HAP - Temp Testing Cooker':'sub-pm-hap-tempcook'};
+document.getElementById('backLink').href='index.html#'+(hashMap[sec]||'sub-preventive');
+var ITEMS=CFG.items,MACHINES=CFG.machines,FORM_ACTION=CFG.action;
+var itemsHost=document.getElementById('items');
+ITEMS.forEach(function(it){
+  var box=document.createElement('div');box.className='item';
+  var q=document.createElement('div');q.className='q';
+  q.innerHTML=(it[2]?it[1]+' <span class="req">*</span>':it[1]);
+  var opts=document.createElement('div');opts.className='opts';
+  var ok=document.createElement('label');ok.className='opt';
+  ok.innerHTML='<input type="radio" name="'+it[0]+'" value="ok"><span class="ok">OK</span>';
+  var nok=document.createElement('label');nok.className='opt';
+  nok.innerHTML='<input type="radio" name="'+it[0]+'" value="nok"><span class="nok">Not OK</span>';
+  var pb=document.createElement('div');pb.className='problem-box';
+  var pb1=document.createElement('div');pb1.className='pb-field';
+  var l1=document.createElement('label');l1.textContent='Describe the problem';
+  var ta=document.createElement('textarea');ta.placeholder='Describe the problem';
+  pb1.appendChild(l1);pb1.appendChild(ta);
+  var pb2=document.createElement('div');pb2.className='pb-field';
+  var l2=document.createElement('label');l2.textContent='Corrective action';
+  var ta2=document.createElement('textarea');ta2.placeholder='Corrective action';
+  pb2.appendChild(l2);pb2.appendChild(ta2);
+  pb.appendChild(pb1);pb.appendChild(pb2);
+  var rads=[ok.querySelector('input'),nok.querySelector('input')];
+  rads.forEach(function(r){
+    r.addEventListener('change',function(){
+      pb.style.display=(nok.querySelector('input').checked)?'block':'none';
+      if(r.value==='nok')ta.focus();    });
   });
-  opts.appendChild(ok); opts.appendChild(nok);
-  box.appendChild(q); box.appendChild(opts); box.appendChild(pb);
+  opts.appendChild(ok);opts.appendChild(nok);
+  box.appendChild(q);box.appendChild(opts);box.appendChild(pb);
   itemsHost.appendChild(box);
 });
-
-var mach = document.getElementById('fMachine'), machWrap = document.getElementById('ifmWrap');
-var IMM_MACHINES = ["IMM-358T-PC-A1","IMM-358T-PC-A2","IMM-360T-PP-A3","IMM-300T-PP-A4","IMM-258T-PP-A5","IMM-128T-PC-B1","IMM-120T-PP-B2","IMM-208T-PP-B3","IMM-200T-PP-B4","IMM-168T-PP-B5","IMM-128T-PP-B6","IMM-160T-PP-B7","IMM-160T-PP-B8","IMM-208T-PC-C1","IMM-208T-PC-C2","IMM-208T-PC-C3","IMM-208T-PC-C4","IMM-208T-PC-C5","IMM-258T-PC-C6","IMM-258T-PC-C7","IMM-258T-PC-C8","IMM-258T-PC-C9","IMM-250T-PP-C10","IMM-250T-PP-C11"];
-var MACHINES = (sec === 'IMM' || sec === 'IMM Inhouse') ? IMM_MACHINES : [sec];
-MACHINES.forEach(function (m) {
-  var o = document.createElement('option'); o.value = m; o.textContent = m; mach.appendChild(o);
+var mach=document.getElementById('fMachine'),machWrap=document.getElementById('ifmWrap');
+MACHINES.forEach(function(m){var o=document.createElement('option');o.value=m;o.textContent=m;mach.appendChild(o)});
+var oo=document.createElement('option');oo.value='__other__';oo.textContent='Other (type manually)';mach.appendChild(oo);
+mach.addEventListener('change',function(){
+  if(mach.value==='__other__'){machWrap.style.display='block';document.getElementById('fOtherMachine').focus()}
+  else{machWrap.style.display='none'}
 });
-var oo = document.createElement('option'); oo.value = '__other__'; oo.textContent = 'Other (type manually)'; mach.appendChild(oo);
-mach.addEventListener('change', function () {
-  if (mach.value === '__other__') { machWrap.style.display = 'block'; document.getElementById('fOtherMachine').focus() }
-  else { machWrap.style.display = 'none' }
-});
-function resetForm() {
-  document.querySelectorAll('#items input[type=radio]').forEach(function (r) { r.checked = false });
-  document.querySelectorAll('#items .problem-box').forEach(function (p) {
-    p.style.display = 'none'; p.querySelectorAll('textarea').forEach(function (t) { t.value = '' });
-  });
-  document.getElementById('ifmWrap').style.display = 'none';
-  document.getElementById('fMachine').value = '';
-  document.getElementById('fOtherMachine').value = '';
-  document.getElementById('fDate').value = new Date().toISOString().split('T')[0];
+function resetForm(){
+  document.querySelectorAll('#items input[type=radio]').forEach(function(r){r.checked=false});
+  document.querySelectorAll('#items .problem-box').forEach(function(p){p.style.display='none';p.querySelectorAll('textarea').forEach(function(t){t.value=''})});
+  document.getElementById('ifmWrap').style.display='none';
+  document.getElementById('fMachine').value='';
+  document.getElementById('fOtherMachine').value='';
+  document.getElementById('fDate').value=new Date().toISOString().split('T')[0];
 }
-function buildPayload() {
-  var payload = {};
-  var firstMissing = '';
-  ITEMS.forEach(function (it) {
-    var input = document.querySelector('input[name="' + it[0] + '"]:checked');
-    if (!input) {
-      if (it[2] && !firstMissing) firstMissing = it[1].replace(/<[^>]*>/g, '');
+function buildPayload(){
+  var payload={};
+  var firstMissing='';
+  ITEMS.forEach(function(it){
+    var input=document.querySelector('input[name="'+it[0]+'"]:checked');
+    if(!input){
+      if(it[2]&&!firstMissing)firstMissing=it[1].replace(/<[^>]*>/g,'');
       return;
     }
-    if (input.value === 'ok') { payload['entry.' + FORM_FIELDS[it[0]]] = 'OK' }
-    else {
-      var names = document.querySelectorAll('input[name="' + it[0] + '"]');
-      var box = names[0].closest('.item').querySelector('.problem-box');
-      var tas = box.querySelectorAll('textarea');
-      var prob = tas[0].value.trim();
-      var action = tas[1].value.trim();
-      var text = prob;
-      if (action) text += text ? (' | Corrective action: ' + action) : ('Corrective action: ' + action);
-      payload['entry.' + FORM_FIELDS[it[0]]] = text ? ('Not OK - ' + text) : 'Not OK';
+    if(input.value==='ok'){payload[it[0]]='OK'}
+    else{
+      var names=document.querySelectorAll('input[name="'+it[0]+'"]');
+      var box=names[0].closest('.item').querySelector('.problem-box');
+      var tas=box.querySelectorAll('textarea');
+      var prob=tas[0].value.trim();
+      var action=tas[1].value.trim();
+      var text=prob;
+      if(action)text+=text?(' | Corrective action: '+action):('Corrective action: '+action);
+      payload[it[0]]=text?('Not OK - '+text):'Not OK';
     }
   });
-  var dv = document.getElementById('fDate').value;
-  if (dv) {
-    var dp = dv.split('-');
-    payload['entry.' + FORM_DATE_ID] = dv;
-    // (date parts not needed for form)
-    
-    
+  var dv=document.getElementById('fDate').value;
+  if(dv){
+    if(CFG.dateIsText){
+      payload[CFG.dateEntry]=dv;
+    }else{
+      var dp=dv.split('-');
+      payload[CFG.dateEntry+'_year']=dp[0];
+      payload[CFG.dateEntry+'_month']=String(parseInt(dp[1],10));
+      payload[CFG.dateEntry+'_day']=String(parseInt(dp[2],10));
+    }
   }
-  if (mach.value === '__other__') {
-    payload['entry.' + FORM_MACHINE_ID] = document.getElementById('fOtherMachine').value.trim();
-  } else {
-    payload['entry.' + FORM_MACHINE_ID] = mach.value;
+  if(mach.value==='__other__'){
+    payload[CFG.machEntry+'.other_option_response']=document.getElementById('fOtherMachine').value.trim();
+  }else{
+    payload[CFG.machEntry]=mach.value;
   }
-  payload['entry.' + FORM_SECTION_ID] = sec;
-  return { payload: payload, firstMissing: firstMissing };
+  payload['fvv']='1';
+  return {payload:payload,firstMissing:firstMissing};
 }
-
-var errMsg = document.getElementById('errMsg'), succMsg = document.getElementById('succMsg');
-var submitBtn = document.getElementById('submitBtn');
-submitBtn.addEventListener('click', function () {
-  errMsg.style.display = 'none'; succMsg.style.display = 'none';
-  if (!mach.value) {
-    errMsg.textContent = 'Please select a Machine'; errMsg.style.display = 'block'; return;
+var errMsg=document.getElementById('errMsg'),succMsg=document.getElementById('succMsg');
+document.getElementById('submitBtn').addEventListener('click',function(){
+  errMsg.style.display='none';succMsg.style.display='none';
+  if(!mach.value){
+    errMsg.textContent='Please select a Machine';errMsg.style.display='block';return;
   }
-  if (mach.value === '__other__' && !document.getElementById('fOtherMachine').value.trim()) {
-    errMsg.textContent = 'Please type the machine name'; errMsg.style.display = 'block'; return;
+  if(mach.value==='__other__'&&!document.getElementById('fOtherMachine').value.trim()){
+    errMsg.textContent='Please type the machine name';errMsg.style.display='block';return;
   }
-  if (!document.getElementById('fDate').value) {
-    errMsg.textContent = 'Please enter the Date'; errMsg.style.display = 'block'; return;
+  if(!document.getElementById('fDate').value){
+    errMsg.textContent='Please enter the Date';errMsg.style.display='block';return;
   }
-  var res = buildPayload();
-  if (res.firstMissing) {
-    errMsg.textContent = 'Please select OK or Not OK for: ' + res.firstMissing;
-    errMsg.style.display = 'block'; return;
+  var res=buildPayload();
+  if(res.firstMissing){
+    errMsg.textContent='Please select OK or Not OK for: '+res.firstMissing;
+    errMsg.style.display='block';return;
   }
-  submitBtn.classList.add('saving'); submitBtn.disabled = true;
-  var body = Object.keys(res.payload).map(function (k) {
-    return encodeURIComponent(k) + '=' + encodeURIComponent(res.payload[k]);
+  var body=Object.keys(res.payload).map(function(k){
+    return encodeURIComponent(k)+'='+encodeURIComponent(res.payload[k]);
   }).join('&');
-  fetch(FORM_ACTION_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: body
-  }).then(function () {
-      submitBtn.classList.remove('saving'); submitBtn.disabled = false;
-      succMsg.style.display = 'block';
-      resetForm();
-      setTimeout(function () { succMsg.style.display = 'none' }, 5000);
-    })
-    .catch(function (err) {
-      submitBtn.classList.remove('saving'); submitBtn.disabled = false;
-      errMsg.textContent = 'Network error. Please try again.'; errMsg.style.display = 'block';
-      console.error('Submit error:', err);
-    });
-  window.scrollTo(0, 0);
+  fetch(FORM_ACTION,{
+    method:'POST',
+    mode:'no-cors',
+    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:body
+  }).then(function(){
+    succMsg.style.display='block';
+  }).catch(function(){
+    errMsg.textContent='Network error. Please try again.';errMsg.style.display='block';return;
+  });
+  resetForm();
+  setTimeout(function(){succMsg.style.display='none'},5000);
+  window.scrollTo(0,0);
 });
-document.getElementById('clearBtn').addEventListener('click', function () {
-  errMsg.style.display = 'none'; succMsg.style.display = 'none'; resetForm();
-});
-document.getElementById('fDate').value = new Date().toISOString().split('T')[0];
+document.getElementById('clearBtn').addEventListener('click',function(){errMsg.style.display='none';succMsg.style.display='none';resetForm()});
+document.getElementById('fDate').value=new Date().toISOString().split('T')[0];
+</script>
+<script>
+(function(){
+function onReady(fn){if(document.readyState!=='loading'){fn()}else{document.addEventListener('DOMContentLoaded',fn)}}
+function main(){
+function setD(el,d){if(el){var v=d+'ms';if(el.style.animationDelay!==v){el.style.animationDelay=v}}}
+function rows(){var rs=document.querySelectorAll('tbody tr');for(var i=0;i<rs.length;i++){setD(rs[i],Math.min(i*15,350))}}
+function boxes(){var bs=document.querySelectorAll('.card,.card-btn,.cat-stat,.stat,.read-card,.floor-card');for(var i=0;i<bs.length;i++){var d=Math.min(i*70,650);setD(bs[i],i===0?0:d);var ic=bs[i].querySelector(':scope > .sicon,:scope > .icon');if(ic){setD(ic,d+90)}}}
+function landing(){setD(document.querySelector('.landing-title'),320);setD(document.querySelector('.landing-sub'),570);setD(document.querySelector('.big-logo'),800)}
+function showPanel(){var ps=document.querySelectorAll('.sub-panel.show');for(var p=0;p<ps.length;p++){var el=ps[p];setD(el.querySelector('.sub-title'),90);setD(el.querySelector('.sub-desc'),320);var bts=el.querySelectorAll('.sub-btn');for(var i=0;i<bts.length;i++){var d=Math.min(i*60,900);setD(bts[i],d);var ic=bts[i].querySelector(':scope > .sicon,:scope > .icon');if(ic){setD(ic,d+90)}}setD(el.querySelector('.sub-back'),bts.length*60+380)}}
+rows();boxes();landing();showPanel();
+if(typeof MutationObserver!=='undefined'){new MutationObserver(function(){requestAnimationFrame(function(){rows();showPanel()})}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']})}
+}
+onReady(main);
+})();
 </script>
 </body>
 </html>
