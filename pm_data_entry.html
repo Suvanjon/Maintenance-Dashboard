@@ -181,7 +181,8 @@ ITEMS.forEach(function (it) {
 });
 
 var mach = document.getElementById('fMachine'), machWrap = document.getElementById('ifmWrap');
-var MACHINES = ["IMM-358T-PC-A1","IMM-358T-PC-A2","IMM-360T-PP-A3","IMM-300T-PP-A4","IMM-258T-PP-A5","IMM-128T-PC-B1","IMM-120T-PP-B2","IMM-208T-PP-B3","IMM-200T-PP-B4","IMM-168T-PP-B5","IMM-128T-PP-B6","IMM-160T-PP-B7","IMM-160T-PP-B8","IMM-208T-PC-C1","IMM-208T-PC-C2","IMM-208T-PC-C3","IMM-208T-PC-C4","IMM-208T-PC-C5","IMM-258T-PC-C6","IMM-258T-PC-C7","IMM-258T-PC-C8","IMM-258T-PC-C9","IMM-250T-PP-C10","IMM-250T-PP-C11"];
+var IMM_MACHINES = ["IMM-358T-PC-A1","IMM-358T-PC-A2","IMM-360T-PP-A3","IMM-300T-PP-A4","IMM-258T-PP-A5","IMM-128T-PC-B1","IMM-120T-PP-B2","IMM-208T-PP-B3","IMM-200T-PP-B4","IMM-168T-PP-B5","IMM-128T-PP-B6","IMM-160T-PP-B7","IMM-160T-PP-B8","IMM-208T-PC-C1","IMM-208T-PC-C2","IMM-208T-PC-C3","IMM-208T-PC-C4","IMM-208T-PC-C5","IMM-258T-PC-C6","IMM-258T-PC-C7","IMM-258T-PC-C8","IMM-258T-PC-C9","IMM-250T-PP-C10","IMM-250T-PP-C11"];
+var MACHINES = (sec === 'IMM' || sec === 'IMM Inhouse') ? IMM_MACHINES : [sec];
 MACHINES.forEach(function (m) {
   var o = document.createElement('option'); o.value = m; o.textContent = m; mach.appendChild(o);
 });
