@@ -81,6 +81,8 @@ body{background:#f5f3ef;min-height:100vh}
 // ============================================================================
 // CONFIG — replace WEB_APP_URL with your deployed Apps Script Web App URL
 // ============================================================================
+// IMPORTANT: replace this with your deployed Apps Script Web App URL.
+// See apps-script.gs in the repo and the deployment steps below.
 var WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxYOUR_DEPLOYED_ID_HERE/exec';
 
 // IMM preventive checklist questions (entry.* IDs match the dashboard reader)
@@ -252,6 +254,11 @@ submitBtn.addEventListener('click', function () {
     errMsg.textContent = 'Please select OK or Not OK for: ' + res.firstMissing;
     errMsg.style.display = 'block'; return;
   }
+  if (WEB_APP_URL.indexOf('YOUR_DEPLOYED_ID_HERE') !== -1) {
+    errMsg.textContent = 'Backend not configured: deploy apps-script.gs as a Web App, then set WEB_APP_URL in this file.';
+    errMsg.style.display = 'block';
+    return;
+  }
   submitBtn.classList.add('saving'); submitBtn.disabled = true;
   var body = Object.keys(res.payload).map(function (k) {
     return encodeURIComponent(k) + '=' + encodeURIComponent(res.payload[k]);
@@ -275,7 +282,9 @@ submitBtn.addEventListener('click', function () {
     })
     .catch(function (err) {
       submitBtn.classList.remove('saving'); submitBtn.disabled = false;
-      errMsg.textContent = 'Network error. Please try again.'; errMsg.style.display = 'block';
+      errMsg.textContent = 'Network/CORS error: ' + (err && err.message ? err.message : 'request failed') + '. Check WEB_APP_URL and Apps Script deployment (Execute as: Me, Anyone).';
+      errMsg.style.display = 'block';
+      console.error('Submit error:', err);
     });
   window.scrollTo(0, 0);
 });
