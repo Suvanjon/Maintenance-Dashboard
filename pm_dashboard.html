@@ -55,6 +55,20 @@ tr:hover td{background:#f6fafb}
 .attn-item{font-size:12px;color:#5a7a88;margin-top:2px;padding-left:12px}
 .no-data{text-align:center;padding:44px;color:#8aa0ae;font-size:15px}
 .loading{text-align:center;padding:44px;color:#00565c;font-size:15px}
+.sec-col{display:none}
+body.all-mode .sec-col{display:table-cell;white-space:nowrap}
+.detail-toggle{margin-top:6px;padding:4px 11px;border:1px solid rgba(0,86,92,.35);background:#fff;color:#00565c;border-radius:999px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit}
+.detail-toggle:hover{background:#00565c;color:#fff}
+.detail-row td{background:#f7fbfb;padding:0 10px 12px}
+.det-box{border:1px solid #dce9e9;border-radius:10px;padding:10px 12px;margin:6px 0 2px;background:#fff}
+.det-head{font-size:12px;font-weight:700;color:#00565c;margin-bottom:6px}
+.det-item{display:flex;gap:8px;font-size:12px;padding:3px 0;border-bottom:1px dashed #e8f0f0}
+.det-item:last-child{border-bottom:none}
+.det-mark{width:14px;font-weight:800;flex:0 0 14px}
+.det-ok .det-mark{color:#2e7d32}
+.det-bad .det-mark{color:#e65100}
+.det-key{flex:1 1 55%;color:#33475c;min-width:0}
+.det-val{flex:1 1 45%;color:#61788a;word-break:break-word}
 .byte{width:94%;margin-left:3%;}
 </style>
 <style>
@@ -123,6 +137,7 @@ tbody tr{animation:ml-row-in .28s ease backwards}
 <table id="dataTable">
 <thead><tr>
 <th data-col="sl">S/L</th>
+<th data-col="section" class="sec-col">Department</th>
 <th data-col="date">Date &#x25B4;</th>
 <th data-col="machine">Machine Name</th>
 <th data-col="status">Status</th>
@@ -132,12 +147,12 @@ tbody tr{animation:ml-row-in .28s ease backwards}
 </table>
 <div class="no-data" id="noData" style="display:none">No records found.</div>
 <div class="loading" id="loadingMsg">Loading data from Google Sheets...</div>
+<div class="loading" id="loadWarn" style="display:none;color:#b45309;padding-top:10px;font-size:13px"></div>
 </div>
 </div>
 </div>
 <script>
 var DATA=[];
-var CHECK_KEYS=[];
 var CONFIGS={
 'IMM':{
 csv:'https://docs.google.com/spreadsheets/d/15zQZ2KjFw2KFcU1lUlbxXqryHlttQVap0kFnv_cbrkk/gviz/tq?tqx=out:csv&gid=1267535245',
@@ -305,11 +320,15 @@ title:'Circuit Breaker Completed Dashboard',
 startCol:3,machCol:2,dateCol:1,itemCount:17
 }
 };
-var sec=new URLSearchParams(location.search).get('section')||'IMM';
+var params=new URLSearchParams(location.search);
+var sec=params.get('section')||'IMM';
+var ALL_MODE=/^(all|all\s*departments)$/i.test(String(sec).trim());
 var CFG=CONFIGS[sec]||CONFIGS['IMM'];
 var hashMap={'IMM':'sub-pm-imm','Crusher Machine':'sub-pm-crusher','Mixture Machine':'sub-pm-mixture','Central Feeding':'sub-pm-feeding','Conveyor Line':'sub-pm-conveyor','Automatic Packing Machine':'sub-pm-apm','PVC Tape Cutting':'sub-pm-pvc-cut','PVC Tape Wrapping':'sub-pm-pvc-wrap','Circuit Breaker':'sub-pm-cb','LED - Automatic Packing':'sub-pm-led-apm','LED - Automatic Assembly':'sub-pm-led-aasm','LED - Semi Automatic Assembly':'sub-pm-led-sasm','LED - Assembly Conveyor':'sub-pm-led-conveyor','LED - Crimping':'sub-pm-led-crimp','LED - Manual Aging':'sub-pm-led-aging','LED - Laser Printer':'sub-pm-led-laser','LED - Belt Stamping':'sub-pm-led-stamp','LED - Chip Cutting':'sub-pm-led-chip','HAP - Conveyor Belt S App':'sub-pm-hap-cb','HAP - 5 in 1 QC':'sub-pm-hap-qc','HAP - Flame Testing':'sub-pm-hap-flame','HAP - Spot Weld GS':'sub-pm-hap-swgs','HAP - Gas Leakage':'sub-pm-hap-gasleak','HAP - Temp Testing':'sub-pm-hap-tempiron','HAP - Gluing Machine (Electric Cooker)':'sub-pm-hap-glucook','HAP - Spot Weld Kettle':'sub-pm-hap-swkettle','HAP - Cont Weld Kettle':'sub-pm-hap-cwkettle','HAP - Edge Beading':'sub-pm-hap-edge','HAP - Gluing Heating Plate':'sub-pm-hap-gluplate','HAP - Leak Test 4':'sub-pm-hap-leak4','HAP - Auto Packaging':'sub-pm-hap-apk','HAP - Belt Stamping':'sub-pm-hap-bstamp','HAP - Temp Testing Cooker':'sub-pm-hap-tempcook'};
 document.getElementById('backLink').href='index.html#'+(hashMap[sec]||'sub-preventive');
-var CSV_URL=CFG.csv;
+document.getElementById('secBadge').textContent=ALL_MODE?'All Departments':sec;
+document.title=(ALL_MODE?'All Departments':sec)+' - Preventive Completed Dashboard';
+if(ALL_MODE)document.body.classList.add('all-mode');
 
 function parseCSV(text){
   var lines=[],row=[],field='',inQ=false;
@@ -323,13 +342,21 @@ function parseCSV(text){
 
 function normDate(d){
   if(!d)return '';
-  var p=d.split('/');
+  var s=String(d).trim();
+  var iso=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+  if(iso){return iso[1]+'-'+('0'+iso[2]).slice(-2)+'-'+('0'+iso[3]).slice(-2)}
+  var p=s.split('/');
   if(p.length===3){
-    var mm=(p[0].length<2?'0':'')+p[0];
-    var dd=(p[1].length<2?'0':'')+p[1];
-    return p[2]+'-'+mm+'-'+dd;
+    var a=parseInt(p[0],10),b=parseInt(p[1],10),y=parseInt(p[2],10);
+    if(!isNaN(a)&&!isNaN(b)&&!isNaN(y)){
+      var mm,dd;
+      if(a>12){dd=a;mm=b}else{mm=a;dd=b}
+      return y+'-'+('0'+mm).slice(-2)+'-'+('0'+dd).slice(-2);
+    }
   }
-  return d;
+  var t=new Date(s);
+  if(!isNaN(t.getTime())){return t.getFullYear()+'-'+('0'+(t.getMonth()+1)).slice(-2)+'-'+('0'+t.getDate()).slice(-2)}
+  return s;
 }
 
 function shortName(full){
@@ -433,56 +460,125 @@ function shortName(full){
   return map[full]||full;
 }
 
-function loadData(){
-  fetch(CSV_URL).then(function(r){return r.text()}).then(function(csv){
-    var rows=parseCSV(csv);
-    if(!rows.length){document.getElementById('loadingMsg').textContent='No data found.';return}
-    var header=rows[0];
-    var endCol=CFG.itemCount?(CFG.startCol+CFG.itemCount):header.length;
-    for(var i=CFG.startCol;i<endCol;i++){
-      var h=(header[i]||'').trim();
-      if(h&&h!=='Column '+i)CHECK_KEYS.push(h);
-    }
-    for(var i=1;i<rows.length;i++){
-      var r=rows[i];if(!r||r.length<=CFG.startCol)continue;
-      var machine=(r[CFG.machCol]||'').trim();
-      if(machine==='Column '+CFG.machCol||/^Column \d+$/.test(machine))continue;
-      var date=(r[CFG.dateCol]||'').trim();
-      if(!date&&!machine)continue;
-      var items=[];
-      CHECK_KEYS.forEach(function(k,idx){
-        var raw=(r[CFG.startCol+idx]||'').trim();
-        var ok=(raw===''||raw.toUpperCase()==='OK');
-        var detail='';
-        if(!ok){
-          detail=raw;
-          var m=raw.match(/Corrective action:\s*(.*)/i);
-          var issue=raw.split('|')[0].replace(/^Not\s*OK\s*-\s*/i,'').trim();
-          if(!issue)issue=raw;
-          detail=issue+(m&&m[1]?(' | '+m[1].trim()):'');
-        }
-        items.push({key:k,ok:ok,detail:detail});
-      });
-      DATA.push({timestamp:r[0]||'',date:date,machine:machine,items:items});
-    }
-    document.getElementById('loadingMsg').style.display='none';
-    initFilters();
-    var t=new Date();
-    var tm=('0'+(t.getMonth()+1)).slice(-2),td=('0'+t.getDate()).slice(-2);
-    var tStr=t.getFullYear()+'-'+tm+'-'+td;
-    document.getElementById('dateFrom').value=tStr;
-    document.getElementById('dateTo').value=tStr;
-    render();
+function isOkValue(raw){
+  var v=String(raw==null?'':raw).trim();
+  if(v==='')return true;
+  if(/^not\s*ok/i.test(v))return false;
+  return /^ok\b/i.test(v);
+}
+
+function buildMap(header,cfg){
+  var h=(header||[]).map(function(x){return String(x==null?'':x).trim()});
+  var dt=h.findIndex(function(x){return /^date\b/i.test(x)});
+  if(dt<0)dt=cfg.dateCol;
+  var mc=h.findIndex(function(x){return /^machine\s*name/i.test(x)});
+  if(mc<0)mc=cfg.machCol;
+  var ts=h.findIndex(function(x){return /^timestamp/i.test(x)});
+  if(ts<0)ts=0;
+  var start=cfg.startCol;
+  var end=cfg.itemCount?Math.min(h.length,start+cfg.itemCount):h.length;
+  var cols=[];
+  for(var i=start;i<end;i++){
+    var name=h[i]||'';
+    if(!name)continue;
+    if(/^column\s*\d+$/i.test(name))continue;
+    if(i===dt||i===mc||i===ts)continue;
+    cols.push({key:name,idx:i});
+  }
+  return {ts:ts,dt:dt,mc:mc,cols:cols};
+}
+
+function parseSection(key,cfg,csv){
+  var rows=parseCSV(csv);
+  if(!rows.length)return [];
+  var map=buildMap(rows[0],cfg);
+  var out=[];
+  for(var i=1;i<rows.length;i++){
+    var r=rows[i];
+    if(!r)continue;
+    var any=false;
+    for(var j=0;j<r.length;j++){if(String(r[j]==null?'':r[j]).trim()){any=true;break}}
+    if(!any)continue;
+    var machine=String(r[map.mc]==null?'':r[map.mc]).trim();
+    if(!machine&&cfg.machCol!==map.mc)machine=String(r[cfg.machCol]==null?'':r[cfg.machCol]).trim();
+    if(/^column\s*\d+$/i.test(machine))machine='';
+    var date=String(r[map.dt]==null?'':r[map.dt]).trim();
+    if(!date&&!machine)continue;
+    var items=map.cols.map(function(c){
+      var raw=String(r[c.idx]==null?'':r[c.idx]).trim();
+      var ok=isOkValue(raw),detail='';
+      if(!ok){
+        detail=raw;
+        var m=raw.match(/Corrective action:\s*(.*)/i);
+        var issue=raw.split('|')[0].replace(/^Not\s*OK\s*-?\s*/i,'').trim();
+        if(!issue)issue=raw;
+        detail=issue+(m&&m[1]?(' | '+m[1].trim()):'');
+      }
+      return {key:c.key,ok:ok,detail:detail,raw:raw};
+    });
+    out.push({section:key,timestamp:String(r[map.ts]==null?'':r[map.ts]).trim(),date:date,dateISO:normDate(date),machine:machine||'(not specified)',items:items});
+  }
+  return out;
+}
+
+var FAILED=[];
+function loadOne(key){
+  var cfg=CONFIGS[key];
+  return fetch(cfg.csv,{cache:'no-store'}).then(function(r){
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    return r.text();
+  }).then(function(txt){
+    var recs=parseSection(key,cfg,txt);
+    DATA=DATA.concat(recs);
+    return recs.length;
   }).catch(function(e){
-    document.getElementById('loadingMsg').textContent='Failed to load data: '+e.message;
+    FAILED.push(key+' ('+(e&&e.message?e.message:e)+')');
+    return 0;
   });
+}
+
+function loadData(){
+  var keys=ALL_MODE?Object.keys(CONFIGS):[CONFIGS[sec]?sec:'IMM'];
+  var loading=document.getElementById('loadingMsg');
+  var i=0,loaded=0;
+  loading.style.display='block';
+  loading.textContent='Loading data from Google Sheets...';
+  function batch(){
+    if(i>=keys.length){finish();return}
+    var part=keys.slice(i,i+6);i+=6;
+    Promise.all(part.map(loadOne)).then(function(){
+      loaded+=part.length;
+      loading.textContent='Loading... '+loaded+' / '+keys.length+' departments';
+      batch();
+    });
+  }
+  function finish(){
+    loading.style.display='none';
+    var warn=document.getElementById('loadWarn');
+    if(warn){
+      if(FAILED.length){warn.style.display='block';warn.textContent='Could not load '+FAILED.length+' department(s): '+FAILED.join(' | ')}
+      else{warn.style.display='none'}
+    }
+    document.getElementById('secBadge').textContent=(ALL_MODE?'All Departments':sec)+' • '+DATA.length+' record'+(DATA.length===1?'':'s');
+    initFilters();
+    render();
+  }
+  batch();
 }
 
 function initFilters(){
   var mach=document.getElementById('machineFilter');
-  var machs={};
-  DATA.forEach(function(r){if(r.machine)machs[r.machine]=1});
-  Object.keys(machs).sort().forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;mach.appendChild(o)});
+  mach.innerHTML='<option value="">All Machines</option>';
+  var seen={};
+  DATA.forEach(function(r){
+    if(!r.machine)return;
+    var val=ALL_MODE?(r.section+'||'+r.machine):r.machine;
+    var label=ALL_MODE?(r.machine+'  —  '+r.section):r.machine;
+    if(!seen[val])seen[val]=label;
+  });
+  Object.keys(seen).sort(function(a,b){return seen[a].localeCompare(seen[b])}).forEach(function(v){
+    var o=document.createElement('option');o.value=v;o.textContent=seen[v];mach.appendChild(o);
+  });
   mach.onchange=render;
   document.getElementById('statusFilter').onchange=render;
   document.getElementById('dateFrom').onchange=onDateChange;
@@ -500,8 +596,7 @@ function onDateChange(){
 var sortCol='date',sortAsc=false;
 
 function statusOf(r){
-  var attn=r.items.filter(function(it){return !it.ok});
-  return attn.length?attn:[];
+  return r.items.filter(function(it){return !it.ok});
 }
 
 function render(){
@@ -510,11 +605,14 @@ function render(){
   var df=document.getElementById('dateFrom').value;
   var dt=document.getElementById('dateTo').value;
   var filtered=DATA.filter(function(r){
-    if(mv&&r.machine!==mv)return false;
+    if(mv){
+      var key=ALL_MODE?(r.section+'||'+r.machine):r.machine;
+      if(key!==mv)return false;
+    }
     if(sv==='ok'&&statusOf(r).length)return false;
     if(sv==='attn'&&!statusOf(r).length)return false;
-    if(df&&normDate(r.date)<df)return false;
-    if(dt&&normDate(r.date)>dt)return false;
+    if(df&&(!r.dateISO||r.dateISO<df))return false;
+    if(dt&&(!r.dateISO||r.dateISO>dt))return false;
     return true;
   });
   renderChart(filtered);
@@ -524,30 +622,57 @@ function render(){
   document.getElementById('stOk').textContent=okCount;
   document.getElementById('stAttn').textContent=attnCount;
   var machSet={};
-  filtered.forEach(function(r){machSet[r.machine]=1});
+  filtered.forEach(function(r){machSet[ALL_MODE?(r.section+'||'+r.machine):r.machine]=1});
   document.getElementById('stMachines').textContent=Object.keys(machSet).length;
-  if(sortCol!=='sl'){
-    filtered.sort(function(a,b){
-      var av=a[sortCol]||'',bv=b[sortCol]||'';
-      return sortAsc?av.localeCompare(bv):bv.localeCompare(av);
-    });
-  }
+  filtered.sort(function(a,b){
+    var av,bv;
+    if(sortCol==='date'){av=a.dateISO||'';bv=b.dateISO||''}
+    else if(sortCol==='machine'){av=a.machine||'';bv=b.machine||''}
+    else if(sortCol==='section'){av=a.section||'';bv=b.section||''}
+    else{av=a[sortCol]||'';bv=b[sortCol]||''}
+    return sortAsc?String(av).localeCompare(String(bv)):String(bv).localeCompare(String(av));
+  });
   var tb=document.getElementById('tbody');tb.innerHTML='';
   document.getElementById('noData').style.display=filtered.length?'none':'block';
   document.getElementById('dataTable').style.display=filtered.length?'table':'none';
   filtered.forEach(function(r,i){
     var attn=statusOf(r);
     var tr=document.createElement('tr');
-    var statusHtml=attn.length
-      ?'<span class="badge attention">Attention</span>'
-      :'<span class="badge ok">All OK</span>';
-    var attnHtml=attn.length
-      ?('<div class="attn">'+attn.length+' item(s) &#9888;</div>'+attn.slice(0,4).map(function(it){return '<div class="attn-item">&#8226; '+esc(shortName(it.key))+': '+esc(it.detail)+'</div>'}).join(''))
-      :'<span style="color:#2e7d32;font-size:12px">&#10003; All '+CHECK_KEYS.length+' items passed</span>';
-    tr.innerHTML='<td class="sl">'+(i+1)+'</td><td>'+esc(r.date)+'</td><td><b>'+esc(r.machine)+'</b></td><td>'+statusHtml+'</td><td>'+attnHtml+'</td>';
+    var statusHtml=attn.length?'<span class="badge attention">Attention</span>':'<span class="badge ok">All OK</span>';
+    var attnHtml='';
+    if(attn.length){
+      attnHtml='<div class="attn">'+attn.length+' item(s) &#9888;</div>'+attn.map(function(it){
+        return '<div class="attn-item">&#8226; '+esc(shortName(it.key))+': '+esc(it.detail)+'</div>';
+      }).join('');
+    }else{
+      attnHtml='<span style="color:#2e7d32;font-size:12px">&#10003; All '+r.items.length+' items passed</span>';
+    }
+    attnHtml+=' <button type="button" class="detail-toggle">View details</button>';
+    tr.innerHTML='<td class="sl">'+(i+1)+'</td>'
+      +(ALL_MODE?'<td class="sec-col">'+esc(r.section)+'</td>':'')
+      +'<td>'+esc(r.date||'-')+'</td><td><b>'+esc(r.machine)+'</b></td><td>'+statusHtml+'</td><td>'+attnHtml+'</td>';
     tb.appendChild(tr);
+    var dr=document.createElement('tr');
+    dr.className='detail-row';
+    dr.style.display='none';
+    dr.innerHTML='<td colspan="'+(ALL_MODE?6:5)+'">'+detailHtml(r)+'</td>';
+    tb.appendChild(dr);
+    var btn=tr.querySelector('.detail-toggle');
+    btn.addEventListener('click',function(){
+      var open=dr.style.display==='none';
+      dr.style.display=open?'table-row':'none';
+      btn.textContent=open?'Hide details':'View details';
+    });
   });
   updateSortIndicators();
+}
+
+function detailHtml(r){
+  var body=r.items.map(function(it){
+    var val=it.ok?(it.raw||'OK'):it.detail;
+    return '<div class="det-item '+(it.ok?'det-ok':'det-bad')+'"><span class="det-mark">'+(it.ok?'&#10003;':'&#10007;')+'</span><span class="det-key">'+esc(shortName(it.key))+'</span><span class="det-val">'+esc(val)+'</span></div>';
+  }).join('');
+  return '<div class="det-box"><div class="det-head">'+esc(r.section)+' &nbsp;|&nbsp; '+esc(r.machine)+' &nbsp;|&nbsp; '+esc(r.date||'-')+' &nbsp;|&nbsp; Submitted: '+esc(r.timestamp||'-')+' &nbsp;|&nbsp; '+r.items.filter(function(x){return x.ok}).length+'/'+r.items.length+' OK</div>'+body+'</div>';
 }
 
 function renderChart(filtered){
@@ -578,8 +703,8 @@ function updateSortIndicators(){
   var ths=document.querySelectorAll('th[data-col]');
   for(var i=0;i<ths.length;i++){
     var col=ths[i].getAttribute('data-col');
-    var txt=ths[i].textContent.replace(/\s*[▴▾]\s*$/,'');
-    if(col===sortCol)txt+=sortAsc?' ▴':' ▾';
+    var txt=ths[i].textContent.replace(/\s*[\u25B4\u25BE]\s*$/,'');
+    if(col===sortCol)txt+=sortAsc?' \u25B4':' \u25BE';
     ths[i].textContent=txt;
   }
 }
@@ -593,10 +718,12 @@ document.querySelectorAll('th[data-col]').forEach(function(th){
   });
 });
 
-function esc(s){return s?s.replace(/&/g,'&amp;').replace(/</g,'&lt;'):''}
+function esc(s){
+  return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
 
-(function(){var s=new URLSearchParams(location.search).get('section')||'IMM';document.getElementById('secBadge').textContent=s;document.title=CFG.title+' - '+s})();
 loadData();
+
 </script>
 <script>
 (function(){
